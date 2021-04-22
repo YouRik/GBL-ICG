@@ -87,7 +87,7 @@ export default class Box extends GameObject {
             positions.push(position.y);
             positions.push(position.z);
         });
-        this.positionAmount = positions.length;
+        this.positionCount = positions.length;
 
         const colors = [];
         for (let i = 0; i < positions.length; i++) {
@@ -107,7 +107,7 @@ export default class Box extends GameObject {
             indices.push(face[2]);
             indices.push(face[3]);
         });
-        this.indexAmount = indices.length;
+        this.indexCount = indices.length;
 
         const vertices = positions.concat(colors);
 
@@ -251,8 +251,8 @@ export default class Box extends GameObject {
         //     2, 6, 7
         // ];
 
-        this.positionAmount = positions.length;
-        this.indexAmount = indices.length;
+        this.positionCount = positions.length;
+        this.indexCount = indices.length;
 
         const vertices = positions.concat(normals);
 

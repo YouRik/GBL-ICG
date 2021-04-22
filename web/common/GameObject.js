@@ -144,10 +144,10 @@ export default class GameObject {
         // Set attribute pointer for colors
         GL.enableVertexAttribArray(this.colLoc);
         GL.vertexAttribPointer(this.colLoc, 3, GL.FLOAT, false, 0,
-            this.positionAmount * 4);
+            this.positionCount * 4);
 
         // Draw all the indices
-        GL.drawElements(GL.TRIANGLES, this.indexAmount, GL.UNSIGNED_SHORT, 0);
+        GL.drawElements(GL.TRIANGLES, this.indexCount, GL.UNSIGNED_SHORT, 0);
     }
 
     /**
@@ -169,7 +169,7 @@ export default class GameObject {
         // Set attribute pointer for normals
         GL.enableVertexAttribArray(this.normalLoc);
         GL.vertexAttribPointer(this.normalLoc, 3, GL.FLOAT, false, 0,
-            this.positionAmount * 4);
+            this.positionCount * 4);
 
         // Pass lighting values
         // TODO: mark this place in code for lighting1
@@ -179,6 +179,6 @@ export default class GameObject {
         GL.uniform1f(this.specExpLoc, this.specExp);
 
         // Draw all the indices
-        GL.drawElements(GL.TRIANGLES, this.indexAmount, GL.UNSIGNED_SHORT, 0);
+        GL.drawElements(GL.TRIANGLES, this.indexCount, GL.UNSIGNED_SHORT, 0);
     }
 }
