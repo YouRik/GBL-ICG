@@ -1,0 +1,70 @@
+{
+    "resources": {
+        "shaders": [
+            ["vertLightingV", "shaders/fragment_lighting.vs"],
+            ["fragLightingF", "shaders/fragment_lighting.fs"]
+        ],
+        "textures": [
+
+        ],
+        "meshes": [
+
+        ]
+    },
+    "shader_programs": {
+        "fragmentLighting": {
+            "type": "lit",
+            "vertex": "vertLightingV",
+            "fragment": "fragLightingF"
+        }
+    },
+    "objects": [
+        {
+            "type": "box",
+            "shader_program": "fragmentLighting",
+            "halfExtents": [100, 0.2, 100],
+            "position": [0, 0, 0],
+            "lightParams": {
+                "ka": [0.4, 0.2, 0],
+                "kd": [0.6, 0.3, 0],
+                "ks": [0.5, 0.5, 0],
+                "specExp": 4
+            },
+            "mass": 0
+        },
+        {
+            "type": "cube",
+            "shader_program": "fragmentLighting",
+            "halfExtent": 1,
+            "position": [0, 15, 0],
+            "mass": 20
+        },
+        {
+            "type": "cube",
+            "shader_program": "fragmentLighting",
+            "halfExtent": 1,
+            "position": [-1, 10, 1],
+            "color": [0, 0, 1],
+            "mass": 20
+        },
+        {
+            "type": "box",
+            "shader_program": "fragmentLighting",
+            "halfExtents": [0.7, 2, 1],
+            "position": [1, 8, -1],
+            "color": [0, 0, 1],
+            "mass": 150
+        },
+        {
+            "type": "player",
+            "position": [0, 1, -6]
+        },
+        {
+            "type": "globalLight",
+            "position": [-10, 20, -10],
+            "Ia": [0.6, 0.6, 0.6],
+            "Id": [0.9, 0.9, 0.9],
+            "Is": [1.0, 1.0, 1.0]
+        }
+    ]
+}

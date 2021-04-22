@@ -1,0 +1,58 @@
+<h2>Pass the labyrinth</h2>
+<p>
+    Get to the end of the labyrinth. But this time it looks like all walls are painted in the beautiful color of Hamburg's sky.
+    <br />
+    So good luck!
+    <br />
+    Or, well, you could get some depth in here.
+    <ol>
+        <li>
+            You should already have the ambient light implemented.
+        </li>
+        <li>
+            Open the file <div class=code>shaders/tasks/vertex_lighting.vs</div>. Notice that all required light source attributes and uniforms are already passed to the shader.
+        </li>
+        <li>
+            Calculate the vectors V, N, L and R.
+            These are some useful GLSL functions to keep in mind:
+            <ul>
+                <li>
+                    <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/normalize.xhtml">normalize()</a>
+                </li>
+                <li>
+                    <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/reflect.xhtml">reflect()</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            Calculate the the light attenuation factor fAtt. <br />
+            These are some useful GLSL functions to keep in mind:
+            <ul>
+                <li>
+                    <a href="https://docs.gl/sl4/distance">distance()</a>
+                </li>
+                <li>
+                    <a href="https://docs.gl/sl4/min">min()</a>
+                </li>
+                <li>
+                    <a href="https://docs.gl/sl4/pow">pow()</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            Implement the diffuse light based on the Phong lighting model. <br />
+            These are some useful GLSL functions to keep in mind:
+            <ul>
+                <li>
+                    <a href="https://docs.gl/sl4/max">max()</a>
+                </li>
+                <li>
+                    <a href="https://docs.gl/sl4/dot">dot()</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            Pass the labyrinth.
+        </li>
+    </ol>
+</p>

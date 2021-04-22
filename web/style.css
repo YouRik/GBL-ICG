@@ -1,0 +1,67 @@
+/* TODO: UHH corporate style guidelines */
+body {
+  font-family: sans-serif;
+  font-size: 16px;
+  color: #212121;
+  margin-left: 1.5vw;
+  margin-right: 1.5vw;
+}
+
+body .code {
+  font-family: monospace;
+  display: inline;
+  background-color: #e2e2e2;
+  color: #000000;
+}
+li {
+  padding-top: 0.8em;
+}
+
+h1 {
+  color: #0271bb;
+}
+h2 {
+  color: #0271bb;
+}
+
+#top-container {
+  width: 100%;
+}
+
+#canvas-container {
+  width: 60%;
+}
+
+#tasks-container {
+  width: 40%;
+  padding-left: 2vw;
+  vertical-align: top;
+}
+#tasks-container * {
+  margin-top: 0;
+}
+
+#gl-canvas {
+  width: 100%;
+	box-shadow: 0 0 0 1px #424242,
+              0 0 0.5vw 0.25vw #b1b1b1;
+	transition: all 0.15s;
+}
+#gl-canvas.playing {
+	box-shadow: 0 0 0 1px #0271bb,
+              0 0 1vw 0.5vw #0271bb86;
+}
+
+footer {
+  margin-top: 3em;
+}
+footer p {
+  display: inline;
+}
+footer p.copyright {
+  float: left;
+}
+footer p.licenses {
+  float: right;
+  margin-left: 2em;
+}

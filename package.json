@@ -1,0 +1,20 @@
+{
+  "name": "gbl-icg",
+  "version": "0.0.1",
+  "description": "A proof-of-concept game-based learning approach to teaching interactive computer graphics.",
+  "main": "Server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node Server.js"
+  },
+  "author": "Jurik Karimian",
+  "license": "",
+  "devDependencies": {
+    "eslint": "^7.24.0",
+    "jest": "^26.6.3",
+    "jsdoc": "^3.6.6"
+  },
+  "dependencies": {
+    "ejs": "^3.1.6"
+  }
+}

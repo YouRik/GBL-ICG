@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<!-- Avoid warning about nonexisting favicon-->
+		<link rel="shortcut icon" href="#" />
+		<link rel="stylesheet" href="style.css">
+		<title>GBL-ICG</title>
+	</head>
+	<body>
+		<%- include(`./html/${StageName}-title.html`); %>
+		<table>
+			<tr>
+				<td>
+					<p>Frametime / FPS: </p>
+				</td>
+				<td>
+					<p id="performance-output"></p>
+				</td>
+			</tr>
+		</table>
+
+		<table id="top-container">
+			<tr>
+				<td id="canvas-container">
+					<canvas id="gl-canvas">
+						If you see this, your browser doesn't support WebGL.
+					</canvas>
+				</td>
+
+				<td id="tasks-container">
+					<%- include(`./html/${StageName}-tasks.html`); %>
+				</td>
+			</tr>
+		</table>
+
+		<h2>Theory recap</h2>
+		<p>
+			Remember this and that from the lecture about something? <br />
+			Well, here's a quick recap of the most important bits.
+		</p>
+		<script type="text/javascript">
+			var stageFile = '<%= StageName %>';
+		</script>
+		<script type="module" src="Main.js"></script>
+	</body>
+	<%- include('./html/footer.html'); %>
+</html>
