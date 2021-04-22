@@ -6,9 +6,8 @@ import BoxObject from './BoxObject.js';
  * TODO: add documentation
  */
 export default class CubeObject extends BoxObject {
-    constructor(world, program, shaderType, options) {
-        const halfExtent = options.halfExtent != undefined ?
-            options.halfExtent : 1;
+    constructor(world, program, shaderType, options = {}) {
+        const halfExtent = 'halfExtent' in options ? options.halfExtent : 1;
         const position = options.position;
         const orientation = options.orientation;
         const mass = options.mass;
