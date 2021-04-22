@@ -11,7 +11,7 @@
 `npm install`
 
 - Generate documentation:  
-``./generate_docs``
+`bash ./generate_docs`
 
 - Start web server:  
 `npm start`
