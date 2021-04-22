@@ -8,14 +8,17 @@ import * as GLMAT from './lib/gl-matrix/index.js';
  * TODO: add documentation
  */
 export default class Box extends GameObject {
-    constructor(world, program, shaderType, options = {}) {
-        const halfExtents = 'halfExtents' in options ? options.halfExtents
-            : [1, 1, 1];
-        const position = 'position' in options ? options.position : [0, 0, 0];
-        const orientation = 'orientation' in options ? options.orientation
-            : [0, 0, 0];
-        const mass = 'mass' in options ? options.mass : 1;
-        const color = 'color' in options ? options.color : [1, 0, 0];
+    constructor(world, program, shaderType, options) {
+        const halfExtents = options.halfExtents != undefined ?
+            options.halfExtents : [1, 1, 1];
+        const position = options.position != undefined ?
+            options.position : [0, 0, 0];
+        const orientation = options.orientation != undefined ?
+            options.orientation : [0, 0, 0];
+        const mass = options.mass != undefined ?
+            options.mass : 1;
+        const color = options.color != undefined ?
+            options.color : [1, 0, 0];
         const lightParams = options.lightParams;
 
         super(program, shaderType,

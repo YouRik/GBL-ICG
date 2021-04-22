@@ -17,11 +17,13 @@ export default class GameObject {
      *  orientation
      * @param {GLMAT.vec3} [options.scale] The object's default scale
      */
-    constructor(program, shaderType, options = {}) {
-        const position = 'position' in options ? options.position : [0, 0, 0];
-        const orientation = 'orientation' in options ? options.orientation
-            : [0, 0, 0];
-        const scale = 'scale' in options ? options.scale : [1, 1, 1];
+    constructor(program, shaderType, options) {
+        const position = options.position != undefined ?
+            options.position : [0, 0, 0];
+        const orientation = options.orientation != undefined ?
+            options.orientation : [0, 0, 0];
+        const scale = options.scale != undefined ?
+            options.scale : [1, 1, 1];
 
         // Required methods to be implemented
         if (typeof (this.initVBOs) != 'function') {
