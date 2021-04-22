@@ -11,19 +11,19 @@ export default class GameObject {
      * @param {WebGLProgram} program The WebGL shader program for this object
      * @param {string} shaderType The type of shader. Can be one of 'colored',
      *  'lit', 'textured', 'textured-lit'
-     * @param {object} [options] Optional options for the object
+     * @param {object} [options={}] Optional options for the object
      * @param {GLMAT.vec3} [options.position] The object's default position
      * @param {GLMAT.vec3} [options.orientation] The object's default
      *  orientation
      * @param {GLMAT.vec3} [options.scale] The object's default scale
      */
-    constructor(program, shaderType, options) {
-        const position = options.position != undefined ?
-            options.position : [0, 0, 0];
-        const orientation = options.orientation != undefined ?
-            options.orientation : [0, 0, 0];
-        const scale = options.scale != undefined ?
-            options.scale : [1, 1, 1];
+    constructor(program, shaderType, options = {}) {
+        const position = options.position == undefined ? [0, 0, 0]
+            : options.position;
+        const orientation = options.orientation == undefined ? [0, 0, 0]
+            : options.orientation;
+        const scale = options.scale == undefined ? [1, 1, 1]
+            : options.scale;
 
         // Required methods to be implemented
         if (typeof (this.initVBOs) != 'function') {

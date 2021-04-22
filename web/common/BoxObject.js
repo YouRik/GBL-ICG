@@ -8,23 +8,19 @@ import * as GLMAT from './lib/gl-matrix/index.js';
  * TODO: add documentation
  */
 export default class Box extends GameObject {
-    constructor(world, program, shaderType, options) {
-        const halfExtents = options.halfExtents != undefined ?
-            options.halfExtents : [1, 1, 1];
-        const position = options.position != undefined ?
-            options.position : [0, 0, 0];
-        const orientation = options.orientation != undefined ?
-            options.orientation : [0, 0, 0];
-        const mass = options.mass != undefined ?
-            options.mass : 1;
-        const color = options.color != undefined ?
-            options.color : [1, 0, 0];
+    constructor(world, program, shaderType, options = {}) {
+        const halfExtents = options.halfExtents == undefined ? [1, 1, 1]
+            : options.halfExtents;
+        const mass = options.mass == undefined ? 1
+            : options.mass;
+        const color = options.color == undefined ? [1, 0, 0]
+            : options.color;
         const lightParams = options.lightParams;
 
         super(program, shaderType,
             {
-                position: position,
-                orientation: orientation
+                position: options.position,
+                orientation: options.orientation
             });
 
         if (shaderType == 'lit' && lightParams == undefined) {
@@ -59,7 +55,8 @@ export default class Box extends GameObject {
                 restitution: 0.2
             })
         });
-        this.physicsBody.position.set(position[0], position[1], position[2]);
+        this.physicsBody.position.set(
+            this.position[0], this.position[1], this.position[2]);
         this.physicsBody.quaternion.set(this.quaternion[0], this.quaternion[1],
             this.quaternion[2], this.quaternion[3]);
 
