@@ -350,11 +350,23 @@
             "yaw": -90
         },
         {
-            "type": "globalLight",
+            "type": "lightSource",
             "position": [-10, 10, -10],
-            "Ia": [0.6, 0.6, 0.6],
+            "Ia": [0.2, 0.2, 0.2],
             "Id": [0, 0, 0],
-            "Is": [1, 1, 1]
+            "Is": [0, 0, 0.3]
+        },
+        {
+            "type": "lightSource",
+            "position": [0, 2, 10],
+            "Id": [0, 0, 0],
+            "Is": [0, 0.3, 0]
+        },
+        {
+            "type": "lightSource",
+            "position": [10, 2, 0],
+            "Id": [0, 0, 0],
+            "Is": [0.3, 0, 0]
         }
     ]
 }

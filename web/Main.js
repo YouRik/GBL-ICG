@@ -9,6 +9,7 @@ import FirstPersonPlayer from './common/FirstPersonPlayer.js';
 import PerformanceLogger from './common/PerformanceLogger.js';
 import * as CANNON from './common/lib/cannon/cannon-es.js';
 import * as GLMAT from './common/lib/gl-matrix/index.js';
+import LightSource from './common/LightSource.js';
 
 // Global WebGL rendering context
 window.GL = null;
@@ -65,38 +66,33 @@ function main(resources, shaderDefs, objectDefs) {
     // Create player
     let player;
 
-    // Create all game objects to update and render
+    // Array of game objects
     const gameObjects = [];
+
+    // Remember shaders that implement lighting
+    const lightPrograms = [];
+    for (const programName in programs) {
+        if (shaderDefs[programName].type == 'lit') {
+            lightPrograms.push(programs[programName]);
+        }
+    }
+
+    // Create all game objects to update and render
     objectDefs.forEach(objectDef => {
         const objType = objectDef.type;
         if (objType == 'player') {
             player = new FirstPersonPlayer(world, objectDef.position, programs,
                 canvas.width / canvas.height, objectDef.yaw, objectDef.pitch);
-        } else if (objType == 'globalLight') {
+        } else if (objType == 'lightSource') {
             // TODO: wrap in class
             // TODO: multiple light sources
             // Create light source
-            const lightPosition = objectDef.position;
-            const Ia = objectDef.Ia;
-            const Id = objectDef.Id;
-            const Is = objectDef.Is;
-            // Pass light source to all lighting shaders
-            for (const programName in programs) {
-                if (shaderDefs[programName].type == 'lit') {
-                    const program = programs[programName];
-
-                    const IaLocV = GL.getUniformLocation(program, 'Ia');
-                    const IdLocV = GL.getUniformLocation(program, 'Id');
-                    const IsLocV = GL.getUniformLocation(program, 'Is');
-                    const lightPositionLocV = GL.getUniformLocation(program,
-                        'lPosition');
-                    GL.useProgram(program);
-                    GL.uniform3fv(IaLocV, Ia);
-                    GL.uniform3fv(IdLocV, Id);
-                    GL.uniform3fv(IsLocV, Is);
-                    GL.uniform3fv(lightPositionLocV, lightPosition);
-                }
-            }
+            const lightSource = new LightSource(
+                objectDef.position, lightPrograms, {
+                    Ia: objectDef.Ia,
+                    Id: objectDef.Id,
+                    Is: objectDef.Is
+                });
         } else {
             // Get object options
             const options = {};
@@ -123,6 +119,13 @@ function main(resources, shaderDefs, objectDefs) {
             }
         }
     });
+
+    // Pass number of lights to the relevant shaders
+    for (const programIndex in programs) {
+        const program = programs[programIndex];
+        const lightCountLoc = GL.getUniformLocation(program, 'lightsCount');
+        GL.uniform1i(lightCountLoc, LightSource.lightsCount);
+    }
 
     // Input callbacks
     const handleKeyUp = (event) => {
@@ -266,6 +269,7 @@ function setViewPort(canvas, gl = window.GL) {
 // TODO: Optional player (flash-)light
 // TODO: Mesh loading
 // TODO: Multiple (different) light sources
+// TODO: replace colored, lit, textured with bit flag
 
 // TODO: Check coding style (ESLint)
 // TODO: DOCUMENTATION

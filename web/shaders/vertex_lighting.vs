@@ -7,11 +7,11 @@ uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
 
-uniform vec3 lPosition;
+uniform vec3 lPosition[1];
 
 uniform vec3 Ia;
-uniform vec3 Id;
-uniform vec3 Is;
+uniform vec3 Id[1];
+uniform vec3 Is[1];
 uniform vec3 ka;
 uniform vec3 kd;
 uniform vec3 ks;
@@ -30,7 +30,7 @@ void main()
 
     vec4 position = modelViewMatrix * vPosition;
     vec4 normal = normalMatrix * vec4(normalize(vNormal), 0.0);
-    vec4 lightPos = viewMatrix * vec4(lPosition, 1.0);
+    vec4 lightPos = viewMatrix * vec4(lPosition[0], 1.0);
     
     vec3 N = normalize(normal.xyz);
     vec3 L = normalize((lightPos - position).xyz);
@@ -41,8 +41,8 @@ void main()
     float fAtt = min(1.0/(c1 + c2 * d + c3 * pow(d, 2.0)), 1.0);
 
     vec3 I 	= Ia * ka
-        + fAtt * (Id * kd * max(dot(N, L), 0.0)
-        + Is * ks * pow(max(dot(R, V), 0.0), specExp));
+        + fAtt * (Id[0] * kd * max(dot(N, L), 0.0)
+        + Is[0] * ks * pow(max(dot(R, V), 0.0), specExp));
     vfColor = vec4(I.xyz, 1.0);
     
     gl_Position = projectionMatrix * position;

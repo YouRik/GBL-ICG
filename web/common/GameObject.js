@@ -40,7 +40,7 @@ export default class GameObject {
             this.colLoc = GL.getAttribLocation(this.program, 'vColor');
         } else if (this.shaderType == 'lit') {
             this.normalLoc = GL.getAttribLocation(this.program, 'vNormal');
-            // TODO: mark this place in code for lighting1
+            // TASK: Get the shader locations for the lighting uniforms
             this.kaLoc = GL.getUniformLocation(this.program, 'ka');
             this.kdLoc = GL.getUniformLocation(this.program, 'kd');
             this.ksLoc = GL.getUniformLocation(this.program, 'ks');
@@ -172,7 +172,7 @@ export default class GameObject {
             this.positionCount * 4);
 
         // Pass lighting values
-        // TODO: mark this place in code for lighting1
+        // TASK: Pass the lighting uniforms to the shader
         GL.uniform3fv(this.kaLoc, this.ka);
         GL.uniform3fv(this.kdLoc, this.kd);
         GL.uniform3fv(this.ksLoc, this.ks);

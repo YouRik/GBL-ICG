@@ -60,7 +60,7 @@
             "position": [0, 1, -6]
         },
         {
-            "type": "globalLight",
+            "type": "lightSource",
             "position": [-10, 20, -10],
             "Ia": [0.6, 0.6, 0.6],
             "Id": [0.9, 0.9, 0.9],
