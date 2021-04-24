@@ -17,9 +17,9 @@ uniform vec3 kd;
 uniform vec3 ks;
 uniform float specExp;
 
-const float c1 = 1.0;
-const float c2 = 0.0005;
-const float c3 = 0.000003;
+uniform float c1[1];
+uniform float c2[1];
+uniform float c3[1];
 
 out vec4 vfColor;
 
@@ -38,7 +38,7 @@ void main()
     vec3 R = normalize(reflect(-L, N));
 
     float d = distance(lightPos, position);
-    float fAtt = min(1.0/(c1 + c2 * d + c3 * pow(d, 2.0)), 1.0);
+    float fAtt = min(1.0/(c1[0] + c2[0] * d + c3[0] * pow(d, 2.0)), 1.0);
 
     vec3 I 	= Ia * ka
         + fAtt * (Id[0] * kd * max(dot(N, L), 0.0)

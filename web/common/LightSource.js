@@ -7,13 +7,9 @@ export default class LightSource {
         this.Ia = options.Ia;
         this.Id = options.Id == undefined ? [0.8, 0.8, 0.8] : options.Id;
         this.Is = options.Is == undefined ? [1, 1, 1] : options.Is;
-        this.c1 = options.c1 == undefined ? 1 : options.c1;
-        this.c2 = options.c2 == undefined ? 0 : options.c2;
-        this.c3 = options.c3 == undefined ? 0 : options.c3;
+        this.c = options.c == undefined ? [1, 0, 0] : options.c;
         this.position = position;
-
-        // TODO: make light variables in shaders arrays and pass index and count
-        // TODO: pass c1, c2, c3
+        console.log(this.c);
 
         // Pass light source to all lighting shaders
         for (const programIndex in programs) {
@@ -30,10 +26,19 @@ export default class LightSource {
                 `Is[${LightSource.lightsCount}]`);
             const lightPositionLocV = GL.getUniformLocation(program,
                 `lPosition[${LightSource.lightsCount}]`);
+            const c1Loc = GL.getUniformLocation(program,
+                `c1[${LightSource.lightsCount}]`);
+            const c2Loc = GL.getUniformLocation(program,
+                `c2[${LightSource.lightsCount}]`);
+            const c3Loc = GL.getUniformLocation(program,
+                `c3[${LightSource.lightsCount}]`);
             GL.useProgram(program);
             GL.uniform3fv(IdLocV, this.Id);
             GL.uniform3fv(IsLocV, this.Is);
             GL.uniform3fv(lightPositionLocV, this.position);
+            GL.uniform1f(c1Loc, this.c[0]);
+            GL.uniform1f(c2Loc, this.c[1]);
+            GL.uniform1f(c3Loc, this.c[2]);
         }
 
         LightSource.lightsCount++;

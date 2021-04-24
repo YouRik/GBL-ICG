@@ -91,7 +91,8 @@ function main(resources, shaderDefs, objectDefs) {
                 objectDef.position, lightPrograms, {
                     Ia: objectDef.Ia,
                     Id: objectDef.Id,
-                    Is: objectDef.Is
+                    Is: objectDef.Is,
+                    c: objectDef.c
                 });
         } else {
             // Get object options

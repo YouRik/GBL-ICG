@@ -16,9 +16,9 @@ uniform vec3 kd;
 uniform vec3 ks;
 uniform float specExp;
 
-const float c1 = 1.0;
-const float c2 = 0.0005;
-const float c3 = 0.000003;
+uniform float c1[MAX_LIGHTS_COUNT];
+uniform float c2[MAX_LIGHTS_COUNT];
+uniform float c3[MAX_LIGHTS_COUNT];
 
 out vec4 fColor;
 
@@ -27,8 +27,7 @@ vec3 calculateIntensity(int lIndex, vec3 N, vec3 V) {
         vec3 R = reflect(-L, N);
 
         float d = distance(lightPosCam[lIndex], positionCam);
-        float fAtt = 1.0;
-        // float fAtt = min(1.0/(c1 + c2 * d + c3 * pow(d, 2.0)), 1.0);
+        float fAtt = min(1.0/(c1[lIndex] + c2[lIndex] * d + c3[lIndex] * pow(d, 2.0)), 1.0);
 
         return fAtt *
                 (Id[lIndex] * kd * max(dot(N, L), 0.0)
