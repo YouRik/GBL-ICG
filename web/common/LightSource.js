@@ -9,7 +9,6 @@ export default class LightSource {
         this.Is = options.Is == undefined ? [1, 1, 1] : options.Is;
         this.c = options.c == undefined ? [1, 0, 0] : options.c;
         this.position = position;
-        console.log(this.c);
 
         // Pass light source to all lighting shaders
         for (const programIndex in programs) {
