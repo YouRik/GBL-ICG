@@ -2,7 +2,9 @@
     "resources": {
         "shaders": [
             ["vertLightingV", "shaders/fragment_lighting.vs"],
-            ["fragLightingF", "shaders/fragment_lighting.fs"]
+            ["fragLightingF", "shaders/fragment_lighting.fs"],
+            ["defaultV", "shaders/default.vs"],
+            ["defaultF", "shaders/default.fs"]
         ],
         "textures": [
 
@@ -18,6 +20,11 @@
             "type": "lit",
             "vertex": "vertLightingV",
             "fragment": "fragLightingF"
+        },
+        "colored": {
+            "type": "colored",
+            "vertex": "defaultV",
+            "fragment": "defaultF"
         }
     },
     "objects": [
@@ -56,6 +63,14 @@
             "position": [0, 5, 0],
             "color": [0, 0, 1],
             "mass": 150
+        },
+        {
+            "type": "cube",
+            "shader_program": "colored",
+            "halfExtent": 1,
+            "color": [0, 1, 0],
+            "position": [3, 15, -3],
+            "mass": 20
         },
         {
             "type": "mesh",

@@ -13,6 +13,7 @@ export default class LightSource {
         // Pass light source to all lighting shaders
         for (const programIndex in programs) {
             const program = programs[programIndex];
+            GL.useProgram(program);
 
             if (this.Ia != undefined) {
                 const IaLocV = GL.getUniformLocation(program, 'Ia');
@@ -31,7 +32,6 @@ export default class LightSource {
                 `c2[${LightSource.lightsCount}]`);
             const c3Loc = GL.getUniformLocation(program,
                 `c3[${LightSource.lightsCount}]`);
-            GL.useProgram(program);
             GL.uniform3fv(IdLocV, this.Id);
             GL.uniform3fv(IsLocV, this.Is);
             GL.uniform3fv(lightPositionLocV, this.position);

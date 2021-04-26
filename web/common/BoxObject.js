@@ -57,14 +57,17 @@ export default class Box extends GameObject {
     }
 
     initVBOsColored(box) {
-        // TODO: fix winding order of faces
-
-        const positions = [];
-        box.convexPolyhedronRepresentation.vertices.forEach(position => {
-            positions.push(position.x);
-            positions.push(position.y);
-            positions.push(position.z);
-        });
+        const hE = box.halfExtents;
+        const positions = [
+            -hE.x, -hE.y, -hE.z,
+            +hE.x, -hE.y, -hE.z,
+            +hE.x, +hE.y, -hE.z,
+            -hE.x, +hE.y, -hE.z,
+            -hE.x, -hE.y, +hE.z,
+            +hE.x, -hE.y, +hE.z,
+            +hE.x, +hE.y, +hE.z,
+            -hE.x, +hE.y, +hE.z
+        ];
         this.positionCount = positions.length;
 
         const colors = [];
@@ -74,17 +77,26 @@ export default class Box extends GameObject {
             });
         }
 
-        const indices = [];
         // Two triangles per face
-        box.convexPolyhedronRepresentation.faces.forEach(face => {
-            indices.push(face[0]);
-            indices.push(face[1]);
-            indices.push(face[2]);
+        const indices = [
+            4, 6, 7,
+            4, 5, 6,
 
-            indices.push(face[0]);
-            indices.push(face[2]);
-            indices.push(face[3]);
-        });
+            1, 6, 5,
+            1, 2, 6,
+
+            7, 2, 3,
+            7, 6, 2,
+
+            0, 5, 4,
+            0, 1, 5,
+
+            7, 3, 4,
+            3, 0, 4,
+
+            3, 2, 0,
+            2, 1, 0
+        ];
         this.indexCount = indices.length;
 
         const vertices = positions.concat(colors);
