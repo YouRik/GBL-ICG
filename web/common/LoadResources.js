@@ -60,7 +60,7 @@ export async function loadResources(
     if (meshPaths) {
         const meshLoading = [];
         meshPaths.forEach(pair => {
-            meshLoading.push(fetchAndDecode('mesh',pair[0], pair[1]));
+            meshLoading.push(fetchAndDecode('mesh', pair[1], pair[0]));
         });
         loading.push(Promise.all(meshLoading).then(meshes => {
             meshes.forEach(pair => {
@@ -81,6 +81,8 @@ export async function loadResources(
  * @param {string} url The resource's URL
  * @param {string} [name] The resource's name. Required for shaders, textures
  *  and meshes. Unnecessary for stage
+ * @throws {LoadResourceError} Errors when resource could not be fetched or
+ *  decoded
  * @returns {Promise<Array>} The resulting pair of name and resource
  */
 function fetchAndDecode(type, url, name) {
@@ -105,8 +107,13 @@ function fetchAndDecode(type, url, name) {
             });
         } else if (type == 'mesh') {
             // Return mesh in correct format
-            // TODO: correct mesh loading
-            return response.json().then(mesh => {
+            return response.text().then(meshText => {
+                let mesh
+                try {
+                    mesh = parsePLY(meshText);
+                } catch (error) {
+                    throw new LoadResourceError(name, url, error.message);
+                }
                 return [name, mesh];
             });
         } else if (type == 'stage') {
@@ -116,6 +123,63 @@ function fetchAndDecode(type, url, name) {
         console.log(error);
         throw new LoadResourceError(name, url, error);
     })
+}
+
+/**
+ * TODO: documentation
+ * @param {} meshText 
+ * @throws {}
+ * @returns 
+ */
+function parsePLY(meshText) {
+    const mesh = {
+        positions: [],
+        normals: [],
+        indices: []
+    };
+    let vertexCount;
+    let faceCount;
+    let endHeader = false;
+    let endPositions = false;
+    let endIndices = false;
+    
+    const lines = meshText.split('\n');
+    lines.forEach(line => {
+        if (line.includes('element vertex')) {
+            vertexCount = parseInt(line.substring(15));
+        } else if (line.includes('element face')) {
+            faceCount = parseInt(line.substring(13));
+        } else if(line == 'end_header') {
+            endHeader = true;
+        } else if (endHeader) {
+            if (!endPositions) {
+                const values = line.split(' ');
+                mesh.positions.push(values[0]);
+                mesh.positions.push(values[1]);
+                mesh.positions.push(values[2]);
+                mesh.normals.push(values[3]);
+                mesh.normals.push(values[4]);
+                mesh.normals.push(values[5]);
+                if (mesh.positions.length == vertexCount * 3) {
+                    endPositions = true;
+                }
+            } else if (!endIndices) {
+                const values = line.split(' ');
+                if (values[0] == 3) {
+                    mesh.indices.push(values[1]);
+                    mesh.indices.push(values[2]);
+                    mesh.indices.push(values[3]);
+                    if (mesh.indices.length == faceCount * 3) {
+                        endIndices = true;
+                    }
+                } else {
+                    throw new Error('Mesh not fully triangulated');
+                }
+            }
+        }
+    });
+
+    return mesh;
 }
 
 /**

@@ -19,6 +19,7 @@ const mimeTypes = {
     '.vs': 'text/plain',
     '.fs': 'text/plain',
     '.png': 'image/png',
+    '.ply': 'text/plain',
     '.txt': 'text/plain',
     '.md': 'text/markdown'
 };
@@ -45,9 +46,9 @@ const server = http.createServer((req, res) => {
                 console.log(err);
                 return respond404(res);
             } else {
-                const mimeType = mimeTypes[fileEnding]
+                const mimeType = mimeTypes[fileEnding];
                 vLog(`Response for file: ${req.url}`
-                    + ` with mime type ${mimeType}`)
+                    + ` with mime type ${mimeType}`);
                 res.writeHead(200, {'Content-Type': mimeType});
                 res.write(data);
                 return res.end();
