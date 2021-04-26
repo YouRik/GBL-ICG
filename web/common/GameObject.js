@@ -24,6 +24,11 @@ export default class GameObject {
             : options.orientation;
         const scale = options.scale == undefined ? [1, 1, 1]
             : options.scale;
+        this.mass = options.mass == undefined ? 1
+            : options.mass;
+        this.color = options.color == undefined ? [1, 0, 0]
+            : options.color;
+        const lightParams = options.lightParams;
 
         // Required methods to be implemented
         if (typeof (this.initVBOs) != 'function') {
@@ -33,6 +38,26 @@ export default class GameObject {
         this.program = program;
         this.modelMatLoc = GL.getUniformLocation(this.program, 'modelMatrix');
         this.posLoc = GL.getAttribLocation(this.program, 'vPosition');
+
+        if (shaderType == 'lit') {
+            // Set light parameters or calculate from color
+            if (lightParams != undefined) {
+                // Use passed values otherwise
+                this.ka = lightParams.ka;
+                this.kd = lightParams.kd;
+                this.ks = lightParams.ks;
+                this.specExp = lightParams.specExp;
+            } else {
+                // Calculate lighting parameters if needed but not provided
+                this.ka = GLMAT.vec3.create();
+                GLMAT.vec3.scale(this.ka, this.color, 0.6);
+                this.kd = GLMAT.vec3.create();
+                GLMAT.vec3.scale(this.kd, this.color, 0.9);
+                this.ks = GLMAT.vec3.create();
+                GLMAT.vec3.scale(this.ks, [1, 1, 1], 0.7);
+                this.specExp = 20;
+            }
+        }
 
         // Get uniform and attribute locations depending on used shader
         this.shaderType = shaderType;
@@ -122,7 +147,6 @@ export default class GameObject {
         } else if (this.shaderType == 'textured-lit') {
             // TODO: render textured and lit
         }
-        // TODO: change rendering based on vboLayout
     }
 
     /**

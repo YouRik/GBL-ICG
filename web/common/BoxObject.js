@@ -11,34 +11,14 @@ export default class Box extends GameObject {
     constructor(world, program, shaderType, options = {}) {
         const halfExtents = options.halfExtents == undefined ? [1, 1, 1]
             : options.halfExtents;
-        const mass = options.mass == undefined ? 1
-            : options.mass;
-        const color = options.color == undefined ? [1, 0, 0]
-            : options.color;
-        const lightParams = options.lightParams;
 
-        super(program, shaderType,
-            {
-                position: options.position,
-                orientation: options.orientation
-            });
-
-        if (shaderType == 'lit' && lightParams == undefined) {
-            // Calculate lighting parameters if needed but not provided
-            this.ka = GLMAT.vec3.create();
-            GLMAT.vec3.scale(this.ka, color, 0.6);
-            this.kd = GLMAT.vec3.create();
-            GLMAT.vec3.scale(this.kd, color, 0.9);
-            this.ks = GLMAT.vec3.create();
-            GLMAT.vec3.scale(this.ks, [1, 1, 1], 0.7);
-            this.specExp = 20;
-        } else if (shaderType == 'lit') {
-            // Use passed values otherwise
-            this.ka = lightParams.ka;
-            this.kd = lightParams.kd;
-            this.ks = lightParams.ks;
-            this.specExp = lightParams.specExp;
-        }
+        super(program, shaderType, {
+            position: options.position,
+            orientation: options.orientation,
+            mass: options.mass,
+            color: options.color,
+            lightParams: options.lightParams
+        });
 
         const box = new CANNON.Box(new CANNON.Vec3(
             halfExtents[0],
@@ -48,8 +28,8 @@ export default class Box extends GameObject {
 
         this.physicsBody = new CANNON.Body({
             shape: box,
-            mass: mass,
-            type: mass == 0 ? CANNON.Body.STATIC : CANNON.Body.DYNAMIC,
+            mass: this.mass,
+            type: this.mass == 0 ? CANNON.Body.STATIC : CANNON.Body.DYNAMIC,
             material: new CANNON.Material({
                 friction: 1,
                 restitution: 0.2
@@ -61,14 +41,14 @@ export default class Box extends GameObject {
             this.quaternion[2], this.quaternion[3]);
 
         world.addBody(this.physicsBody);
-        this.initVBOs(box, color);
+        this.initVBOs(box);
     }
 
-    initVBOs(box, color) {
+    initVBOs(box) {
         if (this.shaderType == 'colored') {
-            this.initVBOsColored(box, color);
+            this.initVBOsColored(box);
         } else if (this.shaderType == 'lit') {
-            this.initVBOsLit(box, color);
+            this.initVBOsLit(box);
         } else if (this.shaderType == 'textured') {
             // TODO: init textured VBOs
         } else if (this.shaderType == 'textured-lit') {
@@ -76,9 +56,7 @@ export default class Box extends GameObject {
         }
     }
 
-    initVBOsColored(box, color) {
-        this.vboLayout = 0;
-
+    initVBOsColored(box) {
         // TODO: fix winding order of faces
 
         const positions = [];
@@ -91,7 +69,7 @@ export default class Box extends GameObject {
 
         const colors = [];
         for (let i = 0; i < positions.length; i++) {
-            color.forEach(value => {
+            this.color.forEach(value => {
                 colors.push(value);
             });
         }
@@ -122,9 +100,7 @@ export default class Box extends GameObject {
             GL.DYNAMIC_DRAW);
     }
 
-    initVBOsLit(box, color) {
-        this.vboLayout = 0;
-
+    initVBOsLit(box) {
         const hE = box.halfExtents;
         // Per face normal
         const positions = [
