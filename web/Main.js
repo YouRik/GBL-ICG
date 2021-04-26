@@ -85,8 +85,6 @@ function main(resources, shaderDefs, objectDefs) {
             player = new FirstPersonPlayer(world, objectDef.position, programs,
                 canvas.width / canvas.height, objectDef.yaw, objectDef.pitch);
         } else if (objType == 'lightSource') {
-            // TODO: wrap in class
-            // TODO: multiple light sources
             // Create light source
             const lightSource = new LightSource(
                 objectDef.position, lightPrograms, {
@@ -258,9 +256,7 @@ function initWebGL(canvas) {
     // Set clear color (background) to UHH blue
     gl.clearColor(0.01, 0.44, 0.73, 1.0);
     gl.enable(gl.DEPTH_TEST);
-    // TODO: Enable back face culling.
-    //       Requires all models to have the correct face winding...
-    //       Or set per object during render
+    // TODO: Make sure all objects have the correct face winding.
     gl.enable(gl.CULL_FACE);
     gl.frontFace(gl.CCW);
     gl.cullFace(gl.BACK);
@@ -281,7 +277,7 @@ function setViewPort(canvas, gl = window.GL) {
 
 // TODO: Optional player (flash-)light
 // TODO: Mesh loading
-// TODO: Multiple (different) light sources
+// TODO: Light source types (spotlight, directional light)
 // TODO: replace colored, lit, textured with bit flag
 
 // TODO: Check coding style (ESLint)
