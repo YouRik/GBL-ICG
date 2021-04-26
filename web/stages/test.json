@@ -8,7 +8,9 @@
 
         ],
         "meshes": [
-
+            ["thing", "meshes/thing.ply"],
+            ["thingp1", "meshes/thing_convdecomp1.ply"],
+            ["thingp2", "meshes/thing_convdecomp2.ply"]
         ]
     },
     "shader_programs": {
@@ -36,24 +38,34 @@
             "type": "cube",
             "shader_program": "fragmentLighting",
             "halfExtent": 1,
-            "position": [0, 15, 0],
+            "position": [-3, 15, -3],
             "mass": 20
         },
         {
             "type": "cube",
             "shader_program": "fragmentLighting",
             "halfExtent": 1,
-            "position": [-1, 10, 1],
+            "position": [3, 10, 3],
             "color": [0, 0, 1],
             "mass": 20
         },
         {
             "type": "box",
             "shader_program": "fragmentLighting",
-            "halfExtents": [0.7, 2, 1],
-            "position": [1, 8, -1],
+            "halfExtents": [1.5, 0.1, 1.5],
+            "position": [0, 5, 0],
             "color": [0, 0, 1],
             "mass": 150
+        },
+        {
+            "type": "mesh",
+            "shader_program": "fragmentLighting",
+            "position": [0, 6, 0],
+            "color": [1, 0, 1],
+            "orientation": [0, 0, 0],
+            "mass": 5,
+            "meshes": ["thingp1", "thingp2"],
+            "graphical_mesh": "thing"
         },
         {
             "type": "player",

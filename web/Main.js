@@ -10,6 +10,7 @@ import PerformanceLogger from './common/PerformanceLogger.js';
 import * as CANNON from './common/lib/cannon/cannon-es.js';
 import * as GLMAT from './common/lib/gl-matrix/index.js';
 import LightSource from './common/LightSource.js';
+import MeshObject from './common/MeshObject.js';
 
 // Global WebGL rendering context
 window.GL = null;
@@ -89,16 +90,17 @@ function main(resources, shaderDefs, objectDefs) {
             // Create light source
             const lightSource = new LightSource(
                 objectDef.position, lightPrograms, {
-                    Ia: objectDef.Ia,
-                    Id: objectDef.Id,
-                    Is: objectDef.Is,
-                    c: objectDef.c
-                });
+                Ia: objectDef.Ia,
+                Id: objectDef.Id,
+                Is: objectDef.Is,
+                c: objectDef.c
+            });
         } else {
             // Get object options
             const options = {};
             for (const option in objectDef) {
-                if (option != 'type' && option != 'shader_program') {
+                if (option != 'type' && option != 'shader_program'
+                    && option != 'meshes' && option != 'graphical_mesh') {
                     options[option] = objectDef[option];
                 }
             }
@@ -108,14 +110,23 @@ function main(resources, shaderDefs, objectDefs) {
                 case 'box':
                     gameObjects.push(
                         new BoxObject(world, programs[program],
-                            shaderDefs[program].type, options)
-                    );
+                            shaderDefs[program].type, options));
                     break;
                 case 'cube':
                     gameObjects.push(
                         new CubeObject(world, programs[program],
-                            shaderDefs[program].type, options)
-                    );
+                            shaderDefs[program].type, options));
+                    break;
+                case 'mesh':
+                    options['graphicalMesh'] =
+                        resources.meshes[objectDef.graphical_mesh];
+                    const meshes = [];
+                    objectDef.meshes.forEach(mesh => {
+                        meshes.push(resources.meshes[mesh]);
+                    });
+                    gameObjects.push(
+                        new MeshObject(world, programs[program],
+                            shaderDefs[program].type, meshes, options));
                     break;
             }
         }
@@ -248,9 +259,10 @@ function initWebGL(canvas) {
     gl.clearColor(0.01, 0.44, 0.73, 1.0);
     gl.enable(gl.DEPTH_TEST);
     // TODO: Enable back face culling.
-    //       Requires all models to have the correct face winding
+    //       Requires all models to have the correct face winding...
+    //       Or set per object during render
     gl.enable(gl.CULL_FACE);
-    gl.frontFace(gl.CW);
+    gl.frontFace(gl.CCW);
     gl.cullFace(gl.BACK);
     return gl;
 }
