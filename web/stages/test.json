@@ -59,7 +59,7 @@
         {
             "type": "box",
             "shader_program": "fragmentLighting",
-            "halfExtents": [1.5, 0.15, 1.5],
+            "halfExtents": [1.5, 0.25, 1.5],
             "position": [0, 5, 0],
             "color": [0, 0, 1],
             "mass": 150
@@ -86,7 +86,8 @@
             "position": [1.6, 6, 0],
             "color": [1, 0, 1],
             "orientation": [0, 0, 90],
-            "mass": 5,
+            "scale": [2, 2, 2],
+            "mass": 15,
             "meshes": ["thingp1", "thingp2"],
             "graphical_mesh": "thing"
         },

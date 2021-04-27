@@ -282,4 +282,5 @@ function setViewPort(canvas, gl = window.GL) {
 
 // TODO: Check coding style (ESLint)
 // TODO: DOCUMENTATION
+// TODO: reduce imports to only necessary ones
 // TODO: Write and execute tests

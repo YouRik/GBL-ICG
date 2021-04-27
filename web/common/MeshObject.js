@@ -9,10 +9,12 @@ import * as CANNON from './lib/cannon/cannon-es.js';
 export default class MeshObject extends GameObject {
     constructor(world, program, shaderType, meshes, options = {}) {
         let graphicalMesh = options.graphicalMesh;
+        const scale = options.scale == undefined ? [1, 1, 1] : options.scale;
 
         super(program, shaderType, {
             position: options.position,
             orientation: options.orientation,
+            scale: scale,
             mass: options.mass,
             color: options.color,
             lightParams: options.lightParams
@@ -27,28 +29,28 @@ export default class MeshObject extends GameObject {
             })
         });
 
-        // TODO: scale: set scale matrix for graphics and manually multiply all
-        //              vertices for physics
-
-        // generate combined physics mesh from meshes
+        // generate combined physics mesh from meshes and scale
         meshes.forEach(mesh => {
             const vertices = [];
             const faces = [];
             for (let i = 0; i < mesh.positions.length; i += 3) {
-                vertices.push(new CANNON.Vec3(mesh.positions[i],
-                    mesh.positions[i+1], mesh.positions[i+2]));
+                vertices.push(new CANNON.Vec3(
+                    mesh.positions[i] * scale[0],
+                    mesh.positions[i + 1] * scale[1],
+                    mesh.positions[i + 2] * scale[2]));
             }
             let firstIndex = 0;
             for (let i = 0; i < mesh.faceIndexCounts.length; i++) {
                 const count = parseInt(mesh.faceIndexCounts[i]);
                 const indices = [];
                 for (let j = 0; j < count; j++) {
-                    indices.push(mesh.indices[firstIndex+j]);
+                    indices.push(mesh.indices[firstIndex + j]);
                 }
                 faces.push(indices);
                 firstIndex += count;
             }
-            const physicsMesh = new CANNON.ConvexPolyhedron({vertices, faces});
+            const physicsMesh = new CANNON.ConvexPolyhedron(
+                { vertices, faces });
             this.physicsBody.addShape(physicsMesh);
         });
 
