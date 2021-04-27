@@ -135,7 +135,8 @@ function parsePLY(meshText) {
     const mesh = {
         positions: [],
         normals: [],
-        indices: []
+        indices: [],
+        faceIndexCounts: []
     };
     let vertexCount;
     let faceCount;
@@ -165,15 +166,13 @@ function parsePLY(meshText) {
                 }
             } else if (!endIndices) {
                 const values = line.split(' ');
-                if (values[0] == 3) {
-                    mesh.indices.push(values[1]);
-                    mesh.indices.push(values[2]);
-                    mesh.indices.push(values[3]);
-                    if (mesh.indices.length == faceCount * 3) {
-                        endIndices = true;
-                    }
+                if (values.length < 4) {
+                    endIndices = true;
                 } else {
-                    throw new Error('Mesh not fully triangulated');
+                    mesh.faceIndexCounts.push(values[0]);
+                    for (let i = 1; i <= values[0]; i++) {
+                        mesh.indices.push(values[i]);
+                    }
                 }
             }
         }

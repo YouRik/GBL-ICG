@@ -27,7 +27,8 @@ export default class MeshObject extends GameObject {
             })
         });
 
-        // TODO: scale
+        // TODO: scale: set scale matrix for graphics and manually multiply all
+        //              vertices for physics
 
         // generate combined physics mesh from meshes
         meshes.forEach(mesh => {
@@ -37,24 +38,38 @@ export default class MeshObject extends GameObject {
                 vertices.push(new CANNON.Vec3(mesh.positions[i],
                     mesh.positions[i+1], mesh.positions[i+2]));
             }
-            for (let i = 0; i < mesh.indices.length; i += 3) {
-                faces.push(
-                    [mesh.indices[i], mesh.indices[i+1], mesh.indices[i+2]]);
+            let firstIndex = 0;
+            for (let i = 0; i < mesh.faceIndexCounts.length; i++) {
+                const count = parseInt(mesh.faceIndexCounts[i]);
+                const indices = [];
+                for (let j = 0; j < count; j++) {
+                    indices.push(mesh.indices[firstIndex+j]);
+                }
+                faces.push(indices);
+                firstIndex += count;
             }
             const physicsMesh = new CANNON.ConvexPolyhedron({vertices, faces});
             this.physicsBody.addShape(physicsMesh);
         });
 
         if (graphicalMesh == undefined) {
-            // TODO: Combine graphical mesh from separate meshes
+            // TODO: Combine graphical mesh from separate physics meshes
+            // Iterate through meshes and triangulate faces
             graphicalMesh = {};
+            throw Error('Graphical mesh not set');
+        } else {
+            // Check that the mesh is triangulated
+            graphicalMesh.faceIndexCounts.forEach(count => {
+                if (count != 3) {
+                    throw Error('Graphical mesh not triangulated');
+                }
+            });
         }
         this.physicsBody.position.set(
             this.position[0], this.position[1], this.position[2]);
         this.physicsBody.quaternion.set(this.quaternion[0], this.quaternion[1],
             this.quaternion[2], this.quaternion[3]);
 
-        // TODO: collision with other bodies is pretty weird.
         world.addBody(this.physicsBody);
         this.initVBOs(graphicalMesh);
     }
