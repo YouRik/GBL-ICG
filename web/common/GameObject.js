@@ -1,6 +1,7 @@
 /** @module GameObject */
 
 import * as GLMAT from './lib/gl-matrix/index.js';
+import * as CANNON from './lib/cannon/cannon-es.js';
 
 /**
  * Abstract class for 3D game objects with a mesh and a physical body
@@ -24,11 +25,11 @@ export default class GameObject {
             : options.orientation;
         const scale = options.scale == undefined ? [1, 1, 1]
             : options.scale;
-        this.mass = options.mass == undefined ? 1
+        const mass = options.mass == undefined ? 1
             : options.mass;
+        const lightParams = options.lightParams;
         this.color = options.color == undefined ? [1, 0, 0]
             : options.color;
-        const lightParams = options.lightParams;
 
         // Required methods to be implemented
         if (typeof (this.initVBOs) != 'function') {
@@ -91,6 +92,20 @@ export default class GameObject {
             GLMAT.vec3.fromValues(position[0], position[1], position[2]),
             quaternion,
             GLMAT.vec3.fromValues(scale[0], scale[1], scale[2]));
+
+        // Initialize basic physics body
+        this.physicsBody = new CANNON.Body({
+            mass: mass,
+            type: mass == 0 ? CANNON.Body.STATIC : CANNON.Body.DYNAMIC,
+            material: new CANNON.Material({
+                friction: 1,
+                restitution: 0.2
+            }),
+            position: new CANNON.Vec3(this.position[0],
+                this.position[1], this.position[2]),
+            quaternion: new CANNON.Quaternion(this.quaternion[0],
+                this.quaternion[1], this.quaternion[2], this.quaternion[3])
+        });
     }
 
     /**

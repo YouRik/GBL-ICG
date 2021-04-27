@@ -70,7 +70,7 @@
             "halfExtent": 1,
             "color": [0, 1, 0],
             "position": [3, 15, -3],
-            "mass": 20
+            "mass": 50
         },
         {
             "type": "cube",

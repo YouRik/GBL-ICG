@@ -26,19 +26,7 @@ export default class Box extends GameObject {
             halfExtents[2]
         ));
 
-        this.physicsBody = new CANNON.Body({
-            shape: box,
-            mass: this.mass,
-            type: this.mass == 0 ? CANNON.Body.STATIC : CANNON.Body.DYNAMIC,
-            material: new CANNON.Material({
-                friction: 1,
-                restitution: 0.2
-            })
-        });
-        this.physicsBody.position.set(
-            this.position[0], this.position[1], this.position[2]);
-        this.physicsBody.quaternion.set(this.quaternion[0], this.quaternion[1],
-            this.quaternion[2], this.quaternion[3]);
+        this.physicsBody.addShape(box);
 
         world.addBody(this.physicsBody);
         this.initVBOs(box);

@@ -20,15 +20,6 @@ export default class MeshObject extends GameObject {
             lightParams: options.lightParams
         });
 
-        this.physicsBody = new CANNON.Body({
-            mass: this.mass,
-            type: this.mass == 0 ? CANNON.Body.STATIC : CANNON.Body.DYNAMIC,
-            material: new CANNON.Material({
-                friction: 1,
-                restitution: 0.2
-            })
-        });
-
         // generate combined physics mesh from meshes and scale
         meshes.forEach(mesh => {
             const vertices = [];
@@ -67,10 +58,6 @@ export default class MeshObject extends GameObject {
                 }
             });
         }
-        this.physicsBody.position.set(
-            this.position[0], this.position[1], this.position[2]);
-        this.physicsBody.quaternion.set(this.quaternion[0], this.quaternion[1],
-            this.quaternion[2], this.quaternion[3]);
 
         world.addBody(this.physicsBody);
         this.initVBOs(graphicalMesh);
