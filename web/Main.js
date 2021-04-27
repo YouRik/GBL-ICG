@@ -11,6 +11,7 @@ import * as CANNON from './common/lib/cannon/cannon-es.js';
 import * as GLMAT from './common/lib/gl-matrix/index.js';
 import LightSource from './common/LightSource.js';
 import MeshObject from './common/MeshObject.js';
+import SphereObject from './common/SphereObject.js';
 
 // Global WebGL rendering context
 window.GL = null;
@@ -98,7 +99,8 @@ function main(resources, shaderDefs, objectDefs) {
             const options = {};
             for (const option in objectDef) {
                 if (option != 'type' && option != 'shader_program'
-                    && option != 'meshes' && option != 'graphical_mesh') {
+                    && option != 'meshes' && option != 'graphical_mesh'
+                    && options != 'sphereMesh') {
                     options[option] = objectDef[option];
                 }
             }
@@ -126,6 +128,12 @@ function main(resources, shaderDefs, objectDefs) {
                         new MeshObject(world, programs[program],
                             shaderDefs[program].type, meshes, options));
                     break;
+                case 'sphere':
+                    gameObjects.push(
+                        new SphereObject(world, programs[program],
+                            shaderDefs[program].type,
+                            resources.meshes[objectDef.mesh], options)
+                    );
             }
         }
     });
