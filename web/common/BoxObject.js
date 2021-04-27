@@ -59,7 +59,7 @@ export default class Box extends GameObject {
         this.positionCount = positions.length;
 
         const colors = [];
-        for (let i = 0; i < positions.length; i++) {
+        for (let i = 0; i < this.positionCount; i++) {
             this.color.forEach(value => {
                 colors.push(value);
             });

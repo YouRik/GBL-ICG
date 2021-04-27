@@ -143,6 +143,38 @@ export default class GameObject {
     }
 
     /**
+     * Helper function to initialize VBOs from mesh data
+     * @param {object} mesh The mesh data to use for VBO initialization
+     */
+    initVBOsWithMesh(mesh) {
+        this.positionCount = mesh.positions.length;
+        this.indexCount = mesh.indices.length;
+        let vertices = [];
+
+        if (this.shaderType == 'colored') {
+            const colors = [];
+            for (let i = 0; i < this.positionCount; i++) {
+                this.color.forEach(value => {
+                    colors.push(value);
+                });
+            }
+            vertices = mesh.positions.concat(colors);
+        } else if (this.shaderType == 'lit') {
+            vertices = mesh.positions.concat(mesh.normals);
+        }
+
+        this.dataVBO = GL.createBuffer();
+        GL.bindBuffer(GL.ARRAY_BUFFER, this.dataVBO);
+        GL.bufferData(GL.ARRAY_BUFFER, new Float32Array(vertices),
+            GL.DYNAMIC_DRAW);
+
+        this.indexVBO = GL.createBuffer();
+        GL.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, this.indexVBO);
+        GL.bufferData(GL.ELEMENT_ARRAY_BUFFER, new Uint16Array(mesh.indices),
+            GL.DYNAMIC_DRAW);
+    }
+
+    /**
      * Update step
      */
     update() {
