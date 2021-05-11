@@ -155,12 +155,12 @@ function parsePLY(meshText) {
         } else if (endHeader) {
             if (!endPositions) {
                 const values = line.split(' ');
-                mesh.positions.push(values[0]);
-                mesh.positions.push(values[1]);
-                mesh.positions.push(values[2]);
-                mesh.normals.push(values[3]);
-                mesh.normals.push(values[4]);
-                mesh.normals.push(values[5]);
+                mesh.positions.push(parseFloat(values[0]));
+                mesh.positions.push(parseFloat(values[1]));
+                mesh.positions.push(parseFloat(values[2]));
+                mesh.normals.push(parseFloat(values[3]));
+                mesh.normals.push(parseFloat(values[4]));
+                mesh.normals.push(parseFloat(values[5]));
                 if (mesh.positions.length == vertexCount * 3) {
                     endPositions = true;
                 }
@@ -169,9 +169,9 @@ function parsePLY(meshText) {
                 if (values.length < 4) {
                     endIndices = true;
                 } else {
-                    mesh.faceIndexCounts.push(values[0]);
+                    mesh.faceIndexCounts.push(parseInt(values[0]));
                     for (let i = 1; i <= values[0]; i++) {
-                        mesh.indices.push(values[i]);
+                        mesh.indices.push(parseInt(values[i]));
                     }
                 }
             }

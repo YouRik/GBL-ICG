@@ -82,8 +82,7 @@
             "orientation": [0, 0, 90],
             "scale": [2, 2, 2],
             "mass": 15,
-            "meshes": ["thingp1", "thingp2"],
-            "graphical_mesh": "thing"
+            "meshes": ["thingp1", "thingp2"]
         },
         {
             "type": "sphere",
