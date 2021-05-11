@@ -30,7 +30,7 @@ export default class FirstPersonPlayer {
         this.jumpSpeed = 10;
 
         // Initialize camera values and view matrix
-        this.cameraOffsetY = 0.6;
+        this.cameraOffsetY = 0.55;
         this.sensitivity = 0.25;
         this.yaw = yaw;
         this.pitch = pitch;
@@ -45,7 +45,6 @@ export default class FirstPersonPlayer {
 
         // Create physics body
         this.physicsBody = new CANNON.Body({
-            shape: new CANNON.Sphere(0.8),
             mass: 5,
             position: new CANNON.Vec3(position[0], position[1], position[2]),
             fixedRotation: true,
@@ -54,12 +53,26 @@ export default class FirstPersonPlayer {
                 restitution: 0
             })
         });
+        this.physicsBody.addShape(new CANNON.Sphere(0.35),
+            new CANNON.Vec3(0, -0.55, 0));
+        this.physicsBody.addShape(new CANNON.Sphere(0.35));
+        this.physicsBody.addShape(new CANNON.Sphere(0.35),
+            new CANNON.Vec3(0, 0.55, 0));
         this.physicsBody.addEventListener('collide', event => {
             this.handleCollision(event);
         });
         world.addBody(this.physicsBody);
 
         this.update(0);
+    }
+
+    setPerspectiveMatrix(aspectRatio) {
+        this.projectionMatrix = GLMAT.mat4.create();
+        GLMAT.mat4.perspective(this.projectionMatrix, 1, aspectRatio, 0.1, 500);
+        this.programs.forEach(program => {
+            GL.useProgram(program[0]);
+            GL.uniformMatrix4fv(program[2], false, this.projectionMatrix);
+        });
     }
 
     /**
@@ -111,15 +124,6 @@ export default class FirstPersonPlayer {
                 }
         }
         event.preventDefault();
-    }
-
-    setPerspectiveMatrix(aspectRatio) {
-        this.projectionMatrix = GLMAT.mat4.create();
-        GLMAT.mat4.perspective(this.projectionMatrix, 1, aspectRatio, 0.5, 500);
-        this.programs.forEach(program => {
-            GL.useProgram(program[0]);
-            GL.uniformMatrix4fv(program[2], false, this.projectionMatrix);
-        });
     }
 
     pointerMove(event) {
