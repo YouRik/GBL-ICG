@@ -115,7 +115,7 @@ export default class FirstPersonPlayer {
 
     setPerspectiveMatrix(aspectRatio) {
         this.projectionMatrix = GLMAT.mat4.create();
-        GLMAT.mat4.perspective(this.projectionMatrix, 1, aspectRatio, 0.5, 100);
+        GLMAT.mat4.perspective(this.projectionMatrix, 1, aspectRatio, 0.5, 500);
         this.programs.forEach(program => {
             GL.useProgram(program[0]);
             GL.uniformMatrix4fv(program[2], false, this.projectionMatrix);
