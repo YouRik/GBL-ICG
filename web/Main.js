@@ -108,7 +108,6 @@ function main(resources, shaderDefs, sceneDefs, objectDefs) {
             // Create light source
             const lightSource = new LightSource(
                 objectDef.position, lightPrograms, {
-                Ia: objectDef.Ia,
                 Id: objectDef.Id,
                 Is: objectDef.Is,
                 c: objectDef.c
