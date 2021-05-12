@@ -15,6 +15,8 @@ export default class FirstPersonPlayer {
                 GL.getUniformLocation(program, 'projectionMatrix')
             ]);
         }
+        this.world = world;
+
         // Initialize movement variables
         this.movement = {
             forward: false,
@@ -23,11 +25,17 @@ export default class FirstPersonPlayer {
             right: false,
             canJump: false,
             isJumping: false,
+            isCarrying: false,
+            isPickingUp: false,
+            isDropping: false,
             pointerX: 0,
             pointerY: 0
         };
         this.moveSpeed = 9;
         this.jumpSpeed = 10;
+        this.pickUpDistance = 3;
+        this.carryDistance = 2;
+        this.carryForce = 8;
 
         // Initialize camera values and view matrix
         this.cameraOffsetY = 0.55;
@@ -63,6 +71,14 @@ export default class FirstPersonPlayer {
         });
         world.addBody(this.physicsBody);
 
+        // Create joint body for picking up objects
+        this.jointBody = new CANNON.Body({
+            collisionFilterMask: 0,
+            collisionFilterGroup: 0,
+            fixedRotation: true
+        });
+        world.addBody(this.jointBody);
+
         this.update(0);
     }
 
@@ -93,8 +109,6 @@ export default class FirstPersonPlayer {
             case 'd':
                 this.movement.right = false;
                 break;
-            case ' ':
-                this.movement.isJumping = false;
         }
         event.preventDefault();
     }
@@ -124,6 +138,19 @@ export default class FirstPersonPlayer {
                 }
         }
         event.preventDefault();
+    }
+    
+    pointerDown(event) {
+        if (!this.movement.isCarrying) {
+            this.movement.isPickingUp = true;
+        }
+    }
+
+    pointerUp(event) {
+        this.movement.isPickingUp = false;
+        if (this.movement.isCarrying) {
+            this.movement.isDropping = true;
+        }
     }
 
     pointerMove(event) {
@@ -221,5 +248,62 @@ export default class FirstPersonPlayer {
             GL.useProgram(program[0]);
             GL.uniformMatrix4fv(program[1], false, this.viewMatrix);
         });
+
+        // Update joint body and constraint positions
+        this.jointBody.position = new CANNON.Vec3(
+            posValues[0] + viewDirection[0] * this.carryDistance,
+            posValues[1] + viewDirection[1] * this.carryDistance
+            + this.cameraOffsetY,
+            posValues[2] + viewDirection[2] * this.carryDistance);
+        if (this.movement.isCarrying) {
+            this.jointConstraint.update();
+        }
+
+        // Pick up object if desired and portable object is in front
+        if (this.movement.isPickingUp) {
+            this.movement.isPickingUp = false;
+
+            // Shoot ray in view direction to check for portable object
+            const ray = new CANNON.Ray(
+                new CANNON.Vec3(
+                    posValues[0],
+                    posValues[1] + this.cameraOffsetY,
+                    posValues[2]),
+                new CANNON.Vec3(
+                    posValues[0] + viewDirection[0] * this.pickUpDistance,
+                    posValues[1] + viewDirection[1] * this.pickUpDistance
+                    + this.cameraOffsetY,
+                    posValues[2] + viewDirection[2] * this.pickUpDistance));
+            let castResult = new CANNON.RaycastResult();
+            const hasHit = ray.intersectWorld(this.world, {
+                result: castResult,
+                collisionFilterMask: 2
+            });
+
+            if (hasHit) {
+                // Set constraint to carry the object
+                this.movement.isCarrying = true;
+                this.jointConstraint = new CANNON.PointToPointConstraint(
+                    castResult.body, new CANNON.Vec3(0, 0, 0),
+                    this.jointBody, new CANNON.Vec3(0, 0, 0), this.carryForce);
+                this.world.addConstraint(this.jointConstraint);
+                // Reduce rotation of object with angular damping
+                this.jointConstraint.bodyA.angularDamping = 0.9;
+            }
+        }
+
+        // Drop object if desired or carried object is too far
+        if (this.movement.isDropping
+            || (this.movement.isCarrying
+                && this.jointConstraint.bodyA.position.distanceTo(
+                    this.jointConstraint.bodyB.position) > 2.5)) {
+            this.movement.isDropping = false;
+            this.movement.isCarrying = false;
+            // Reset angular damping on object
+            this.jointConstraint.bodyA.angularDamping = 0.01;
+            // Remove constraint
+            this.world.removeConstraint(this.jointConstraint);
+            this.jointConstraint = undefined;
+        }
     }
 }

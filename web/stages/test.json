@@ -43,6 +43,14 @@
         {
             "type": "box",
             "shader_program": "fragmentLighting",
+            "halfExtents": [0.1, 1, 1.5],
+            "position": [-4.5, 1, 3],
+            "color": [1, 0.5, 0.5],
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "fragmentLighting",
             "halfExtents": [100, 0.2, 100],
             "position": [0, -0.2, 0],
             "lightParams": {
@@ -66,7 +74,8 @@
             "halfExtent": 1,
             "position": [3, 10, 3],
             "color": [0, 0, 1],
-            "mass": 20
+            "mass": 20,
+            "portable": true
         },
         {
             "type": "cube",
@@ -74,7 +83,8 @@
             "halfExtent": 0.5,
             "position": [0, 10, 3],
             "color": [0, 0, 1],
-            "mass": 10
+            "mass": 10,
+            "portable": true
         },
         {
             "type": "cube",
@@ -82,7 +92,8 @@
             "halfExtent": 0.25,
             "position": [-3, 10, 3],
             "color": [0, 0, 1],
-            "mass": 5
+            "mass": 5,
+            "portable": true
         },
         {
             "type": "box",

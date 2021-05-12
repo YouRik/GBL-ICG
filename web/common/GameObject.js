@@ -20,6 +20,7 @@ export default class GameObject {
      * @param {GLMAT.vec3} [options.mass] The object's mass
      * @param {GLMAT.vec3} [options.color] The object's color
      * @param {GLMAT.vec3} [options.lightParams] The object's light coefficients
+     * @param {GLMAT.vec3} [options.portable] Whether the object can be picked
      * up or not
      */
     constructor(program, shaderType, options = {}) {
@@ -32,6 +33,8 @@ export default class GameObject {
         const mass = options.mass == undefined ? 1
             : options.mass;
         const lightParams = options.lightParams;
+        const portable = options.portable == undefined ? false
+            : options.portable;
         this.color = options.color == undefined ? [1, 0, 0]
             : options.color;
 
@@ -108,7 +111,9 @@ export default class GameObject {
             position: new CANNON.Vec3(this.position[0],
                 this.position[1], this.position[2]),
             quaternion: new CANNON.Quaternion(this.quaternion[0],
-                this.quaternion[1], this.quaternion[2], this.quaternion[3])
+                this.quaternion[1], this.quaternion[2], this.quaternion[3]),
+            // if it's portable, additionally add it to collision group 2
+            collisionFilterGroup: portable ? 1 | 2 : 1
         });
     }
 

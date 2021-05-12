@@ -152,6 +152,12 @@ function main(resources, shaderDefs, objectDefs) {
     const handleKeyDown = (event) => {
         player.keyDown(event);
     };
+    const handlePointerDown = (event) => {
+        player.pointerDown(event);
+    };
+    const handlePointerUp = (event) => {
+        player.pointerUp(event);
+    };
     const handlePointerMove = (event) => {
         player.pointerMove(event);
     };
@@ -161,6 +167,8 @@ function main(resources, shaderDefs, objectDefs) {
             document.addEventListener('mousemove', handlePointerMove);
             document.addEventListener('keyup', handleKeyUp);
             document.addEventListener('keydown', handleKeyDown);
+            document.addEventListener('pointerdown', handlePointerDown);
+            document.addEventListener('pointerup', handlePointerUp);
             canvas.classList.add('playing');
             isPaused = false;
         } else {
