@@ -18,6 +18,13 @@
             "fragment": "defaultF"
         }
     },
+    "scene": {
+        "player": {
+            "start_position": [0, 0.8, 0],
+            "yaw": -90
+        },
+        "ambient_light": [0.2, 0.2, 0.2]
+    },
     "objects": [
         {
             "type": "box",
@@ -343,58 +350,46 @@
             "color": [0, 1, 0],
             "mass": 20
         },
-
-        {
-            "type": "player",
-            "position": [0, 0.8, 0],
-            "yaw": -90
-        },
+        
         {
             "type": "lightSource",
             "position": [0, 4, 30],
-            "Ia": [0.2, 0.2, 0.2],
             "Id": [0, 0, 0],
             "Is": [0, 0, 0.3]
         },
         {
             "type": "lightSource",
             "position": [-30, 4, -30],
-            "Ia": [0.2, 0.2, 0.2],
             "Id": [0, 0, 0],
             "Is": [0, 0.3, 0]
         },
         {
             "type": "lightSource",
             "position": [30, 4, 0],
-            "Ia": [0.2, 0.2, 0.2],
             "Id": [0, 0, 0],
             "Is": [0.3, 0, 0]
         },
         {
             "type": "lightSource",
             "position": [30, 4, 30],
-            "Ia": [0.2, 0.2, 0.2],
             "Id": [0, 0, 0],
             "Is": [0.3, 0, 0.3]
         },
         {
             "type": "lightSource",
             "position": [-30, 4, 0],
-            "Ia": [0.2, 0.2, 0.2],
             "Id": [0, 0, 0],
             "Is": [0, 0.3, 0.3]
         },
         {
             "type": "lightSource",
             "position": [0, 4, -30],
-            "Ia": [0.2, 0.2, 0.2],
             "Id": [0, 0, 0],
             "Is": [0.3, 0.3, 0]
         },
         {
             "type": "lightSource",
             "position": [-30, 4, 30],
-            "Ia": [0.2, 0.2, 0.2],
             "Id": [0, 0, 0],
             "Is": [0.3, 0.3, 0.3]
         }

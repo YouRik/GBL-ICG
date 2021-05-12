@@ -18,6 +18,13 @@
             "fragment": "defaultF"
         }
     },
+    "scene": {
+        "player": {
+            "start_position": [0, 0.8, 0],
+            "yaw": -90
+        },
+        "ambient_light": [0.6, 0.6, 0.6]
+    },
     "objects": [
         {
             "type": "box",
@@ -345,14 +352,8 @@
         },
 
         {
-            "type": "player",
-            "position": [0, 0.8, 0],
-            "yaw": -90
-        },
-        {
             "type": "lightSource",
             "position": [-10, 10, -10],
-            "Ia": [0.6, 0.6, 0.6],
             "Id": [0.7, 0.7, 0.7],
             "Is": [0, 0, 0]
         }

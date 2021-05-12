@@ -31,6 +31,12 @@
             "fragment": "defaultF"
         }
     },
+    "scene": {
+        "player": {
+            "start_position": [0, 0.9, -6]
+        },
+        "ambient_light": [0.9, 0.9, 0.9]
+    },
     "objects": [
         {
             "type": "box",
@@ -124,47 +130,46 @@
         {
             "type": "sphere",
             "shader_program": "fragmentLighting",
-            "radius": 1,
+            "radius": 0.5,
             "color": [1, 1, 0],
             "position": [-5, 10, 0],
             "mass": 5,
-            "mesh": "sphere"
+            "mesh": "sphere",
+            "portable": true
         },
         {
             "type": "sphere",
             "shader_program": "fragmentLighting",
-            "radius": 1,
+            "radius": 0.5,
             "color": [1, 1, 0],
             "position": [-5, 20, 0],
             "mass": 5,
-            "mesh": "sphereSoft"
+            "mesh": "sphereSoft",
+            "portable": true
         },
         {
             "type": "sphere",
             "shader_program": "fragmentLighting",
-            "radius": 1,
+            "radius": 0.5,
             "color": [0, 1, 1],
             "position": [5, 10, 0],
             "mass": 5,
-            "mesh": "icoSphere"
+            "mesh": "icoSphere",
+            "portable": true
         },
         {
             "type": "sphere",
             "shader_program": "fragmentLighting",
-            "radius": 1,
+            "radius": 0.5,
             "color": [0, 1, 1],
             "position": [5, 20, 0],
             "mass": 5,
-            "mesh": "icoSphereSoft"
-        },
-        {
-            "type": "player",
-            "position": [0, 0.9, -6]
+            "mesh": "icoSphereSoft",
+            "portable": true
         },
         {
             "type": "lightSource",
             "position": [-200, 150, -200],
-            "Ia": [0.9, 0.9, 0.9],
             "Id": [0.9, 0.9, 0.9],
             "Is": [1.0, 1.0, 1.0]
         },

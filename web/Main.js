@@ -26,13 +26,14 @@ if (window.stageFile == undefined) {
 loadStage(`stages/${stageFile}.json`).then(levelData => {
     const resourceFiles = levelData['resources'];
     const shaderPrograms = levelData['shader_programs'];
+    const scene = levelData['scene'];
     const objects = levelData['objects'];
     loadResources(
         resourceFiles['shaders'],
         resourceFiles['textures'],
         resourceFiles['meshes']
     ).then(resources => {
-        main(resources, shaderPrograms, objects);
+        main(resources, shaderPrograms, scene, objects);
     });
 });
 
@@ -40,9 +41,10 @@ loadStage(`stages/${stageFile}.json`).then(levelData => {
  * Entry point of the game
  * @param {Object} resources The resource container object
  * @param {Object} shaderDefs Object containing shader program definitions
+ * @param {Object} sceneDefs Object containing settings for the scene
  * @param {Array<Object>} objectDefs List of game object definitions
  */
-function main(resources, shaderDefs, objectDefs) {
+function main(resources, shaderDefs, sceneDefs, objectDefs) {
     const canvas = document.getElementById('gl-canvas');
     // Initialize WebGL context and set globally
     window.GL = initWebGL(canvas);
@@ -79,13 +81,30 @@ function main(resources, shaderDefs, objectDefs) {
         }
     }
 
+    // Set up scene settings
+    for (const setting in sceneDefs) {
+        if (setting == 'player') {
+            const startPos = sceneDefs['player']['start_position'];
+            const yaw = sceneDefs['player']['yaw'];
+            const pitch = sceneDefs['player']['pitch'];
+            player = new FirstPersonPlayer(world, startPos, programs,
+                canvas.width / canvas.height, yaw, pitch);
+        } else if (setting == 'ambient_light') {
+            const Ia = sceneDefs['ambient_light'];
+            for (const programIndex in lightPrograms) {
+                const program = lightPrograms[programIndex];
+                GL.useProgram(program);
+    
+                const IaLocV = GL.getUniformLocation(program, 'Ia');
+                GL.uniform3fv(IaLocV, Ia);
+            }
+        }
+    }
+
     // Create all game objects to update and render
     objectDefs.forEach(objectDef => {
         const objType = objectDef.type;
-        if (objType == 'player') {
-            player = new FirstPersonPlayer(world, objectDef.position, programs,
-                canvas.width / canvas.height, objectDef.yaw, objectDef.pitch);
-        } else if (objType == 'lightSource') {
+        if (objType == 'lightSource') {
             // Create light source
             const lightSource = new LightSource(
                 objectDef.position, lightPrograms, {
@@ -292,7 +311,6 @@ function setViewPort(canvas, gl = window.GL) {
 }
 
 // TODO: Optional player (flash-)light
-// TODO: Mesh loading
 // TODO: Light source types (spotlight, directional light)
 // TODO: replace colored, lit, textured with bit flag
 

@@ -4,7 +4,6 @@ import * as GLM from './lib/gl-matrix/index.js'
 
 export default class LightSource {
     constructor(position, programs, options = {}) {
-        this.Ia = options.Ia;
         this.Id = options.Id == undefined ? [0.8, 0.8, 0.8] : options.Id;
         this.Is = options.Is == undefined ? [1, 1, 1] : options.Is;
         this.c = options.c == undefined ? [1, 0, 0] : options.c;
@@ -14,11 +13,6 @@ export default class LightSource {
         for (const programIndex in programs) {
             const program = programs[programIndex];
             GL.useProgram(program);
-
-            if (this.Ia != undefined) {
-                const IaLocV = GL.getUniformLocation(program, 'Ia');
-                GL.uniform3fv(IaLocV, this.Ia);
-            }
 
             const IdLocV = GL.getUniformLocation(program,
                 `Id[${LightSource.lightsCount}]`);
