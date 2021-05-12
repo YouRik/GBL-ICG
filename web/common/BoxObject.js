@@ -12,13 +12,7 @@ export default class Box extends GameObject {
         const halfExtents = options.halfExtents == undefined ? [1, 1, 1]
             : options.halfExtents;
 
-        super(program, shaderType, {
-            position: options.position,
-            orientation: options.orientation,
-            mass: options.mass,
-            color: options.color,
-            lightParams: options.lightParams
-        });
+        super(program, shaderType, options);
 
         const box = new CANNON.Box(new CANNON.Vec3(
             halfExtents[0],

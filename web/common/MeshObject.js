@@ -11,14 +11,9 @@ export default class MeshObject extends GameObject {
         let graphicalMesh = options.graphicalMesh;
         const scale = options.scale == undefined ? [1, 1, 1] : options.scale;
 
-        super(program, shaderType, {
-            position: options.position,
-            orientation: options.orientation,
-            scale: scale,
-            mass: options.mass,
-            color: options.color,
-            lightParams: options.lightParams
-        });
+        const opts = options;
+        opts.scale = scale;
+        super(program, shaderType, opts);
 
         // generate combined physics mesh from meshes and scale
         meshes.forEach(mesh => {

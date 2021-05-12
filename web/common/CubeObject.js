@@ -10,13 +10,8 @@ export default class CubeObject extends BoxObject {
         const halfExtent = options.halfExtent == undefined ? 1
             : options.halfExtent;
 
-        super(world, program, shaderType, {
-            halfExtents: [halfExtent, halfExtent, halfExtent],
-            position: options.position,
-            orientation: options.orientation,
-            color: options.color,
-            lightParams: options.lightParams,
-            mass: options.mass
-        });
+        const opts = options;
+        opts.halfExtents = [halfExtent, halfExtent, halfExtent];
+        super(world, program, shaderType, opts);
     }
 }

@@ -17,6 +17,10 @@ export default class GameObject {
      * @param {GLMAT.vec3} [options.orientation] The object's default
      *  orientation
      * @param {GLMAT.vec3} [options.scale] The object's default scale
+     * @param {GLMAT.vec3} [options.mass] The object's mass
+     * @param {GLMAT.vec3} [options.color] The object's color
+     * @param {GLMAT.vec3} [options.lightParams] The object's light coefficients
+     * up or not
      */
     constructor(program, shaderType, options = {}) {
         const position = options.position == undefined ? [0, 0, 0]
