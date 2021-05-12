@@ -194,6 +194,8 @@ function main(resources, shaderDefs, sceneDefs, objectDefs) {
             document.removeEventListener('mousemove', handlePointerMove);
             document.removeEventListener('keyup', handleKeyUp);
             document.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener('pointerdown', handlePointerDown);
+            document.removeEventListener('pointerup', handlePointerUp);
             canvas.classList.remove('playing');
             isPaused = true;
         }
