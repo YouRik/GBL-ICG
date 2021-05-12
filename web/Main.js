@@ -227,14 +227,14 @@ function gameLoop(player, world, perfLogger, gameObjects, lastUpdateTime = 0) {
  * @param {number} deltaTime Elapsed time since last update
  */
 function update(player, world, gameObjects, deltaTime) {
-    // Update player and camera
-    player.update(deltaTime);
     // Update physics
     world.step(1 / 60, deltaTime);
     // Update objects
     gameObjects.forEach(object => {
         object.update();
     });
+    // Update player and camera
+    player.update(deltaTime);
 }
 
 /**
