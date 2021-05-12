@@ -33,8 +33,10 @@ export default class FirstPersonPlayer {
         };
         this.moveSpeed = 9;
         this.jumpSpeed = 10;
-        this.pickUpDistance = 3;
+        this.pickUpDistance = 4;
         this.carryDistance = 2;
+        this.maxCarryDistance = this.pickUpDistance;
+        this.minCarryDistance = 1;
         this.carryForce = 8;
 
         // Initialize camera values and view matrix
@@ -157,6 +159,20 @@ export default class FirstPersonPlayer {
         // Calculate offsets
         this.movement.pointerX += event.movementX;
         this.movement.pointerY += event.movementY;
+    }
+    
+    wheel(event) {
+        if (event.deltaY > 0) {
+            this.carryDistance -= 0.2;
+            if (this.carryDistance < this.minCarryDistance) {
+                this.carryDistance = this.minCarryDistance;
+            }
+        } else if (event.deltaY < 0) {
+            this.carryDistance += 0.2;
+            if (this.carryDistance > this.maxCarryDistance) {
+                this.carryDistance = this.maxCarryDistance;
+            }
+        }
     }
 
     handleCollision(event) {

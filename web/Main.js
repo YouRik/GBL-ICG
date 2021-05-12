@@ -179,6 +179,10 @@ function main(resources, shaderDefs, sceneDefs, objectDefs) {
     const handlePointerMove = (event) => {
         player.pointerMove(event);
     };
+    const handleWheel = (event) => {
+        event.preventDefault();
+        player.wheel(event);
+    };
     const lockChangeAlert = () => {
         // Unpause, hook input callbacks when pointer is locked
         if (document.pointerLockElement === canvas) {
@@ -187,6 +191,10 @@ function main(resources, shaderDefs, sceneDefs, objectDefs) {
             document.addEventListener('keydown', handleKeyDown);
             document.addEventListener('pointerdown', handlePointerDown);
             document.addEventListener('pointerup', handlePointerUp);
+            document.addEventListener('wheel', handleWheel, {
+                capture: true,
+                passive: false
+            });
             canvas.classList.add('playing');
             isPaused = false;
         } else {
@@ -196,6 +204,7 @@ function main(resources, shaderDefs, sceneDefs, objectDefs) {
             document.removeEventListener('keydown', handleKeyDown);
             document.removeEventListener('pointerdown', handlePointerDown);
             document.removeEventListener('pointerup', handlePointerUp);
+            document.removeEventListener('wheel', handleWheel, {capture: true});
             canvas.classList.remove('playing');
             isPaused = true;
         }
