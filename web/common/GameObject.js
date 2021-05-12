@@ -57,12 +57,9 @@ export default class GameObject {
                 this.specExp = lightParams.specExp;
             } else {
                 // Calculate lighting parameters if needed but not provided
-                this.ka = GLMAT.vec3.create();
-                GLMAT.vec3.scale(this.ka, this.color, 0.6);
-                this.kd = GLMAT.vec3.create();
-                GLMAT.vec3.scale(this.kd, this.color, 0.9);
-                this.ks = GLMAT.vec3.create();
-                GLMAT.vec3.scale(this.ks, [1, 1, 1], 0.7);
+                this.ka = this.color;
+                this.kd = this.color;
+                this.ks = [1, 1, 1];
                 this.specExp = 20;
             }
         }

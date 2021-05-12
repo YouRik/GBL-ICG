@@ -23,7 +23,7 @@
             "start_position": [0, 0.8, 0],
             "yaw": -90
         },
-        "ambient_light": [0.9, 0.9, 0.9]
+        "ambient_light": [0.8, 0.8, 0.8]
     },
     "objects": [
         {
@@ -349,13 +349,6 @@
             "position": [-8, 1, 0],
             "color": [0, 1, 0],
             "mass": 20
-        },
-
-        {
-            "type": "lightSource",
-            "position": [-10, 10, -10],
-            "Id": [0, 0, 0],
-            "Is": [0, 0, 0]
         }
     ]
 }
