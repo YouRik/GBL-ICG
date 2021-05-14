@@ -58,7 +58,9 @@ export default class GameObject {
             } else {
                 // Calculate lighting parameters if needed but not provided
                 this.ka = this.color;
-                this.kd = this.color;
+                this.kd = [0.4 * this.color[0] + 0.6,
+                    0.4 * this.color[1] + 0.6,
+                    0.4 * this.color[2] + 0.6];
                 this.ks = [1, 1, 1];
                 this.specExp = 20;
             }
