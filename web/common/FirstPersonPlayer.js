@@ -17,27 +17,34 @@ export default class FirstPersonPlayer {
         }
         this.world = world;
 
-        // Initialize movement variables
-        this.movement = {
+        // Initialize movement and control state variables
+        this.controls = {
             forward: false,
             backward: false,
             left: false,
             right: false,
-            canJump: false,
-            isJumping: false,
+            isOnGround: false,
+            wantsToJump: false,
             isCarrying: false,
             isPickingUp: false,
             isDropping: false,
             pointerX: 0,
-            pointerY: 0
+            pointerY: 0,
+            carryDistance: 2,
         };
-        this.moveSpeed = 9;
-        this.jumpSpeed = 10;
-        this.pickUpDistance = 4;
-        this.carryDistance = 2;
-        this.maxCarryDistance = this.pickUpDistance;
+
+        // Player configuration
+        this.moveForce = 2000;
+        this.jumpForce = 40000;
+        this.brakeForce = 350;
+        this.maxMoveSpeed = 15;
+        this.maxCarryDistance = 4;
         this.minCarryDistance = 1;
         this.carryForce = 8;
+        this.groundCheckDistance = 1.3;
+
+        // Store angular damping of carried object before picking up
+        this.prevCarriedAngularDamping = 0.01;
 
         // Initialize camera values and view matrix
         this.cameraOffsetY = 0.55;
@@ -55,9 +62,10 @@ export default class FirstPersonPlayer {
 
         // Create physics body
         this.physicsBody = new CANNON.Body({
-            mass: 5,
+            mass: 70,
             position: new CANNON.Vec3(position[0], position[1], position[2]),
             fixedRotation: true,
+            collisionFilterGroup: 4,
             material: new CANNON.Material({
                 friction: 0,
                 restitution: 0
@@ -100,19 +108,21 @@ export default class FirstPersonPlayer {
     keyUp(event) {
         switch (event.key) {
             case 'w':
-                this.movement.forward = false;
+                this.controls.forward = false;
                 break;
             case 's':
-                this.movement.backward = false;
+                this.controls.backward = false;
                 break;
             case 'a':
-                this.movement.left = false;
+                this.controls.left = false;
                 break;
             case 'd':
-                this.movement.right = false;
+                this.controls.right = false;
+                break;
+            case ' ':
+                this.controls.wantsToJump = false;
                 break;
         }
-        event.preventDefault();
     }
 
     /**
@@ -122,55 +132,54 @@ export default class FirstPersonPlayer {
     keyDown(event) {
         switch (event.key) {
             case 'w':
-                this.movement.forward = true;
+                this.controls.forward = true;
                 break;
             case 's':
-                this.movement.backward = true;
+                this.controls.backward = true;
                 break;
             case 'a':
-                this.movement.left = true;
+                this.controls.left = true;
                 break;
             case 'd':
-                this.movement.right = true;
+                this.controls.right = true;
                 break;
             case ' ':
-                if (this.movement.canJump) {
-                    this.movement.isJumping = true;
-                    this.movement.canJump = false;
-                }
+                this.controls.wantsToJump = true;
+                break;
         }
-        event.preventDefault();
     }
-    
+
     pointerDown(event) {
-        if (!this.movement.isCarrying) {
-            this.movement.isPickingUp = true;
+        if (!this.controls.isCarrying) {
+            this.controls.isPickingUp = true;
         }
     }
 
     pointerUp(event) {
-        this.movement.isPickingUp = false;
-        if (this.movement.isCarrying) {
-            this.movement.isDropping = true;
+        this.controls.isPickingUp = false;
+        if (this.controls.isCarrying) {
+            this.controls.isDropping = true;
         }
     }
 
     pointerMove(event) {
         // Calculate offsets
-        this.movement.pointerX += event.movementX;
-        this.movement.pointerY += event.movementY;
+        this.controls.pointerX += event.movementX;
+        this.controls.pointerY += event.movementY;
     }
-    
+
     wheel(event) {
-        if (event.deltaY > 0) {
-            this.carryDistance -= 0.2;
-            if (this.carryDistance < this.minCarryDistance) {
-                this.carryDistance = this.minCarryDistance;
-            }
-        } else if (event.deltaY < 0) {
-            this.carryDistance += 0.2;
-            if (this.carryDistance > this.maxCarryDistance) {
-                this.carryDistance = this.maxCarryDistance;
+        if (this.controls.isCarrying) {
+            if (event.deltaY > 0) {
+                this.controls.carryDistance -= 0.2;
+                if (this.controls.carryDistance < this.minCarryDistance) {
+                    this.controls.carryDistance = this.minCarryDistance;
+                }
+            } else if (event.deltaY < 0) {
+                this.controls.carryDistance += 0.2;
+                if (this.controls.carryDistance > this.maxCarryDistance) {
+                    this.controls.carryDistance = this.maxCarryDistance;
+                }
             }
         }
     }
@@ -185,17 +194,17 @@ export default class FirstPersonPlayer {
         }
 
         // Check if collision normal points up enough
-        if (contactNormal.dot(new CANNON.Vec3(0, 1, 0)) > 0.85) {
-            this.movement.canJump = true;
+        if (contactNormal.dot(new CANNON.Vec3(0, 1, 0)) > 0.5) {
+            this.controls.isOnGround = true;
         }
     }
 
     update(deltaTime) {
         // Calculate new yaw and pitch values in degrees
-        this.yaw -= this.movement.pointerX * this.sensitivity;
-        this.pitch -= this.movement.pointerY * this.sensitivity;
-        this.movement.pointerX = 0;
-        this.movement.pointerY = 0;
+        this.yaw -= this.controls.pointerX * this.sensitivity;
+        this.pitch -= this.controls.pointerY * this.sensitivity;
+        this.controls.pointerX = 0;
+        this.controls.pointerY = 0;
 
         // Clamp pitch to +-89 degrees
         if (this.pitch > 89) {
@@ -214,43 +223,124 @@ export default class FirstPersonPlayer {
         ];
         GLMAT.vec3.normalize(viewDirection, viewDirection);
 
-        // Update player velocity
+        // Check if player has left the ground
+        const posValues = this.physicsBody.position.toArray();
+        if (this.controls.isOnGround) {
+            const groundRay = new CANNON.Ray(this.physicsBody.position,
+                new CANNON.Vec3(posValues[0],
+                    posValues[1] - this.groundCheckDistance, posValues[2]));
+            const leftGround = !(groundRay.intersectWorld(this.world,
+                { collisionFilterMask: 1 }));
+            if (leftGround) {
+                this.controls.isOnGround = false;
+            }
+        }
+
+        // Get move direction factors
+        let forwardFactor = 0;
+        let rightFactor = 0;
+        if (this.controls.forward) {
+            forwardFactor += 1;
+        }
+        if (this.controls.backward) {
+            forwardFactor -= 1;
+        }
+        if (this.controls.left) {
+            rightFactor -= 1;
+        }
+        if (this.controls.right) {
+            rightFactor += 1;
+        }
+        if (this.controls.wantsToJump && this.controls.isOnGround) {
+            this.physicsBody.applyForce(new CANNON.Vec3(0, this.jumpForce, 0));
+            this.controls.isOnGround = false;
+        }
+
+        // Get direction to move in
         const forwardDirection = [viewDirection[0], 0, viewDirection[2]];
         const rightDirection = GLMAT.vec3.create();
         GLMAT.vec3.cross(rightDirection, forwardDirection, [0, 1, 0]);
         GLMAT.vec3.normalize(forwardDirection, forwardDirection);
         GLMAT.vec3.normalize(rightDirection, rightDirection);
-        let forwardFactor = 0;
-        let rightFactor = 0;
+        const movementDirection = [
+            (forwardDirection[0] * forwardFactor
+                + rightDirection[0] * rightFactor),
+            (forwardDirection[2] * forwardFactor
+                + rightDirection[2] * rightFactor)
+        ];
+        GLMAT.vec2.normalize(movementDirection, movementDirection);
 
-        // Get move direction factors
-        if (this.movement.forward) {
-            forwardFactor += 1;
-        }
-        if (this.movement.backward) {
-            forwardFactor -= 1;
-        }
-        if (this.movement.left) {
-            rightFactor -= 1;
-        }
-        if (this.movement.right) {
-            rightFactor += 1;
-        }
-        if (this.movement.isJumping) {
-            this.physicsBody.velocity.y = this.jumpSpeed;
-            this.movement.isJumping = false;
-        }
+        // Apply forces for movement
+        this.physicsBody.force = new CANNON.Vec3(
+            movementDirection[0] * this.moveForce,
+            this.physicsBody.force.y,
+            movementDirection[1] * this.moveForce
+        );
 
-        // Apply velocities
-        this.physicsBody.velocity.x = (forwardDirection[0] * forwardFactor
-            + rightDirection[0] * rightFactor)
-            * this.moveSpeed;
-        this.physicsBody.velocity.z = (forwardDirection[2] * forwardFactor
-            + rightDirection[2] * rightFactor)
-            * this.moveSpeed;
+        // Apply counter forces for braking and limiting maximum velocity
+        const hVelocity = GLMAT.vec3.fromValues(
+            this.physicsBody.velocity.x, 0, this.physicsBody.velocity.z);
+        const hVelocityDir = GLMAT.vec3.create();
+        GLMAT.vec3.normalize(hVelocityDir, hVelocity);
+        const hVelocityLen = GLMAT.vec3.length(hVelocity);
+
+        // TODO: This can be reduced to one or two cases instead of four
+        if (rightFactor == 0) {
+            const brakeFactor = GLMAT.vec3.dot(
+                hVelocityDir, rightDirection)
+                * -hVelocityLen;
+
+            const brakeForce = GLMAT.vec3.create();
+            GLMAT.vec3.scale(brakeForce,
+                rightDirection, brakeFactor * this.brakeForce);
+
+            this.physicsBody.applyForce(new CANNON.Vec3(
+                brakeForce[0], brakeForce[1], brakeForce[2]));
+        } else {
+            let overspeedAmount = hVelocityLen - this.maxMoveSpeed;
+            if (overspeedAmount < 0) {
+                overspeedAmount = 0;
+            }
+            const brakeFactor = GLMAT.vec3.dot(
+                hVelocityDir, rightDirection)
+                * -overspeedAmount;
+
+            const brakeForce = GLMAT.vec3.create();
+            GLMAT.vec3.scale(brakeForce,
+                rightDirection, brakeFactor * this.brakeForce);
+
+            this.physicsBody.applyForce(new CANNON.Vec3(
+                brakeForce[0], brakeForce[1], brakeForce[2]));
+        }
+        if (forwardFactor == 0) {
+            const brakeFactor = GLMAT.vec3.dot(
+                hVelocityDir, forwardDirection)
+                * -hVelocityLen;
+
+            const brakeForce = GLMAT.vec3.create();
+            GLMAT.vec3.scale(brakeForce,
+                forwardDirection, brakeFactor * this.brakeForce);
+
+            this.physicsBody.applyForce(new CANNON.Vec3(
+                brakeForce[0], brakeForce[1], brakeForce[2]));
+        } else {
+            let overspeedAmount = hVelocityLen - this.maxMoveSpeed;
+            if (overspeedAmount < 0) {
+                overspeedAmount = 0;
+            }
+            const brakeFactor = GLMAT.vec3.dot(
+                hVelocityDir, forwardDirection)
+                * -overspeedAmount;
+
+            const brakeForce = GLMAT.vec3.create();
+            GLMAT.vec3.scale(brakeForce,
+                forwardDirection, brakeFactor * this.brakeForce);
+
+            this.physicsBody.applyForce(new CANNON.Vec3(
+                brakeForce[0], brakeForce[1], brakeForce[2]));
+        }
 
         // Update player position from physics
-        const posValues = this.physicsBody.position.toArray();
         this.position = GLMAT.vec3.fromValues(
             posValues[0], posValues[1] + this.cameraOffsetY, posValues[2]);
 
@@ -267,29 +357,26 @@ export default class FirstPersonPlayer {
 
         // Update joint body and constraint positions
         this.jointBody.position = new CANNON.Vec3(
-            posValues[0] + viewDirection[0] * this.carryDistance,
-            posValues[1] + viewDirection[1] * this.carryDistance
-            + this.cameraOffsetY,
-            posValues[2] + viewDirection[2] * this.carryDistance);
-        if (this.movement.isCarrying) {
+            this.position[0] + viewDirection[0] * this.controls.carryDistance,
+            this.position[1] + viewDirection[1] * this.controls.carryDistance,
+            this.position[2] + viewDirection[2] * this.controls.carryDistance);
+        if (this.controls.isCarrying) {
             this.jointConstraint.update();
         }
 
         // Pick up object if desired and portable object is in front
-        if (this.movement.isPickingUp) {
-            this.movement.isPickingUp = false;
+        if (this.controls.isPickingUp) {
+            this.controls.isPickingUp = false;
 
             // Shoot ray in view direction to check for portable object
             const ray = new CANNON.Ray(
+                new CANNON.Vec3(this.position[0], this.position[1],
+                    this.position[2]),
                 new CANNON.Vec3(
-                    posValues[0],
-                    posValues[1] + this.cameraOffsetY,
-                    posValues[2]),
-                new CANNON.Vec3(
-                    posValues[0] + viewDirection[0] * this.pickUpDistance,
-                    posValues[1] + viewDirection[1] * this.pickUpDistance
-                    + this.cameraOffsetY,
-                    posValues[2] + viewDirection[2] * this.pickUpDistance));
+                    this.position[0] + viewDirection[0] * this.maxCarryDistance,
+                    this.position[1] + viewDirection[1] * this.maxCarryDistance,
+                    (this.position[2] + viewDirection[2]
+                        * this.maxCarryDistance)));
             let castResult = new CANNON.RaycastResult();
             const hasHit = ray.intersectWorld(this.world, {
                 result: castResult,
@@ -298,25 +385,31 @@ export default class FirstPersonPlayer {
 
             if (hasHit) {
                 // Set constraint to carry the object
-                this.movement.isCarrying = true;
+                this.controls.isCarrying = true;
+                this.controls.carryDistance = (new CANNON.Vec3(this.position[0],
+                    this.position[1], this.position[2]).distanceTo(
+                        castResult.body.position));
                 this.jointConstraint = new CANNON.PointToPointConstraint(
                     castResult.body, new CANNON.Vec3(0, 0, 0),
                     this.jointBody, new CANNON.Vec3(0, 0, 0), this.carryForce);
                 this.world.addConstraint(this.jointConstraint);
                 // Reduce rotation of object with angular damping
+                this.prevCarriedAngularDamping =
+                    this.jointConstraint.bodyA.angularDamping;
                 this.jointConstraint.bodyA.angularDamping = 0.9;
             }
         }
 
         // Drop object if desired or carried object is too far
-        if (this.movement.isDropping
-            || (this.movement.isCarrying
+        if (this.controls.isDropping
+            || (this.controls.isCarrying
                 && this.jointConstraint.bodyA.position.distanceTo(
                     this.jointConstraint.bodyB.position) > 2.5)) {
-            this.movement.isDropping = false;
-            this.movement.isCarrying = false;
+            this.controls.isDropping = false;
+            this.controls.isCarrying = false;
             // Reset angular damping on object
-            this.jointConstraint.bodyA.angularDamping = 0.01;
+            this.jointConstraint.bodyA.angularDamping =
+                this.prevCarriedAngularDamping;
             // Remove constraint
             this.world.removeConstraint(this.jointConstraint);
             this.jointConstraint = undefined;

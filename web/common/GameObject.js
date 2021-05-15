@@ -104,8 +104,8 @@ export default class GameObject {
             mass: mass,
             type: mass == 0 ? CANNON.Body.STATIC : CANNON.Body.DYNAMIC,
             material: new CANNON.Material({
-                friction: 1,
-                restitution: 0.2
+                friction: 0.3,
+                restitution: 0.1
             }),
             position: new CANNON.Vec3(this.position[0],
                 this.position[1], this.position[2]),

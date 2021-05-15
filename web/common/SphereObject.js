@@ -16,6 +16,7 @@ export default class Box extends GameObject {
         super(program, shaderType, opts);
 
         this.physicsBody.addShape(new CANNON.Sphere(radius));
+        this.physicsBody.angularDamping = 0.3;
         world.addBody(this.physicsBody);
         this.initVBOs(sphereMesh);
     }

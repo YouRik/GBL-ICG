@@ -165,9 +165,11 @@ function main(resources, shaderDefs, sceneDefs, objectDefs) {
 
     // Input callbacks
     const handleKeyUp = (event) => {
+        event.preventDefault();
         player.keyUp(event);
     };
     const handleKeyDown = (event) => {
+        event.preventDefault();
         player.keyDown(event);
     };
     const handlePointerDown = (event) => {
