@@ -34,10 +34,10 @@ export default class FirstPersonPlayer {
         };
 
         // Player configuration
-        this.moveForce = 2000;
+        this.moveForce = 1000;
         this.jumpForce = 40000;
-        this.brakeForce = 350;
-        this.maxMoveSpeed = 15;
+        this.brakeForce = 400;
+        this.maxMoveSpeed = 8;
         this.maxCarryDistance = 4;
         this.minCarryDistance = 1;
         this.carryForce = 8;
@@ -284,61 +284,23 @@ export default class FirstPersonPlayer {
         GLMAT.vec3.normalize(hVelocityDir, hVelocity);
         const hVelocityLen = GLMAT.vec3.length(hVelocity);
 
-        // TODO: This can be reduced to one or two cases instead of four
-        if (rightFactor == 0) {
-            const brakeFactor = GLMAT.vec3.dot(
-                hVelocityDir, rightDirection)
-                * -hVelocityLen;
-
-            const brakeForce = GLMAT.vec3.create();
-            GLMAT.vec3.scale(brakeForce,
-                rightDirection, brakeFactor * this.brakeForce);
-
-            this.physicsBody.applyForce(new CANNON.Vec3(
-                brakeForce[0], brakeForce[1], brakeForce[2]));
-        } else {
-            let overspeedAmount = hVelocityLen - this.maxMoveSpeed;
-            if (overspeedAmount < 0) {
-                overspeedAmount = 0;
-            }
-            const brakeFactor = GLMAT.vec3.dot(
-                hVelocityDir, rightDirection)
-                * -overspeedAmount;
-
-            const brakeForce = GLMAT.vec3.create();
-            GLMAT.vec3.scale(brakeForce,
-                rightDirection, brakeFactor * this.brakeForce);
-
-            this.physicsBody.applyForce(new CANNON.Vec3(
-                brakeForce[0], brakeForce[1], brakeForce[2]));
-        }
-        if (forwardFactor == 0) {
-            const brakeFactor = GLMAT.vec3.dot(
-                hVelocityDir, forwardDirection)
-                * -hVelocityLen;
-
-            const brakeForce = GLMAT.vec3.create();
-            GLMAT.vec3.scale(brakeForce,
-                forwardDirection, brakeFactor * this.brakeForce);
-
-            this.physicsBody.applyForce(new CANNON.Vec3(
-                brakeForce[0], brakeForce[1], brakeForce[2]));
-        } else {
-            let overspeedAmount = hVelocityLen - this.maxMoveSpeed;
-            if (overspeedAmount < 0) {
-                overspeedAmount = 0;
-            }
-            const brakeFactor = GLMAT.vec3.dot(
-                hVelocityDir, forwardDirection)
-                * -overspeedAmount;
-
-            const brakeForce = GLMAT.vec3.create();
-            GLMAT.vec3.scale(brakeForce,
-                forwardDirection, brakeFactor * this.brakeForce);
-
-            this.physicsBody.applyForce(new CANNON.Vec3(
-                brakeForce[0], brakeForce[1], brakeForce[2]));
-        }
+        const overspeedAmount = Math.max(0, hVelocityLen - this.maxMoveSpeed);
+        const brakeFactorForward =
+            GLMAT.vec3.dot(hVelocityDir, forwardDirection)
+            * ((forwardFactor == 0) * -hVelocityLen
+                + (forwardFactor != 0) * -overspeedAmount);
+        const brakeFactorRight =
+            GLMAT.vec3.dot(hVelocityDir, rightDirection)
+            * ((rightFactor == 0) * -hVelocityLen
+                + (rightFactor != 0) * -overspeedAmount);
+        
+        const brakeForce = GLMAT.vec3.create();
+        GLMAT.vec3.scale(brakeForce, forwardDirection,
+            brakeFactorForward * this.brakeForce);
+        GLMAT.vec3.scaleAndAdd(brakeForce, brakeForce, rightDirection,
+            brakeFactorRight * this.brakeForce);
+        this.physicsBody.applyForce(new CANNON.Vec3(
+            brakeForce[0], brakeForce[1], brakeForce[2]));
 
         // Update player position from physics
         this.position = GLMAT.vec3.fromValues(
