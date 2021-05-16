@@ -38,7 +38,7 @@ function vLog(string) {
 const server = http.createServer((req, res) => {
     const fileEnding = req.url.substr(req.url.lastIndexOf('.'));
     vLog(`Request for file: ${req.url}`);
-    
+
     if (fileEnding in mimeTypes) {
         // Response for file endings with known mime types
         fs.readFile(`./web/${req.url}`, 'utf8', (err, data) => {
@@ -49,7 +49,7 @@ const server = http.createServer((req, res) => {
                 const mimeType = mimeTypes[fileEnding];
                 vLog(`Response for file: ${req.url}`
                     + ` with mime type ${mimeType}`);
-                res.writeHead(200, {'Content-Type': mimeType});
+                res.writeHead(200, { 'Content-Type': mimeType });
                 res.write(data);
                 return res.end();
             }
@@ -71,14 +71,18 @@ function respondHTML(req, res) {
             console.log(err);
         }
 
-        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        const urlSplit = req.url.split('/');
         try {
             const rendered = ejs.render(data,
-                {filename: './web/index.ejs', StageName: `${req.url}`});
+                {
+                    filename: './web/index.ejs',
+                    StageName: `${urlSplit[1]}`
+                });
             res.write(rendered);
         } catch (error) {
             const rendered = ejs.render(data,
-                {filename: './web/index.ejs', StageName: 'test'});
+                { filename: './web/index.ejs', StageName: 'test' });
             res.write(rendered);
         }
         return res.end();
@@ -91,7 +95,7 @@ function respondHTML(req, res) {
  * @returns {ServerResponse} The new 404 response
  */
 function respond404(res) {
-    res.writeHead(404, {'Content-Type': 'text/html'});
+    res.writeHead(404, { 'Content-Type': 'text/html' });
     res.write('404');
     return res.end();
 }
@@ -100,3 +104,6 @@ function respond404(res) {
 server.listen(port, host, () => {
     console.log(`http://${host}:${port}`);
 });
+
+
+// TODO: handle access attempt to subdirectories
