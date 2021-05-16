@@ -37,7 +37,7 @@ export default class FirstPersonPlayer {
         this.moveForce = 1000;
         this.jumpForce = 40000;
         this.brakeForce = 400;
-        this.maxMoveSpeed = 8;
+        this.maxMoveSpeed = 9;
         this.maxCarryDistance = 4;
         this.minCarryDistance = 1;
         this.carryForce = 8;
@@ -287,18 +287,17 @@ export default class FirstPersonPlayer {
         const overspeedAmount = Math.max(0, hVelocityLen - this.maxMoveSpeed);
         const brakeFactorForward =
             GLMAT.vec3.dot(hVelocityDir, forwardDirection)
-            * ((forwardFactor == 0) * -hVelocityLen
-                + (forwardFactor != 0) * -overspeedAmount);
+            * ((forwardFactor == 0) * -hVelocityLen * this.brakeForce
+                + (forwardFactor != 0) * -overspeedAmount * this.moveForce);
         const brakeFactorRight =
             GLMAT.vec3.dot(hVelocityDir, rightDirection)
-            * ((rightFactor == 0) * -hVelocityLen
-                + (rightFactor != 0) * -overspeedAmount);
+            * ((rightFactor == 0) * -hVelocityLen * this.brakeForce
+                + (rightFactor != 0) * -overspeedAmount * this.moveForce);
         
         const brakeForce = GLMAT.vec3.create();
-        GLMAT.vec3.scale(brakeForce, forwardDirection,
-            brakeFactorForward * this.brakeForce);
+        GLMAT.vec3.scale(brakeForce, forwardDirection, brakeFactorForward);
         GLMAT.vec3.scaleAndAdd(brakeForce, brakeForce, rightDirection,
-            brakeFactorRight * this.brakeForce);
+            brakeFactorRight);
         this.physicsBody.applyForce(new CANNON.Vec3(
             brakeForce[0], brakeForce[1], brakeForce[2]));
 
