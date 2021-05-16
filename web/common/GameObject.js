@@ -141,7 +141,6 @@ export default class GameObject {
         scale = this.scale) {
         this.position = position;
         this.quaternion = quaternion;
-        // TODO: scale physics objects?
         this.scale = scale;
 
         // Calculate model matrix
