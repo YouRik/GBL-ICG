@@ -1,0 +1,78 @@
+{
+    "resources": {
+        "shaders": [
+            ["vertLightingV", "shaders/fragment_lighting.vs"],
+            ["fragLightingF", "shaders/fragment_lighting.fs"],
+            ["defaultV", "shaders/default.vs"],
+            ["defaultF", "shaders/default.fs"]
+        ],
+        "textures": [
+
+        ],
+        "meshes": [
+            ["pedestal1", "meshes/pedestal_convdecomp1.ply"],
+            ["pedestal2", "meshes/pedestal_convdecomp2.ply"],
+            ["pedestal3", "meshes/pedestal_convdecomp3.ply"],
+            ["pedestal4", "meshes/pedestal_convdecomp4.ply"],
+            ["icoSphere", "meshes/icosphere.ply"],
+            ["gate1", "meshes/gate_convdecomp1.ply"],
+            ["gate2", "meshes/gate_convdecomp2.ply"],
+            ["gate3", "meshes/gate_convdecomp3.ply"],
+            ["gate4", "meshes/gate_convdecomp4.ply"],
+            ["gate5", "meshes/gate_convdecomp5.ply"],
+            ["gate6", "meshes/gate_convdecomp6.ply"],
+            ["gate7", "meshes/gate_convdecomp7.ply"],
+            ["gate8", "meshes/gate_convdecomp8.ply"],
+            ["gate9", "meshes/gate_convdecomp9.ply"],
+            ["gate10", "meshes/gate_convdecomp10.ply"]
+        ]
+    },
+    "shader_programs": {
+        "fragmentLighting": {
+            "type": "lit",
+            "vertex": "vertLightingV",
+            "fragment": "fragLightingF"
+        },
+        "colored": {
+            "type": "colored",
+            "vertex": "defaultV",
+            "fragment": "defaultF"
+        }
+    },
+    "scene": {
+        "player": {
+            "start_position": [0, 0.9, -6]
+        },
+        "ambient_light": [0.7, 0.7, 0.7]
+    },
+    "objects": [
+        {
+            "type": "lightSource",
+            "position": [-200, 150, -100],
+            "Id": [0.7, 0.7, 0.7],
+            "Is": [0.9, 0.9, 0.9]
+        },
+        {
+            "type": "sphere",
+            "shader_program": "colored",
+            "radius": 15,
+            "color": [1, 0.9, 0.7],
+            "position": [-100, 150, -200],
+            "mass": 0,
+            "mesh": "icoSphere"
+        },
+        {
+            "type": "box",
+            "shader_program": "fragmentLighting",
+            "halfExtents": [20, 0.2, 20],
+            "position": [0, -0.2, 0],
+            "lightParams": {
+                "ka": [0.7, 0.4, 0],
+                "kd": [0.8, 0.4, 0],
+                "ks": [0.7, 0.7, 0],
+                "specExp": 10
+            },
+            "mass": 0
+        }
+    ]
+}
