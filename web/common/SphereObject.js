@@ -7,7 +7,7 @@ import * as CANNON from './lib/cannon/cannon-es.js';
  * TODO: add documentation
  */
 
-export default class Box extends GameObject {
+export default class SphereObject extends GameObject {
     constructor(world, program, shaderType, sphereMesh, options = {}) {
         const radius = options.radius == undefined ? 1 : options.radius;
 
