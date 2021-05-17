@@ -34,6 +34,7 @@ switch (stageName) {
 }
 
 // TODO: replace colored, lit, textured with bit flag
+// TODO: investigate and smoothen physics-graphics-frame-inconsistencies
 
 // TODO: Check coding style (ESLint)
 // TODO: DOCUMENTATION
