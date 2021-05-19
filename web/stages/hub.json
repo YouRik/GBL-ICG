@@ -14,6 +14,7 @@
             ["pedestal2", "meshes/pedestal_convdecomp2.ply"],
             ["pedestal3", "meshes/pedestal_convdecomp3.ply"],
             ["pedestal4", "meshes/pedestal_convdecomp4.ply"],
+            ["pedestalG", "meshes/pedestal.ply"],
             ["icoSphere", "meshes/icosphere.ply"],
             ["gate1", "meshes/gate_convdecomp1.ply"],
             ["gate2", "meshes/gate_convdecomp2.ply"],
@@ -24,7 +25,8 @@
             ["gate7", "meshes/gate_convdecomp7.ply"],
             ["gate8", "meshes/gate_convdecomp8.ply"],
             ["gate9", "meshes/gate_convdecomp9.ply"],
-            ["gate10", "meshes/gate_convdecomp10.ply"]
+            ["gate10", "meshes/gate_convdecomp10.ply"],
+            ["gateG", "meshes/gate.ply"]
         ]
     },
     "shader_programs": {
