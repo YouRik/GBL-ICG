@@ -61,11 +61,11 @@ export default class HubStage extends Game {
         const gate1 = new Gate(this.world, this.programs['fragmentLighting'],
             'lit',
             [
-                meshes['gate1'], meshes['gate2'],
-                meshes['gate3'], meshes['gate4'],
-                meshes['gate5'], meshes['gate6'],
-                meshes['gate7'], meshes['gate8'],
-                meshes['gate9'], meshes['gate10']
+                meshes['gateD1'], meshes['gateD2'],
+                meshes['gateD3'], meshes['gateD4'],
+                meshes['gateD5'], meshes['gateD6'],
+                meshes['gateD7'], meshes['gateD8'],
+                meshes['gateD9'], meshes['gateD10']
             ], gate1Entered,
             {
                 graphicalMesh: meshes['gateG'],
@@ -92,10 +92,10 @@ export default class HubStage extends Game {
         const pedestal1 = new Pedestal(this.world,
             this.programs['fragmentLighting'], 'lit',
             [
-                meshes['pedestal1'],
-                meshes['pedestal2'],
-                meshes['pedestal3'],
-                meshes['pedestal4']
+                meshes['pedestalD1'],
+                meshes['pedestalD2'],
+                meshes['pedestalD3'],
+                meshes['pedestalD4']
             ],
             pedestal1Filled,
             {

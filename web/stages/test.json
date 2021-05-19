@@ -11,8 +11,8 @@
         ],
         "meshes": [
             ["thing", "meshes/thing.ply"],
-            ["thingp1", "meshes/thing_convdecomp1.ply"],
-            ["thingp2", "meshes/thing_convdecomp2.ply"],
+            ["thingD1", "meshes/thing_convdecomp1.ply"],
+            ["thingD2", "meshes/thing_convdecomp2.ply"],
             ["sphere", "meshes/sphere.ply"],
             ["sphereSoft", "meshes/sphere_soft.ply"],
             ["icoSphere", "meshes/icosphere.ply"],
@@ -162,7 +162,7 @@
             "orientation": [0, 0, 90],
             "scale": [2, 2, 2],
             "mass": 15,
-            "meshes": ["thingp1", "thingp2"]
+            "meshes": ["thingD1", "thingD2"]
         },
         {
             "type": "sphere",
