@@ -1,11 +1,11 @@
 /** @module Lighting2Stage */
 
-import GameStage from '../common/GameStage.js';
+import Game from '../common/Game.js';
 
 /**
  * TODO: documentation
  */
-export default class Lighting2Stage extends GameStage {
+export default class Lighting2Stage extends Game {
     constructor() {
         super('lighting2');
         // Load resources and stage, then start the game loop

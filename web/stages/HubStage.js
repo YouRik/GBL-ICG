@@ -1,6 +1,6 @@
 /** @module HubStage */
 
-import GameStage from '../common/GameStage.js';
+import Game from '../common/Game.js';
 import Gate from '../common/Gate.js';
 import Pedestal from '../common/Pedestal.js';
 import SphereObject from '../common/SphereObject.js';
@@ -8,7 +8,7 @@ import SphereObject from '../common/SphereObject.js';
 /**
  * TODO: documentation
  */
-export default class HubStage extends GameStage {
+export default class HubStage extends Game {
     constructor() {
         super('hub');
         // Load resources and stage, then start the game loop
@@ -55,7 +55,7 @@ export default class HubStage extends GameStage {
         // Gate 1
         const gate1Entered = (event) => {
             if (event.body === this.player.physicsBody) {
-                window.location.replace('lighting1');
+                window.location.replace('transformations');
             }
         }
         const gate1 = new Gate(this.world, this.programs['fragmentLighting'],

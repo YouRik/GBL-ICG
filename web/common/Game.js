@@ -1,4 +1,4 @@
-/** @module GameStage */
+/** @module Game */
 
 import { loadStage, loadResources } from './LoadResources.js';
 import initShaders from './InitShaders.js';
@@ -14,7 +14,7 @@ import SphereObject from './SphereObject.js';
 /**
  * TODO: documentation
  */
-export default class GameStage {
+export default class Game {
     constructor(stageName) {
         this.isPaused = true;
         this.stageName = stageName;

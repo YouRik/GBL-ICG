@@ -1,12 +1,12 @@
 /** @module TestStage */
 
 import CubeObject from '../common/CubeObject.js';
-import GameStage from '../common/GameStage.js';
+import Game from '../common/Game.js';
 
 /**
  * TODO: documentation
  */
-export default class TestStage extends GameStage {
+export default class TestStage extends Game {
     constructor() {
         super('test');
         // Load resources and stage, then start the game loop
