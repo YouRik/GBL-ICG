@@ -40,6 +40,9 @@ h2 {
 #tasks-container * {
   margin-top: 0;
 }
+#tasks-container button {
+  margin-bottom: 1em;
+}
 
 #gl-canvas {
   width: 100%;

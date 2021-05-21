@@ -46,5 +46,5 @@ void main()
         I += calculateIntensity(i, N, V);
     }
 
-    fColor = vec4(I.rgb, 1.0);
+    fColor = vec4(ka, 1.0);
 }

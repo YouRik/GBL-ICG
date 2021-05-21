@@ -1,0 +1,106 @@
+<h2>Collect all orbs</h2>
+<button id="prevButton">Previous</button>
+<button id="nextButton">Next</button>
+<p id="tasks">
+</p>
+
+<script>
+    let taskIndex = 1;
+    const tasksElement = document.getElementById('tasks');
+    const prevButton = document.getElementById('prevButton');
+    const nextButton = document.getElementById('nextButton');
+    const tasks = {
+        task1: `
+    There's an orb on the last island!
+    <ol>
+        <li>Use what you have and climb up the hill to get to the next island.</li>
+        <li>Calculate transformations and move the platforms to make a path.</li>
+        <li>Implement the correct matrix multiplication in the shader ......</li>
+        <li>Place the key and turn it to open the bridge</li>
+        <li>Collect the orb and open the portal.</li>
+    </ol>
+        `,
+        task2: `
+    <p style="background-color: cyan;">Cyan platform</p>
+    <table>
+        <tr>
+            <td><input type="number" /></td>
+            <td><input type="number" /></td>
+            <td><input type="number" /></td>
+        </tr>
+        <tr>
+            <td><input type="number" /></td>
+            <td><input type="number" /></td>
+            <td><input type="number" /></td>
+        </tr>
+        <tr>
+            <td><input type="number" /></td>
+            <td><input type="number" /></td>
+            <td><input type="number" /></td>
+        </tr>
+    </table>
+    <button id="btnCyanTrans">Apply</button>
+
+    <p style="background-color: magenta;">Magenta platform</p>
+    <table>
+        <tr>
+            <td><input type="number" /></td>
+            <td><input type="number" /></td>
+            <td><input type="number" /></td>
+        </tr>
+        <tr>
+            <td><input type="number" /></td>
+            <td><input type="number" /></td>
+            <td><input type="number" /></td>
+        </tr>
+        <tr>
+            <td><input type="number" /></td>
+            <td><input type="number" /></td>
+            <td><input type="number" /></td>
+        </tr>
+    </table>
+    <button id="btnMagentaTrans">Apply</button>
+
+    <p style="background-color: yellow;">Yellow platform</p>
+    <table>
+        <tr>
+            <td><input type="number" /></td>
+            <td><input type="number" /></td>
+            <td><input type="number" /></td>
+        </tr>
+        <tr>
+            <td><input type="number" /></td>
+            <td><input type="number" /></td>
+            <td><input type="number" /></td>
+        </tr>
+        <tr>
+            <td><input type="number" /></td>
+            <td><input type="number" /></td>
+            <td><input type="number" /></td>
+        </tr>
+    </table>
+    <button id="btnYellowTrans">Apply</button>
+        `
+    };
+
+    tasksElement.innerHTML = tasks['task' + taskIndex];
+
+    prevButton.addEventListener('click', (event) => {
+        taskIndex--;
+        if (taskIndex < 1) {
+            taskIndex = 1;
+        }
+        console.log(taskIndex);
+        tasksElement.innerHTML = tasks['task' + taskIndex];
+    });
+
+    nextButton.addEventListener('click', (event) => {
+        taskIndex++;
+        if (taskIndex > 2) {
+            taskIndex = 2;
+        }
+        console.log(taskIndex);
+        tasksElement.innerHTML = tasks['task' + taskIndex];
+    });
+
+</script>

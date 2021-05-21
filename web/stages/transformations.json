@@ -1,0 +1,352 @@
+{
+    "resources": {
+        "shaders": [
+            ["vertLightingV", "shaders/fragment_lighting.vs"],
+            ["fragLightingF", "shaders/fragment_lighting.fs"],
+            ["defaultVnoMVP", "shaders/tasks/default.vs"],
+            ["defaultV", "shaders/default.vs"],
+            ["defaultF", "shaders/default.fs"]
+        ],
+        "textures": [
+
+        ],
+        "meshes": [
+            ["pedestalD1", "meshes/pedestal_convdecomp1.ply"],
+            ["pedestalD2", "meshes/pedestal_convdecomp2.ply"],
+            ["pedestalD3", "meshes/pedestal_convdecomp3.ply"],
+            ["pedestalD4", "meshes/pedestal_convdecomp4.ply"],
+            ["pedestalG", "meshes/pedestal.ply"],
+            ["icoSphere", "meshes/icosphere.ply"],
+            ["gateD1", "meshes/gate_convdecomp1.ply"],
+            ["gateD2", "meshes/gate_convdecomp2.ply"],
+            ["gateD3", "meshes/gate_convdecomp3.ply"],
+            ["gateD4", "meshes/gate_convdecomp4.ply"],
+            ["gateD5", "meshes/gate_convdecomp5.ply"],
+            ["gateD6", "meshes/gate_convdecomp6.ply"],
+            ["gateD7", "meshes/gate_convdecomp7.ply"],
+            ["gateD8", "meshes/gate_convdecomp8.ply"],
+            ["gateD9", "meshes/gate_convdecomp9.ply"],
+            ["gateD10", "meshes/gate_convdecomp10.ply"],
+            ["gateG", "meshes/gate.ply"],
+            ["island", "meshes/island.ply"],
+            ["islandC", "meshes/island_collider.ply"],
+            ["arrow", "meshes/arrow.ply"]
+        ]
+    },
+    "shader_programs": {
+        "fragmentLighting": {
+            "type": "lit",
+            "vertex": "vertLightingV",
+            "fragment": "fragLightingF"
+        },
+        "colored": {
+            "type": "colored",
+            "vertex": "defaultV",
+            "fragment": "defaultF"
+        },
+        "coloredNoMVP": {
+            "type": "colored",
+            "vertex": "defaultVnoMVP",
+            "fragment": "defaultF"
+        }
+    },
+    "scene": {
+        "player": {
+            "start_position": [-50, -3.1, -35]
+        },
+        "ambient_light": [0.7, 0.7, 0.7]
+    },
+    "objects": [
+        {
+            "type": "lightSource",
+            "position": [-200, 150, -100],
+            "Id": [0.7, 0.7, 0.7],
+            "Is": [0.9, 0.9, 0.9]
+        },
+        {
+            "type": "sphere",
+            "shader_program": "colored",
+            "radius": 15,
+            "color": [1, 0.9, 0.7],
+            "position": [-100, 150, -200],
+            "mass": 0,
+            "mesh": "icoSphere"
+        },
+
+        {
+            "type": "mesh",
+            "meshes": ["islandC"],
+            "graphical_mesh": "island",
+            "scale": [0.7, 0.7, 0.7],
+            "orientation": [0, 240, 0],
+            "shader_program": "fragmentLighting",
+            "position": [-50, -4, -35],
+            "color": [0.47, 0.27, 0.23],
+            "mass": 0
+        },
+        {
+            "type": "mesh",
+            "meshes": ["islandC"],
+            "graphical_mesh": "island",
+            "scale": [1, 1, 1],
+            "orientation": [0, 90, 0],
+            "shader_program": "fragmentLighting",
+            "position": [-38, -2.8, -38],
+            "color": [0.47, 0.27, 0.23],
+            "mass": 0
+        },
+        {
+            "type": "mesh",
+            "meshes": ["islandC"],
+            "graphical_mesh": "island",
+            "scale": [2, 2, 2],
+            "orientation": [0, 32, 0],
+            "shader_program": "fragmentLighting",
+            "position": [-21, -1, -26],
+            "color": [0.47, 0.27, 0.23],
+            "mass": 0
+        },
+        {
+            "type": "mesh",
+            "meshes": ["islandC"],
+            "graphical_mesh": "island",
+            "scale": [4, 4, 4],
+            "orientation": [0, 160, 0],
+            "shader_program": "fragmentLighting",
+            "position": [0, -0.2, 0],
+            "color": [0.47, 0.27, 0.23],
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "fragmentLighting",
+            "halfExtents": [5, 3.5, 5],
+            "position": [3, 3.5, 10],
+            "color": [0.6, 0.27, 0.23],
+            "mass": 0
+        },
+        {
+            "type": "mesh",
+            "meshes": ["islandC"],
+            "graphical_mesh": "island",
+            "scale": [4, 4, 4],
+            "orientation": [0, 170, 0],
+            "shader_program": "fragmentLighting",
+            "position": [2, 5.5, 38],
+            "color": [0.47, 0.27, 0.23],
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "fragmentLighting",
+            "halfExtents": [2, 0.2, 1],
+            "position": [-50, 3.5, 50],
+            "color": [1, 1, 0],
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "fragmentLighting",
+            "halfExtents": [1, 0.2, 1],
+            "position": [-45, 3.5, 40],
+            "color": [1, 0, 1],
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "fragmentLighting",
+            "halfExtents": [1, 0.2, 3],
+            "position": [-40, 3.5, 45],
+            "color": [0, 1, 1],
+            "mass": 0
+        },
+        {
+            "type": "mesh",
+            "meshes": ["islandC"],
+            "graphical_mesh": "island",
+            "scale": [2, 10, 2],
+            "shader_program": "fragmentLighting",
+            "position": [-50, 15, 30],
+            "color": [0.47, 0.27, 0.23],
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "coloredNoMVP",
+            "halfExtents": [1, 1, 1],
+            "position": [-60, 15, 30],
+            "color": [1, 1, 1],
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "coloredNoMVP",
+            "halfExtents": [1, 1, 1],
+            "position": [-63, 16, 33],
+            "color": [1, 1, 1],
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "coloredNoMVP",
+            "halfExtents": [1, 1, 1],
+            "position": [-70, 14, 30],
+            "color": [1, 1, 1],
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "coloredNoMVP",
+            "halfExtents": [1, 1, 1],
+            "position": [-68, 15, 27],
+            "color": [1, 1, 1],
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "coloredNoMVP",
+            "halfExtents": [1, 1, 1],
+            "position": [-77, 14, 27],
+            "color": [1, 1, 1],
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "coloredNoMVP",
+            "halfExtents": [1, 1, 1],
+            "position": [-80, 15.5, 33],
+            "color": [1, 1, 1],
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "coloredNoMVP",
+            "halfExtents": [1, 1, 1],
+            "position": [-83, 17.5, 33],
+            "color": [1, 1, 1],
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "coloredNoMVP",
+            "halfExtents": [1, 1, 1],
+            "position": [-90, 15.0, 27],
+            "color": [1, 1, 1],
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "coloredNoMVP",
+            "halfExtents": [1, 1, 1],
+            "position": [-93, 16.5, 33],
+            "color": [1, 1, 1],
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "coloredNoMVP",
+            "halfExtents": [1, 1, 1],
+            "position": [-91, 18.5, 36],
+            "color": [1, 1, 1],
+            "mass": 0
+        },
+        {
+            "type": "mesh",
+            "meshes": ["islandC"],
+            "graphical_mesh": "island",
+            "scale": [0.5, 1, 0.5],
+            "shader_program": "fragmentLighting",
+            "position": [-93, 19.1, 23],
+            "color": [0.47, 0.27, 0.23],
+            "mass": 0
+        },
+
+        {
+            "type": "box",
+            "shader_program": "fragmentLighting",
+            "halfExtents": [8, 0.1, 1],
+            "orientation": [0, -45, 0],
+            "position": [-40, -2.7, -44],
+            "color": [1, 0.5, 1],
+            "mass": 10,
+            "portable": true
+        },
+        {
+            "type": "box",
+            "shader_program": "fragmentLighting",
+            "halfExtents": [3, 0.1, 1],
+            "orientation": [0, -45, 0],
+            "position": [-25, 0.2, -26],
+            "color": [0, 0.5, 1],
+            "mass": 10,
+            "portable": true
+        },
+        {
+            "type": "cube",
+            "shader_program": "fragmentLighting",
+            "halfExtent": 0.5,
+            "position": [-6, 0.5, -6],
+            "color": [0, 1, 0.5],
+            "mass": 10,
+            "portable": true
+        },
+        {
+            "type": "box",
+            "shader_program": "fragmentLighting",
+            "halfExtents": [2, 1.5, 0.7],
+            "position": [-8, 1.5, 8],
+            "color": [0.5, 0.5, 1],
+            "mass": 20,
+            "portable": true
+        },
+        {
+            "type": "box",
+            "shader_program": "fragmentLighting",
+            "halfExtents": [1, 1.5, 1],
+            "position": [8, 1.5, 3],
+            "color": [0.5, 0.5, 0.5],
+            "mass": 20,
+            "portable": true
+        },
+        {
+            "type": "box",
+            "shader_program": "fragmentLighting",
+            "halfExtents": [1, 2, 1],
+            "position": [-10, 2, 2],
+            "color": [0.5, 1, 0.5],
+            "mass": 20,
+            "portable": true
+        },
+
+        {
+            "type": "mesh",
+            "shader_program": "fragmentLighting",
+            "meshes": [],
+            "graphical_mesh": "arrow",
+            "color": [1, 0, 0],
+            "orientation": [0, 180, 0],
+            "mass": 0,
+            "position": [-30, 15, 70]
+        },
+        {
+            "type": "mesh",
+            "shader_program": "fragmentLighting",
+            "meshes": [],
+            "graphical_mesh": "arrow",
+            "color": [0, 1, 0],
+            "orientation": [0, 90, 0],
+            "mass": 0,
+            "position": [-30, 15, 70]
+        },
+        {
+            "type": "mesh",
+            "shader_program": "fragmentLighting",
+            "meshes": [],
+            "graphical_mesh": "arrow",
+            "color": [0, 0, 1],
+            "orientation": [0, 0, -90],
+            "mass": 0,
+            "position": [-30, 15, 70]
+        }
+    ]
+}
