@@ -291,8 +291,8 @@ export default class Game {
 
         // Configure viewport
         this.setViewPort(canvas, gl);
-        // Set clear color (background) to UHH blue
-        gl.clearColor(0.01, 0.44, 0.73, 1.0);
+        // Set clear color (background) to a bright blue
+        gl.clearColor(0.53, 0.78, 0.92, 1.0);
         // Enable depth test
         gl.enable(gl.DEPTH_TEST);
         // Enable back face culling
