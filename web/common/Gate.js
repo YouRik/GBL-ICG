@@ -12,6 +12,7 @@ export default class Gate extends MeshObject {
         options.scale = scale;
         options.position = position;
         options.mass = 0;
+        options.color = [0.2, 0, 0.7];
         super(world, program, shaderType, meshes, options);
 
         // Activation flag
@@ -40,5 +41,17 @@ export default class Gate extends MeshObject {
         });
         // Add trigger to world
         world.addBody(this.triggerBody);
+    }
+
+    activate() {
+        this.activated = true;
+        this.color = [0, 0, 1];
+        this.calculateLightParams();
+    }
+
+    deactivate() {
+        this.activated = false;
+        this.color = [0.2, 0, 0.7];
+        this.calculateLightParams();
     }
 }

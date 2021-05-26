@@ -26,12 +26,7 @@ export default class HubStage extends Game {
             this.programs['fragmentLighting'], 'lit',
             meshes['icoSphere'], {
             mass: 5,
-            lightParams: {
-                ka: [0.9, 0.17, 0.31],
-                kd: [0.78, 0.91, 0.34],
-                ks: [1, 1, 1],
-                specExp: 10
-            },
+            color: [1, 1, 0],
             radius: 0.4,
             position: [-3, 0.5, -3],
             portable: true
@@ -44,7 +39,12 @@ export default class HubStage extends Game {
             meshes['icoSphere'],
             {
                 mass: 5,
-                color: [1, 1, 0],
+                lightParams: {
+                    ka: [0.9, 0.17, 0.31],
+                    kd: [0.78, 0.91, 0.34],
+                    ks: [1, 1, 1],
+                    specExp: 10
+                },
                 radius: 0.4,
                 position: [3, 0.5, -3],
                 portable: true
@@ -70,26 +70,76 @@ export default class HubStage extends Game {
             {
                 graphicalMesh: meshes['gateG'],
                 scale: [1, 1, 1],
-                orientation: [0, 90, 0],
-                color: [0.2, 0, 0.7],
-                position: [0, 0, 5]
+                orientation: [0, 120, 0],
+                position: [5, 0, 3.5]
             }
         );
         this.gameObjects.push(gate1);
+        // Gate 2
+        const gate2Entered = (event) => {
+            if (event.body === this.player.physicsBody) {
+                window.location.replace('splines');
+            }
+        }
+        const gate2 = new Gate(this.world, this.programs['fragmentLighting'],
+            'lit',
+            [
+                meshes['gateD1'], meshes['gateD2'],
+                meshes['gateD3'], meshes['gateD4'],
+                meshes['gateD5'], meshes['gateD6'],
+                meshes['gateD7'], meshes['gateD8'],
+                meshes['gateD9'], meshes['gateD10']
+            ], gate2Entered,
+            {
+                graphicalMesh: meshes['gateG'],
+                scale: [1, 1, 1],
+                orientation: [0, 90, 0],
+                position: [0, 0, 5]
+            }
+        );
+        this.gameObjects.push(gate2);
+        // Gate 3
+        const gate3Entered = (event) => {
+            if (event.body === this.player.physicsBody) {
+                window.location.replace('lighting');
+            }
+        }
+        const gate3 = new Gate(this.world, this.programs['fragmentLighting'],
+            'lit',
+            [
+                meshes['gateD1'], meshes['gateD2'],
+                meshes['gateD3'], meshes['gateD4'],
+                meshes['gateD5'], meshes['gateD6'],
+                meshes['gateD7'], meshes['gateD8'],
+                meshes['gateD9'], meshes['gateD10']
+            ], gate3Entered,
+            {
+                graphicalMesh: meshes['gateG'],
+                scale: [1, 1, 1],
+                orientation: [0, 60, 0],
+                position: [-5, 0, 3.5]
+            }
+        );
+        this.gameObjects.push(gate3);
 
-        // Pedestal 1
-        const pedestal1Filled = (event) => {
+        // Pedestal
+        const pedestalFilled = (event) => {
             if (event.body === orb1.physicsBody) {
-                gate1.activated = true;
+                gate1.activate();
+            } else if (event.body === orb2.physicsBody) {
+                gate2.activate();
             }
         };
-        const pedestal1Emptied = (event) => {
+        const pedestalEmptied = (event) => {
             if (event.bodyA === orb1.physicsBody
                 || event.bodyB === orb1.physicsBody) {
-                gate1.activated = false;
+                    gate1.deactivate();
+            } else if (event.bodyA === orb2.physicsBody
+                || event.bodyB === orb2.physicsBody) {
+                    gate2.deactivate();
             }
         };
-        const pedestal1 = new Pedestal(this.world,
+        const pedestal = new Pedestal(this.world,
             this.programs['fragmentLighting'], 'lit',
             [
                 meshes['pedestalD1'],
@@ -97,7 +147,7 @@ export default class HubStage extends Game {
                 meshes['pedestalD3'],
                 meshes['pedestalD4']
             ],
-            pedestal1Filled,
+            pedestalFilled,
             {
                 graphicalMesh: meshes['pedestalG'],
                 position: [0, 0, 0],
@@ -106,13 +156,13 @@ export default class HubStage extends Game {
                 scale: [1, 1, 1],
             }
         );
-        this.gameObjects.push(pedestal1);
+        this.gameObjects.push(pedestal);
 
         // World event listener for contact exits
         this.world.addEventListener('endContact', (event) => {
-            if (event.bodyA === pedestal1.triggerBody
-                || event.bodyB === pedestal1.triggerBody) {
-                pedestal1Emptied(event);
+            if (event.bodyA === pedestal.triggerBody
+                || event.bodyB === pedestal.triggerBody) {
+                pedestalEmptied(event);
             }
         })
     }

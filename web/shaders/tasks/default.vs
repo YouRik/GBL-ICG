@@ -9,5 +9,7 @@ out vec4 vfColor;
 void main()
 {
     vfColor = vColor;
+    // TASK: Use the transformation matrices provided to the shader to transform
+    //       the vertex positions to clip space
     gl_Position = vec4(0.0, 0.0, 0.0, 0.0);
 }

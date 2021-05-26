@@ -4,6 +4,7 @@ import HubStage from './stages/HubStage.js';
 import Lighting1Stage from './stages/Lighting1Stage.js';
 import Lighting2Stage from './stages/Lighting2Stage.js';
 import Lighting4Stage from './stages/Lighting4Stage.js';
+import SplinesStage from './stages/SplinesStage.js';
 import TestStage from './stages/TestStage.js';
 import TransformationsStage from './stages/TransformationsStage.js';
 
@@ -34,6 +35,9 @@ switch (stageName) {
         break;
     case 'transformations':
         stage = new TransformationsStage();
+        break;
+    case 'splines':
+        stage = new SplinesStage();
         break;
 }
 

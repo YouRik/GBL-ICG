@@ -236,4 +236,20 @@ export default class Box extends GameObject {
         GL.bufferData(GL.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices),
             GL.DYNAMIC_DRAW);
     }
+
+    scalePhysicsShape(scale) {
+        const oldShape = this.physicsBody.shapes[0];
+        this.physicsBody.removeShape(oldShape);
+        
+        if (this.halfExtentsOrig === undefined) {
+            this.halfExtentsOrig = oldShape.halfExtents;
+        }
+        const newHalfExtents = new CANNON.Vec3(
+            scale[0] * this.halfExtentsOrig.x,
+            scale[1] * this.halfExtentsOrig.y,
+            scale[2] * this.halfExtentsOrig.z,
+        );
+        const newShape = new CANNON.Box(newHalfExtents);
+        this.physicsBody.addShape(newShape);
+    }
 }

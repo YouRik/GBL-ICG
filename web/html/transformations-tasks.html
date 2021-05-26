@@ -1,106 +1,140 @@
-<h2>Collect all orbs</h2>
+<h2>Collect the red orb and open the gate</h2>
 <button id="prevButton">Previous</button>
 <button id="nextButton">Next</button>
-<p id="tasks">
-</p>
+<div id="tasks">
+    <div id="task1">
+        There's an orb on the last island!
+        <ol>
+            <li>Use what you have and climb up the hill to get to the next island.</li>
+            <li>Calculate transformations and move the platforms to make a path.</li>
+            <li>Implement the correct matrix multiplication in the shader ......</li>
+            <li>Place the key and turn it to open the bridge</li>
+            <li>Collect the orb and open the portal.</li>
+        </ol>
+    </div>
+    <div id="task2">
+        <table style="background-color: cyan;">
+            <caption>Cyan platform</caption>
+            <tr>
+                <td><input id="cyan00" type="number" size="5" /></td>
+                <td><input id="cyan01" type="number" size="5" /></td>
+                <td><input id="cyan02" type="number" size="5" /></td>
+                <td><input id="cyan03" type="number" size="5" /></td>
+            </tr>
+            <tr>
+                <td><input id="cyan10" type="number" size="5" /></td>
+                <td><input id="cyan11" type="number" size="5" /></td>
+                <td><input id="cyan12" type="number" size="5" /></td>
+                <td><input id="cyan13" type="number" size="5" /></td>
+            </tr>
+            <tr>
+                <td><input id="cyan20" type="number" size="5" /></td>
+                <td><input id="cyan21" type="number" size="5" /></td>
+                <td><input id="cyan22" type="number" size="5" /></td>
+                <td><input id="cyan23" type="number" size="5" /></td>
+            </tr>
+            <tr>
+                <td><input id="cyan30" type="number" size="5" /></td>
+                <td><input id="cyan31" type="number" size="5" /></td>
+                <td><input id="cyan32" type="number" size="5" /></td>
+                <td><input id="cyan33" type="number" size="5" /></td>
+            </tr>
+        </table>
+        <button id="transCyanApply">Apply</button>
+        <button id="transCyanReset">Reset</button>
+        
+        <table style="background-color: magenta;">
+            <caption>Magenta platform</caption>
+            <tr>
+                <td><input id="magenta00" type="number" size="5" /></td>
+                <td><input id="magenta01" type="number" size="5" /></td>
+                <td><input id="magenta02" type="number" size="5" /></td>
+                <td><input id="magenta03" type="number" size="5" /></td>
+            </tr>
+            <tr>
+                <td><input id="magenta10" type="number" size="5" /></td>
+                <td><input id="magenta11" type="number" size="5" /></td>
+                <td><input id="magenta12" type="number" size="5" /></td>
+                <td><input id="magenta13" type="number" size="5" /></td>
+            </tr>
+            <tr>
+                <td><input id="magenta20" type="number" size="5" /></td>
+                <td><input id="magenta21" type="number" size="5" /></td>
+                <td><input id="magenta22" type="number" size="5" /></td>
+                <td><input id="magenta23" type="number" size="5" /></td>
+            </tr>
+            <tr>
+                <td><input id="magenta30" type="number" size="5" /></td>
+                <td><input id="magenta31" type="number" size="5" /></td>
+                <td><input id="magenta32" type="number" size="5" /></td>
+                <td><input id="magenta33" type="number" size="5" /></td>
+            </tr>
+        </table>
+        <button id="transMagentaApply">Apply</button>
+        <button id="transMagentaReset">Reset</button>
+    </div>
+    <div id="task3">
+        <table style="background-color: yellow;">
+            <caption>Yellow key</caption>
+            <tr>
+                <td><input id="yellow00" type="number" size="5" /></td>
+                <td><input id="yellow01" type="number" size="5" /></td>
+                <td><input id="yellow02" type="number" size="5" /></td>
+                <td><input id="yellow03" type="number" size="5" /></td>
+            </tr>
+            <tr>
+                <td><input id="yellow10" type="number" size="5" /></td>
+                <td><input id="yellow11" type="number" size="5" /></td>
+                <td><input id="yellow12" type="number" size="5" /></td>
+                <td><input id="yellow13" type="number" size="5" /></td>
+            </tr>
+            <tr>
+                <td><input id="yellow20" type="number" size="5" /></td>
+                <td><input id="yellow21" type="number" size="5" /></td>
+                <td><input id="yellow22" type="number" size="5" /></td>
+                <td><input id="yellow23" type="number" size="5" /></td>
+            </tr>
+            <tr>
+                <td><input id="yellow30" type="number" size="5" /></td>
+                <td><input id="yellow31" type="number" size="5" /></td>
+                <td><input id="yellow32" type="number" size="5" /></td>
+                <td><input id="yellow33" type="number" size="5" /></td>
+            </tr>
+        </table>
+        <button id="transYellowApply">Apply</button>
+        <button id="transYellowReset">Reset</button>
+    </div>
+</div>
 
-<script>
-    let taskIndex = 1;
-    const tasksElement = document.getElementById('tasks');
+<script defer>
+    const taskCount = 3;
+    let taskIndex = 0;
     const prevButton = document.getElementById('prevButton');
     const nextButton = document.getElementById('nextButton');
-    const tasks = {
-        task1: `
-    There's an orb on the last island!
-    <ol>
-        <li>Use what you have and climb up the hill to get to the next island.</li>
-        <li>Calculate transformations and move the platforms to make a path.</li>
-        <li>Implement the correct matrix multiplication in the shader ......</li>
-        <li>Place the key and turn it to open the bridge</li>
-        <li>Collect the orb and open the portal.</li>
-    </ol>
-        `,
-        task2: `
-    <p style="background-color: cyan;">Cyan platform</p>
-    <table>
-        <tr>
-            <td><input type="number" /></td>
-            <td><input type="number" /></td>
-            <td><input type="number" /></td>
-        </tr>
-        <tr>
-            <td><input type="number" /></td>
-            <td><input type="number" /></td>
-            <td><input type="number" /></td>
-        </tr>
-        <tr>
-            <td><input type="number" /></td>
-            <td><input type="number" /></td>
-            <td><input type="number" /></td>
-        </tr>
-    </table>
-    <button id="btnCyanTrans">Apply</button>
+    const tasks = [];
 
-    <p style="background-color: magenta;">Magenta platform</p>
-    <table>
-        <tr>
-            <td><input type="number" /></td>
-            <td><input type="number" /></td>
-            <td><input type="number" /></td>
-        </tr>
-        <tr>
-            <td><input type="number" /></td>
-            <td><input type="number" /></td>
-            <td><input type="number" /></td>
-        </tr>
-        <tr>
-            <td><input type="number" /></td>
-            <td><input type="number" /></td>
-            <td><input type="number" /></td>
-        </tr>
-    </table>
-    <button id="btnMagentaTrans">Apply</button>
-
-    <p style="background-color: yellow;">Yellow platform</p>
-    <table>
-        <tr>
-            <td><input type="number" /></td>
-            <td><input type="number" /></td>
-            <td><input type="number" /></td>
-        </tr>
-        <tr>
-            <td><input type="number" /></td>
-            <td><input type="number" /></td>
-            <td><input type="number" /></td>
-        </tr>
-        <tr>
-            <td><input type="number" /></td>
-            <td><input type="number" /></td>
-            <td><input type="number" /></td>
-        </tr>
-    </table>
-    <button id="btnYellowTrans">Apply</button>
-        `
-    };
-
-    tasksElement.innerHTML = tasks['task' + taskIndex];
+    for (let i = 0; i < taskCount; i++) {
+        tasks.push(document.getElementById(`task${i + 1}`));
+        tasks[i].style.display = 'none';
+    }
+    tasks[taskIndex].style.display = 'block';
 
     prevButton.addEventListener('click', (event) => {
+        tasks[taskIndex].style.display = 'none';
         taskIndex--;
-        if (taskIndex < 1) {
-            taskIndex = 1;
+        if (taskIndex < 0) {
+            taskIndex = 0;
         }
-        console.log(taskIndex);
-        tasksElement.innerHTML = tasks['task' + taskIndex];
+        tasks[taskIndex].style.display = 'block';
     });
 
     nextButton.addEventListener('click', (event) => {
+        tasks[taskIndex].style.display = 'none';
         taskIndex++;
-        if (taskIndex > 2) {
-            taskIndex = 2;
+        if (taskIndex >= taskCount) {
+            taskIndex = taskCount - 1;
         }
-        console.log(taskIndex);
-        tasksElement.innerHTML = tasks['task' + taskIndex];
+        tasks[taskIndex].style.display = 'block';
     });
 
 </script>

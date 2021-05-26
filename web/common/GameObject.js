@@ -44,27 +44,11 @@ export default class GameObject {
         }
 
         this.program = program;
+        this.shaderType = shaderType;
         this.modelMatLoc = GL.getUniformLocation(this.program, 'modelMatrix');
         this.posLoc = GL.getAttribLocation(this.program, 'vPosition');
 
-        if (shaderType == 'lit') {
-            // Set light parameters or calculate from color
-            if (lightParams != undefined) {
-                // Use passed values otherwise
-                this.ka = lightParams.ka;
-                this.kd = lightParams.kd;
-                this.ks = lightParams.ks;
-                this.specExp = lightParams.specExp;
-            } else {
-                // Calculate lighting parameters if needed but not provided
-                this.ka = this.color;
-                this.kd = [0.4 * this.color[0] + 0.6,
-                    0.4 * this.color[1] + 0.6,
-                    0.4 * this.color[2] + 0.6];
-                this.ks = [1, 1, 1];
-                this.specExp = 20;
-            }
-        }
+        this.calculateLightParams(lightParams);
 
         // Get uniform and attribute locations depending on used shader
         this.shaderType = shaderType;
@@ -116,8 +100,29 @@ export default class GameObject {
         });
     }
 
+    calculateLightParams(lightParams) {
+        if (this.shaderType == 'lit') {
+            // Set light parameters or calculate from color
+            if (lightParams != undefined) {
+                // Use passed values otherwise
+                this.ka = lightParams.ka;
+                this.kd = lightParams.kd;
+                this.ks = lightParams.ks;
+                this.specExp = lightParams.specExp;
+            } else {
+                // Calculate lighting parameters if needed but not provided
+                this.ka = this.color;
+                this.kd = [0.4 * this.color[0] + 0.6,
+                    0.4 * this.color[1] + 0.6,
+                    0.4 * this.color[2] + 0.6];
+                this.ks = [1, 1, 1];
+                this.specExp = 20;
+            }
+        }
+    }
+
     /**
-     * Update the model matrix based on the object's physical positon and
+     * Update the model matrix based on the object's physical position and
      * orientation
      */
     updateModelMatrix() {

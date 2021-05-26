@@ -10,12 +10,14 @@
 
         ],
         "meshes": [
+            ["island", "meshes/island.ply"],
+            ["islandC", "meshes/island_collider.ply"],
+            ["icoSphere", "meshes/icosphere.ply"],
             ["pedestalD1", "meshes/pedestal_convdecomp1.ply"],
             ["pedestalD2", "meshes/pedestal_convdecomp2.ply"],
             ["pedestalD3", "meshes/pedestal_convdecomp3.ply"],
             ["pedestalD4", "meshes/pedestal_convdecomp4.ply"],
             ["pedestalG", "meshes/pedestal.ply"],
-            ["icoSphere", "meshes/icosphere.ply"],
             ["gateD1", "meshes/gate_convdecomp1.ply"],
             ["gateD2", "meshes/gate_convdecomp2.ply"],
             ["gateD3", "meshes/gate_convdecomp3.ply"],
@@ -43,7 +45,9 @@
     },
     "scene": {
         "player": {
-            "start_position": [0, 0.9, -6]
+            "start_position": [0, 0.9, 0],
+            "yaw": -120,
+            "pitch": 10
         },
         "ambient_light": [0.7, 0.7, 0.7]
     },
@@ -63,17 +67,26 @@
             "mass": 0,
             "mesh": "icoSphere"
         },
+
         {
-            "type": "box",
+            "type": "mesh",
+            "meshes": ["islandC"],
+            "graphical_mesh": "island",
+            "scale": [1, 1, 1],
             "shader_program": "fragmentLighting",
-            "halfExtents": [20, 0.2, 20],
-            "position": [0, -0.2, 0],
-            "lightParams": {
-                "ka": [0.0, 0.4, 0.0],
-                "kd": [0.0, 0.5, 0],
-                "ks": [0.33, 0.46, 0.22],
-                "specExp": 1
-            },
+            "position": [0, 0, 0],
+            "color": [0.47, 0.27, 0.23],
+            "mass": 0
+        },
+
+        {
+            "type": "mesh",
+            "meshes": ["islandC"],
+            "graphical_mesh": "island",
+            "scale": [2, 2, 2],
+            "shader_program": "fragmentLighting",
+            "position": [-40, 0, -40],
+            "color": [0.47, 0.27, 0.23],
             "mass": 0
         }
     ]
