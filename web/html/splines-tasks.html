@@ -1,7 +1,74 @@
 <h2>Roll the orb onto the pedestal</h2>
-<p id="tasks">
-    The pedestal that activates the gate is not reachable.. You should build some slides to get the orb over there
-    <ol>
-        <li></li>
-    </ol>
-</p>
+<button id="prevButton">Previous</button>
+<button id="nextButton">Next</button>
+<div id="tasks">
+    <div id="task1">
+        The pedestal that activates the gate is not reachable... Build some slides to move the orb over there, then get to the gate
+    </div>
+    <div id="task2">
+        <p>
+            Calculate three approximation points <i>Q<sub>1</sub>(t)</i> for the first curve using De Casteljau's algorithm. Use the following control points:<br /><br />
+            <b>
+                <i>P<sub>0</sub><sup>(0)</sup></i> = (8, 4) <br />
+                <i>P<sub>1</sub><sup>(0)</sup></i> = (-20, 12) <br />
+                <i>P<sub>2</sub><sup>(0)</sup></i> = (-8, 40) <br />
+            </b>
+        </p>
+        <table>
+            <tr>
+                <td><i>Q<sub>1</sub>(0.25)</i> = </td>
+                <td>(<input id="y1" type="number" size="5" />,</td>
+                <td><input id="z1" type="number" size="5" />)</td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td><i>Q<sub>1</sub>(0.50)</i> = </td>
+                <td>(<input id="y2" type="number" size="5" />,</td>
+                <td><input id="z2" type="number" size="5" />)</td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td><i>Q<sub>1</sub>(0.75)</i> = </td>
+                <td>(<input id="y3" type="number" size="5" />,</td>
+                <td><input id="z3" type="number" size="5" />)</td>
+            </tr>
+        </table>
+        <button id="btnApply">Apply</button>
+        <button id="btnReset">Reset</button>
+    </div>
+</div>
+
+<script defer>
+    const taskCount = 2;
+    let taskIndex = 0;
+    const prevButton = document.getElementById('prevButton');
+    const nextButton = document.getElementById('nextButton');
+    const tasks = [];
+
+    for (let i = 0; i < taskCount; i++) {
+        tasks.push(document.getElementById(`task${i + 1}`));
+        tasks[i].style.display = 'none';
+    }
+    tasks[taskIndex].style.display = 'block';
+
+    prevButton.addEventListener('click', (event) => {
+        tasks[taskIndex].style.display = 'none';
+        taskIndex--;
+        if (taskIndex < 0) {
+            taskIndex = 0;
+        }
+        tasks[taskIndex].style.display = 'block';
+    });
+
+    nextButton.addEventListener('click', (event) => {
+        tasks[taskIndex].style.display = 'none';
+        taskIndex++;
+        if (taskIndex >= taskCount) {
+            taskIndex = taskCount - 1;
+        }
+        tasks[taskIndex].style.display = 'block';
+    });
+
+</script>

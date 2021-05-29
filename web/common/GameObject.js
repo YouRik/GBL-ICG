@@ -21,7 +21,10 @@ export default class GameObject {
      * @param {GLMAT.vec3} [options.color] The object's color
      * @param {GLMAT.vec3} [options.lightParams] The object's light coefficients
      * @param {GLMAT.vec3} [options.portable] Whether the object can be picked
-     * up or not
+     * @param {GLMAT.vec3} [options.collisionFilterGroup] The object's collision
+     *  group
+     * @param {GLMAT.vec3} [options.collisionFilterMask] The object's collision
+     *  mask
      */
     constructor(program, shaderType, options = {}) {
         const position = options.position == undefined ? [0, 0, 0]
@@ -37,6 +40,10 @@ export default class GameObject {
             : options.portable;
         this.color = options.color == undefined ? [1, 0, 0]
             : options.color;
+        let collisionFilterGroup = options.collisionFilterGroup == undefined
+            ? 1 : options.collisionFilterGroup
+        const collisionFilterMask = options.collisionFilterMask == undefined
+            ? -1 : options.collisionFilterMask
 
         // Required methods to be implemented
         if (typeof (this.initVBOs) != 'function') {
@@ -83,6 +90,9 @@ export default class GameObject {
             quaternion,
             GLMAT.vec3.fromValues(scale[0], scale[1], scale[2]));
 
+        if (portable) {
+            collisionFilterGroup = collisionFilterGroup | 2;
+        }
         // Initialize basic physics body
         this.physicsBody = new CANNON.Body({
             mass: mass,
@@ -96,7 +106,8 @@ export default class GameObject {
             quaternion: new CANNON.Quaternion(this.quaternion[0],
                 this.quaternion[1], this.quaternion[2], this.quaternion[3]),
             // if it's portable, additionally add it to collision group 2
-            collisionFilterGroup: portable ? 1 | 2 : 1
+            collisionFilterGroup: collisionFilterGroup,
+            collisionFilterMask: collisionFilterMask
         });
     }
 
@@ -226,8 +237,8 @@ export default class GameObject {
 
         // Set attribute pointer for colors
         GL.enableVertexAttribArray(this.colLoc);
-        GL.vertexAttribPointer(this.colLoc, 3, GL.FLOAT, false, 0,
-            this.positionCount * 4);
+        GL.vertexAttribPointer(this.colLoc, this.color.length, GL.FLOAT, false,
+            0, this.positionCount * 4);
 
         // Draw all the indices
         GL.drawElements(GL.TRIANGLES, this.indexCount, GL.UNSIGNED_SHORT, 0);

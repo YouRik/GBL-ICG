@@ -71,13 +71,13 @@ export default class TransformationsStage extends Game {
         // Pedestal 1
         const pedestal1Filled = (event) => {
             if (event.body === orb1.physicsBody) {
-                gate1.activated = true;
+                gate1.activate();
             }
         };
         const pedestal1Emptied = (event) => {
             if (event.bodyA === orb1.physicsBody
                 || event.bodyB === orb1.physicsBody) {
-                gate1.activated = false;
+                    gate1.deactivate();
             }
         };
         const pedestal1 = new Pedestal(this.world,
@@ -86,7 +86,14 @@ export default class TransformationsStage extends Game {
                 meshes['pedestalD1'],
                 meshes['pedestalD2'],
                 meshes['pedestalD3'],
-                meshes['pedestalD4']
+                meshes['pedestalD4'],
+                meshes['pedestalD5'],
+                meshes['pedestalD6'],
+                meshes['pedestalD7'],
+                meshes['pedestalD8'],
+                meshes['pedestalD9'],
+                meshes['pedestalD10'],
+                meshes['pedestalD11']
             ],
             pedestal1Filled,
             {

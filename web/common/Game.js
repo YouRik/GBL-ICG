@@ -275,7 +275,17 @@ export default class Game {
         // Clear the frame buffer
         GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT);
         // Render each object
+        const deferred = [];
         this.gameObjects.forEach(object => {
+            // Simple workaround for transparency
+            if (object.color.length > 3 && object.color[3] != 1) {
+                deferred.push(object);
+            } else {
+                object.render();
+            }
+        });
+        // Render transparent objects afterwards
+        deferred.forEach(object => {
             object.render();
         });
     }
@@ -299,6 +309,9 @@ export default class Game {
         gl.enable(gl.CULL_FACE);
         gl.frontFace(gl.CCW);
         gl.cullFace(gl.BACK);
+        // Enable blending/transparency
+        gl.enable(gl.BLEND);
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
         return gl;
     }
 
@@ -312,5 +325,10 @@ export default class Game {
         canvas.width = canvas.clientWidth;
         canvas.height = canvas.clientWidth * documentAspectRatio;
         gl.viewport(0, 0, canvas.width, canvas.height);
+    }
+
+    removeGameObject(object) {
+        this.world.removeBody(object.physicsBody);
+        this.gameObjects.pop(object);
     }
 }

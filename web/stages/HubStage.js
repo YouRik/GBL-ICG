@@ -145,7 +145,14 @@ export default class HubStage extends Game {
                 meshes['pedestalD1'],
                 meshes['pedestalD2'],
                 meshes['pedestalD3'],
-                meshes['pedestalD4']
+                meshes['pedestalD4'],
+                meshes['pedestalD5'],
+                meshes['pedestalD6'],
+                meshes['pedestalD7'],
+                meshes['pedestalD8'],
+                meshes['pedestalD9'],
+                meshes['pedestalD10'],
+                meshes['pedestalD11']
             ],
             pedestalFilled,
             {
