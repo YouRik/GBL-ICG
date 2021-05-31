@@ -285,7 +285,7 @@
             "orientation": [0, -45, 0],
             "position": [-25, 0.2, -26],
             "color": [0, 0.5, 1],
-            "mass": 10,
+            "mass": 5,
             "portable": true
         },
         {
@@ -294,7 +294,7 @@
             "halfExtent": 0.7,
             "position": [-6, 0.5, -6],
             "color": [0, 1, 0.5],
-            "mass": 10,
+            "mass": 5,
             "portable": true
         },
         {

@@ -40,7 +40,7 @@ export default class FirstPersonPlayer {
         this.maxMoveSpeed = 9;
         this.maxCarryDistance = 4;
         this.minCarryDistance = 1;
-        this.carryForce = 8;
+        this.carryForce = 5;
         this.groundCheckDistance = 1.3;
 
         // Store angular damping of carried object before picking up
@@ -345,13 +345,24 @@ export default class FirstPersonPlayer {
             });
 
             if (hasHit) {
-                // Set constraint to carry the object
                 this.controls.isCarrying = true;
+                const hitPoint = castResult.hitPointWorld;
                 this.controls.carryDistance = (new CANNON.Vec3(this.position[0],
-                    this.position[1], this.position[2]).distanceTo(
-                        castResult.body.position));
+                    this.position[1], this.position[2]).distanceTo(hitPoint));
+
+                // Calculate constraint position offset
+                // Vector that goes from the body to the clicked point
+                const vector = new CANNON.Vec3().copy(hitPoint).vsub(
+                    castResult.body.position);
+                // Apply anti-quaternion to vector to transform it into the
+                // local body coordinate system
+                const antiRotation = castResult.body.quaternion.inverse();
+                // pivot is not in local body coordinates
+                const pivot = antiRotation.vmult(vector);
+
+                // Set constraint to carry the object
                 this.jointConstraint = new CANNON.PointToPointConstraint(
-                    castResult.body, new CANNON.Vec3(0, 0, 0),
+                    castResult.body, pivot,
                     this.jointBody, new CANNON.Vec3(0, 0, 0), this.carryForce);
                 this.world.addConstraint(this.jointConstraint);
                 // Reduce rotation of object with angular damping
@@ -363,9 +374,10 @@ export default class FirstPersonPlayer {
 
         // Drop object if desired or carried object is too far
         if (this.controls.isDropping
-            || (this.controls.isCarrying
-                && this.jointConstraint.bodyA.position.distanceTo(
-                    this.jointConstraint.bodyB.position) > 2.5)) {
+            // || (this.controls.isCarrying
+            //     && this.jointConstraint.bodyA.position.distanceTo(
+            //         this.jointConstraint.bodyB.position) > 2.5)
+            ) {
             this.controls.isDropping = false;
             this.controls.isCarrying = false;
             // Reset angular damping on object
