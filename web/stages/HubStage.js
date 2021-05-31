@@ -59,16 +59,8 @@ export default class HubStage extends Game {
             }
         }
         const gate1 = new Gate(this.world, this.programs['fragmentLighting'],
-            'lit',
-            [
-                meshes['gateD1'], meshes['gateD2'],
-                meshes['gateD3'], meshes['gateD4'],
-                meshes['gateD5'], meshes['gateD6'],
-                meshes['gateD7'], meshes['gateD8'],
-                meshes['gateD9'], meshes['gateD10']
-            ], gate1Entered,
+            'lit', resources, gate1Entered,
             {
-                graphicalMesh: meshes['gateG'],
                 scale: [1, 1, 1],
                 orientation: [0, 120, 0],
                 position: [5, 0, 3.5]
@@ -82,16 +74,8 @@ export default class HubStage extends Game {
             }
         }
         const gate2 = new Gate(this.world, this.programs['fragmentLighting'],
-            'lit',
-            [
-                meshes['gateD1'], meshes['gateD2'],
-                meshes['gateD3'], meshes['gateD4'],
-                meshes['gateD5'], meshes['gateD6'],
-                meshes['gateD7'], meshes['gateD8'],
-                meshes['gateD9'], meshes['gateD10']
-            ], gate2Entered,
+            'lit', resources, gate2Entered,
             {
-                graphicalMesh: meshes['gateG'],
                 scale: [1, 1, 1],
                 orientation: [0, 90, 0],
                 position: [0, 0, 5]
@@ -105,16 +89,8 @@ export default class HubStage extends Game {
             }
         }
         const gate3 = new Gate(this.world, this.programs['fragmentLighting'],
-            'lit',
-            [
-                meshes['gateD1'], meshes['gateD2'],
-                meshes['gateD3'], meshes['gateD4'],
-                meshes['gateD5'], meshes['gateD6'],
-                meshes['gateD7'], meshes['gateD8'],
-                meshes['gateD9'], meshes['gateD10']
-            ], gate3Entered,
+            'lit', resources, gate3Entered,
             {
-                graphicalMesh: meshes['gateG'],
                 scale: [1, 1, 1],
                 orientation: [0, 60, 0],
                 position: [-5, 0, 3.5]
@@ -140,23 +116,9 @@ export default class HubStage extends Game {
             }
         };
         const pedestal = new Pedestal(this.world,
-            this.programs['fragmentLighting'], 'lit',
-            [
-                meshes['pedestalD1'],
-                meshes['pedestalD2'],
-                meshes['pedestalD3'],
-                meshes['pedestalD4'],
-                meshes['pedestalD5'],
-                meshes['pedestalD6'],
-                meshes['pedestalD7'],
-                meshes['pedestalD8'],
-                meshes['pedestalD9'],
-                meshes['pedestalD10'],
-                meshes['pedestalD11']
-            ],
+            this.programs['fragmentLighting'], 'lit', resources,
             pedestalFilled,
             {
-                graphicalMesh: meshes['pedestalG'],
                 position: [0, 0, 0],
                 color: [0.5, 0.5, 1],
                 orientation: [0, 0, 0],

@@ -122,11 +122,7 @@
             "mass": 0
         },
         {
-            "type": "mesh",
-            "meshes": ["pedestalD1", "pedestalD2", "pedestalD3", "pedestalD4",
-                "pedestalD5", "pedestalD6", "pedestalD7", "pedestalD8",
-                "pedestalD9", "pedestalD10", "pedestalD11"],
-            "graphical_mesh": "pedestalG",
+            "type": "pedestal",
             "shader_program": "fragmentLighting",
             "position": [2, 5, -2],
             "color": [0.69, 0.61, 0.15],

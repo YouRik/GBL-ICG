@@ -4,7 +4,7 @@ import * as CANNON from './lib/cannon/cannon-es.js';
 import MeshObject from './MeshObject.js';
 
 export default class Gate extends MeshObject {
-    constructor(world, program, shaderType, meshes, callback, options = {}) {
+    constructor(world, program, shaderType, resources, callback, options = {}) {
         const scale = options.scale == undefined ? [1, 1, 1]
             : options.scale;
         const position = options.position == undefined ? [0, 0, 0]
@@ -13,7 +13,18 @@ export default class Gate extends MeshObject {
         options.position = position;
         options.mass = 0;
         options.color = [0.2, 0, 0.7];
-        super(world, program, shaderType, meshes, options);
+        const meshes = resources.meshes;
+        options.graphicalMesh = meshes['gateG'];
+
+        const physMeshes = [
+            meshes['gateD1'], meshes['gateD2'],
+            meshes['gateD3'], meshes['gateD4'],
+            meshes['gateD5'], meshes['gateD6'],
+            meshes['gateD7'], meshes['gateD8'],
+            meshes['gateD9'], meshes['gateD10']
+        ];
+
+        super(world, program, shaderType, physMeshes, options);
 
         // Activation flag
         this.activated = false;

@@ -10,6 +10,7 @@ import * as CANNON from './lib/cannon/cannon-es.js';
 import LightSource from './LightSource.js';
 import MeshObject from './MeshObject.js';
 import SphereObject from './SphereObject.js';
+import Pedestal from './Pedestal.js';
 
 /**
  * TODO: documentation
@@ -154,6 +155,12 @@ export default class Game {
                                 shaderDefs[program].type,
                                 resources.meshes[objectDef.mesh], options)
                         );
+                        break;
+                    case 'pedestal':
+                        this.gameObjects.push(new Pedestal(this.world,
+                            this.programs[program], shaderDefs[program].type,
+                            resources, null, options));
+                        break;
                 }
             }
         });

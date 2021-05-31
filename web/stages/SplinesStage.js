@@ -52,16 +52,8 @@ export default class SplinesStage extends Game {
             }
         }
         const gate1 = new Gate(this.world, this.programs['fragmentLighting'],
-            'lit',
-            [
-                meshes['gateD1'], meshes['gateD2'],
-                meshes['gateD3'], meshes['gateD4'],
-                meshes['gateD5'], meshes['gateD6'],
-                meshes['gateD7'], meshes['gateD8'],
-                meshes['gateD9'], meshes['gateD10']
-            ], gate1Entered,
+            'lit', resources, gate1Entered,
             {
-                graphicalMesh: meshes['gateG'],
                 scale: [1, 1, 1],
                 orientation: [0, -60, 0],
                 color: [0.2, 0, 0.7],
@@ -83,23 +75,9 @@ export default class SplinesStage extends Game {
             }
         };
         const pedestal1 = new Pedestal(this.world,
-            this.programs['fragmentLighting'], 'lit',
-            [
-                meshes['pedestalD1'],
-                meshes['pedestalD2'],
-                meshes['pedestalD3'],
-                meshes['pedestalD4'],
-                meshes['pedestalD5'],
-                meshes['pedestalD6'],
-                meshes['pedestalD7'],
-                meshes['pedestalD8'],
-                meshes['pedestalD9'],
-                meshes['pedestalD10'],
-                meshes['pedestalD11']
-            ],
+            this.programs['fragmentLighting'], 'lit', resources,
             pedestal1Filled,
             {
-                graphicalMesh: meshes['pedestalG'],
                 position: [105, -114, 61],
                 color: [0.5, 0.5, 1],
                 orientation: [0, 0, 0],
