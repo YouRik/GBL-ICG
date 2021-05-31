@@ -23,15 +23,25 @@ uniform float c3[MAX_LIGHTS_COUNT];
 out vec4 fColor;
 
 vec3 calculateIntensity(int lIndex, vec3 N, vec3 V) {
-        vec3 L = normalize((lightPosCam[lIndex] - positionCam).xyz);
-        vec3 R = reflect(-L, N);
+    float fAtt = 1.0;
+    vec3 L;
+
+    if (lightPosCam[lIndex].w == 0.0) {
+        // Directed light, position represents the light direction
+        L = normalize(-lightPosCam[lIndex].xyz);
+    } else {
+        // Point light
+        L = normalize((lightPosCam[lIndex] - positionCam).xyz);
 
         float d = distance(lightPosCam[lIndex], positionCam);
-        float fAtt = min(1.0/(c1[lIndex] + c2[lIndex] * d + c3[lIndex] * pow(d, 2.0)), 1.0);
+        fAtt = min(1.0/(c1[lIndex] + c2[lIndex] * d + c3[lIndex] * pow(d, 2.0)),
+            1.0);
+    }
+    vec3 R = reflect(-L, N);
 
-        return fAtt *
-                (Id[lIndex] * kd * max(dot(N, L), 0.0)
-                + Is[lIndex] * ks * pow(max(dot(R, V), 0.0), specExp));
+    return fAtt *
+        (Id[lIndex] * kd * max(dot(N, L), 0.0)
+        + Is[lIndex] * ks * pow(max(dot(R, V), 0.0), specExp));
 }
 
 void main()

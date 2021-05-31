@@ -353,7 +353,8 @@
 
         {
             "type": "lightSource",
-            "position": [-10, 10, -10],
+            "directed": true,
+            "direction": [10, -10, 20],
             "Id": [0.7, 0.7, 0.7],
             "Is": [0, 0, 0]
         }

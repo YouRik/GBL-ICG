@@ -3,6 +3,7 @@
 import { loadStage, loadResources } from './LoadResources.js';
 import initShaders from './InitShaders.js';
 import LightSource from './LightSource.js';
+import DirectedLightSource from './DirectedLightSource.js';
 import FirstPersonPlayer from './FirstPersonPlayer.js';
 import PerformanceLogger from './PerformanceLogger.js';
 import Pedestal from './GameObjects/Pedestal.js';
@@ -109,12 +110,21 @@ export default class Game {
             const objType = objectDef.type;
             if (objType == 'lightSource') {
                 // Create light source
-                const lightSource = new LightSource(
-                    objectDef.position, lightPrograms, {
-                    Id: objectDef.Id,
-                    Is: objectDef.Is,
-                    c: objectDef.c
-                });
+                if (objectDef.directed) {
+                    const lightSource = new DirectedLightSource(
+                        objectDef.direction, lightPrograms, {
+                        Id: objectDef.Id,
+                        Is: objectDef.Is,
+                        c: objectDef.c
+                    });
+                } else {
+                    const lightSource = new LightSource(
+                        objectDef.position, lightPrograms, {
+                        Id: objectDef.Id,
+                        Is: objectDef.Is,
+                        c: objectDef.c
+                    });
+                }
             } else {
                 // Get object options
                 const options = {};

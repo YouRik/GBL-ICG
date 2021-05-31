@@ -1,13 +1,16 @@
 /** @module LightSource */
 
-import * as GLM from './lib/gl-matrix/index.js'
-
 export default class LightSource {
+    static lightsCount = 0;
+
     constructor(position, programs, options = {}) {
         this.Id = options.Id == undefined ? [0.8, 0.8, 0.8] : options.Id;
         this.Is = options.Is == undefined ? [1, 1, 1] : options.Is;
         this.c = options.c == undefined ? [1, 0, 0] : options.c;
         this.position = position;
+        if (this.position.length == 3) {
+            this.position.push(1);
+        }
 
         // Pass light source to all lighting shaders
         for (const programIndex in programs) {
@@ -28,7 +31,7 @@ export default class LightSource {
                 `c3[${LightSource.lightsCount}]`);
             GL.uniform3fv(IdLocV, this.Id);
             GL.uniform3fv(IsLocV, this.Is);
-            GL.uniform3fv(lightPositionLocV, this.position);
+            GL.uniform4fv(lightPositionLocV, this.position);
             GL.uniform1f(c1Loc, this.c[0]);
             GL.uniform1f(c2Loc, this.c[1]);
             GL.uniform1f(c3Loc, this.c[2]);
@@ -36,6 +39,4 @@ export default class LightSource {
 
         LightSource.lightsCount++;
     }
-
-    static lightsCount = 0;
 }
