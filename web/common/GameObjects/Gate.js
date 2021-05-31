@@ -1,7 +1,7 @@
 /** @module Gate */
 
-import * as CANNON from './lib/cannon/cannon-es.js';
 import MeshObject from './MeshObject.js';
+import * as CANNON from '../lib/cannon/cannon-es.js';
 
 export default class Gate extends MeshObject {
     constructor(world, program, shaderType, resources, callback, options = {}) {

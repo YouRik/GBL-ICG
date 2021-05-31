@@ -1,7 +1,7 @@
 /** @module TestStage */
 
-import CubeObject from '../common/CubeObject.js';
 import Game from '../common/Game.js';
+import CubeObject from '../common/GameObjects/CubeObject.js';
 
 /**
  * TODO: documentation

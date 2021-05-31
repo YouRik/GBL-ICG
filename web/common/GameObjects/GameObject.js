@@ -1,7 +1,7 @@
 /** @module GameObject */
 
-import * as GLMAT from './lib/gl-matrix/index.js';
-import * as CANNON from './lib/cannon/cannon-es.js';
+import * as CANNON from '../lib/cannon/cannon-es.js';
+import * as GLMAT from '../lib/gl-matrix/index.js';
 
 /**
  * Abstract class for 3D game objects with a mesh and a physical body

@@ -1,13 +1,13 @@
 /** @module TransformationsStage */
 
-import BoxObject from '../common/BoxObject.js';
 import Game from '../common/Game.js';
-import Gate from '../common/Gate.js';
+import Gate from '../common/GameObjects/Gate.js';
+import Pedestal from '../common/GameObjects/Pedestal.js';
+import BoxObject from '../common/GameObjects/BoxObject.js';
+import MeshObject from '../common/GameObjects/MeshObject.js';
+import SphereObject from '../common/GameObjects/SphereObject.js';
 import * as GLMAT from '../common/lib/gl-matrix/index.js';
 import * as CANNON from '../common/lib/cannon/cannon-es.js'
-import Pedestal from '../common/Pedestal.js';
-import SphereObject from '../common/SphereObject.js';
-import MeshObject from '../common/MeshObject.js';
 
 /**
  * TODO: documentation

@@ -1,9 +1,9 @@
 /** @module HubStage */
 
 import Game from '../common/Game.js';
-import Gate from '../common/Gate.js';
-import Pedestal from '../common/Pedestal.js';
-import SphereObject from '../common/SphereObject.js';
+import Gate from '../common/GameObjects/Gate.js';
+import Pedestal from '../common/GameObjects/Pedestal.js';
+import SphereObject from '../common/GameObjects/SphereObject.js';
 
 /**
  * TODO: documentation

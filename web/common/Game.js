@@ -2,15 +2,15 @@
 
 import { loadStage, loadResources } from './LoadResources.js';
 import initShaders from './InitShaders.js';
-import BoxObject from './BoxObject.js';
-import CubeObject from './CubeObject.js';
+import LightSource from './LightSource.js';
 import FirstPersonPlayer from './FirstPersonPlayer.js';
 import PerformanceLogger from './PerformanceLogger.js';
+import Pedestal from './GameObjects/Pedestal.js';
+import BoxObject from './GameObjects/BoxObject.js';
+import MeshObject from './GameObjects/MeshObject.js';
+import CubeObject from './GameObjects/CubeObject.js';
+import SphereObject from './GameObjects/SphereObject.js';
 import * as CANNON from './lib/cannon/cannon-es.js';
-import LightSource from './LightSource.js';
-import MeshObject from './MeshObject.js';
-import SphereObject from './SphereObject.js';
-import Pedestal from './Pedestal.js';
 
 /**
  * TODO: documentation

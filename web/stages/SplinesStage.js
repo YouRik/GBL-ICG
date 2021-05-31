@@ -1,13 +1,13 @@
 /** @module SplinesStage */
 
 import Game from '../common/Game.js';
-import SphereObject from '../common/SphereObject.js';
-import MeshObject from '../common/MeshObject.js';
-import BoxObject from '../common/BoxObject.js';
-import * as GLMAT from '../common/lib/gl-matrix/index.js';
-import Gate from '../common/Gate.js';
-import Pedestal from '../common/Pedestal.js';
+import Gate from '../common/GameObjects/Gate.js';
+import Pedestal from '../common/GameObjects/Pedestal.js';
+import BoxObject from '../common/GameObjects/BoxObject.js';
+import MeshObject from '../common/GameObjects/MeshObject.js';
+import SphereObject from '../common/GameObjects/SphereObject.js';
 import deCasteljau from '../tasks/decasteljau.js';
+import * as GLMAT from '../common/lib/gl-matrix/index.js';
 
 /**
  * TODO: documentation

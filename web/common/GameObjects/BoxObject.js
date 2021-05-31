@@ -1,8 +1,8 @@
 /** @module BoxObject */
 
 import GameObject from './GameObject.js';
-import * as CANNON from './lib/cannon/cannon-es.js';
-import * as GLMAT from './lib/gl-matrix/index.js';
+import * as CANNON from '../lib/cannon/cannon-es.js';
+import * as GLMAT from '../lib/gl-matrix/index.js';
 
 /**
  * TODO: add documentation
