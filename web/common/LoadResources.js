@@ -98,8 +98,9 @@ function fetchAndDecode(type, url, name) {
             // Create texture image and return
             return response.blob().then(async textureBlob => {
                 const textureImage = new Image();
-                const imageLoading = new Promise((resolve) => {
+                const imageLoading = new Promise((resolve, reject) => {
                     textureImage.addEventListener('load', resolve);
+                    textureImage.addEventListener('error', reject);
                 });
                 textureImage.src = URL.createObjectURL(textureBlob);
                 await imageLoading;

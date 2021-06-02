@@ -41,7 +41,7 @@ const server = http.createServer((req, res) => {
 
     if (fileEnding in mimeTypes) {
         // Response for file endings with known mime types
-        fs.readFile(`./web/${req.url}`, 'utf8', (err, data) => {
+        fs.readFile(`./web/${req.url}`, (err, data) => {
             if (err) {
                 console.log(err);
                 return respond404(res);
