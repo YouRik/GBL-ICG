@@ -1,8 +1,8 @@
 {
     "resources": {
         "shaders": [
-            ["vertLightingV", "shaders/fragment_lighting.vs"],
-            ["defaultF", "shaders/fragment_lighting.fs"]
+            ["fragLightingV", "shaders/fragment_lighting.vs"],
+            ["fragLightingF", "shaders/fragment_lighting.fs"]
         ],
         "textures": [
 
@@ -12,10 +12,10 @@
         ]
     },
     "shader_programs": {
-        "vertexLighting": {
+        "fragmentLighting": {
             "type": "lit",
-            "vertex": "vertLightingV",
-            "fragment": "defaultF"
+            "vertex": "fragLightingV",
+            "fragment": "fragLightingF"
         }
     },
     "scene": {
@@ -28,7 +28,7 @@
     "objects": [
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [30, 0.2, 30],
             "position": [0, -0.2, -5],
             "color": [1, 1, 1],
@@ -36,7 +36,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [30, 0.2, 30],
             "position": [0, 10.2, -5],
             "color": [1, 1, 1],
@@ -45,7 +45,7 @@
 
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [15, 5, 0.2],
             "position": [5, 5, -2],
             "color": [1, 1, 1],
@@ -53,7 +53,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [5, 5, 0.2],
             "position": [-3.8, 5, 2],
             "color": [1, 1, 1],
@@ -61,7 +61,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [6.2, 5, 0.2],
             "position": [-8, 5, 13.2],
             "color": [1, 1, 1],
@@ -69,7 +69,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [12, 5, 0.2],
             "position": [10.2, 5, 9.6],
             "color": [1, 1, 1],
@@ -77,7 +77,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [5, 5, 0.2],
             "position": [3.2, 5, 5.6],
             "color": [1, 1, 1],
@@ -85,7 +85,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [5, 5, 0.2],
             "position": [17.2, 5, 5.6],
             "color": [1, 1, 1],
@@ -93,7 +93,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [7, 5, 0.2],
             "position": [10, 5, 13.2],
             "color": [1, 1, 1],
@@ -101,7 +101,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [6.5, 5, 0.2],
             "position": [-7.7, 5, -8.4],
             "color": [1, 1, 1],
@@ -109,7 +109,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [5, 5, 0.2],
             "position": [-6.6, 5, -12],
             "color": [1, 1, 1],
@@ -117,7 +117,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [10, 5, 0.2],
             "position": [-1.6, 5, -16],
             "color": [1, 1, 1],
@@ -125,7 +125,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [5, 5, 0.2],
             "position": [-5, 5, -6],
             "color": [1, 1, 1],
@@ -133,7 +133,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [3, 5, 0.2],
             "position": [7, 5, -6],
             "color": [1, 1, 1],
@@ -141,7 +141,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [8, 5, 0.2],
             "position": [12, 5, 2],
             "color": [1, 1, 1],
@@ -149,7 +149,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [20, 5, 0.2],
             "position": [2.6, 5, 17.6],
             "color": [1, 1, 1],
@@ -157,7 +157,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [24, 5, 0.2],
             "position": [2.6, 5, 21],
             "color": [1, 1, 1],
@@ -165,7 +165,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [1.6, 5, 0.2],
             "position": [-19.4, 5, -20],
             "color": [1, 1, 1],
@@ -173,7 +173,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [17, 5, 0.2],
             "position": [2.8, 5, -20.8],
             "color": [1, 1, 1],
@@ -181,7 +181,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [23, 5, 0.2],
             "position": [3.6, 5, -25.4],
             "color": [1, 1, 1],
@@ -190,7 +190,7 @@
 
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [2, 5, 2],
             "position": [-8, 5, 7.5],
             "color": [1, 1, 1],
@@ -199,7 +199,7 @@
 
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [0.2, 5, 1.8],
             "position": [1, 5, 0],
             "color": [1, 1, 1],
@@ -207,7 +207,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [0.2, 5, 1.8],
             "position": [-2, 5, 4],
             "color": [1, 1, 1],
@@ -215,7 +215,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [0.2, 5, 1.8],
             "position": [-2, 5, 11.2],
             "color": [1, 1, 1],
@@ -223,7 +223,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [0.2, 5, 10.6],
             "position": [-14, 5, 2.4],
             "color": [1, 1, 1],
@@ -231,7 +231,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [0.2, 5, 6],
             "position": [-14, 5, -14.6],
             "color": [1, 1, 1],
@@ -239,7 +239,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [0.2, 5, 1.8],
             "position": [-11.4, 5, -14],
             "color": [1, 1, 1],
@@ -247,7 +247,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [0.2, 5, 1.8],
             "position": [8.2, 5, -14],
             "color": [1, 1, 1],
@@ -255,7 +255,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [0.2, 5, 1.8],
             "position": [-9.8, 5, -4],
             "color": [1, 1, 1],
@@ -263,7 +263,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [0.2, 5, 1.8],
             "position": [9.8, 5, -4],
             "color": [1, 1, 1],
@@ -271,7 +271,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [0.2, 5, 3],
             "position": [4.2, 5, -9.2],
             "color": [1, 1, 1],
@@ -279,7 +279,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [0.2, 5, 6],
             "position": [22.4, 5, 11.4],
             "color": [1, 1, 1],
@@ -287,7 +287,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [0.2, 5, 1.8],
             "position": [19.8, 5, 0],
             "color": [1, 1, 1],
@@ -295,7 +295,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [0.2, 5, 19],
             "position": [-17.6, 5, -1.2],
             "color": [1, 1, 1],
@@ -303,7 +303,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [0.2, 5, 23],
             "position": [-21.2, 5, -2.2],
             "color": [1, 1, 1],
@@ -311,7 +311,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [0.2, 5, 23],
             "position": [26.4, 5, -2.2],
             "color": [1, 1, 1],
@@ -319,7 +319,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [0.2, 5, 1.4],
             "position": [-19.2, 5, -23.8],
             "color": [1, 1, 1],
@@ -327,7 +327,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [0.2, 5, 8],
             "position": [16, 5, -12.6],
             "color": [1, 1, 1],
@@ -335,7 +335,7 @@
         },
         {
             "type": "box",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [0.2, 5, 9.4],
             "position": [20, 5, -11.6],
             "color": [1, 1, 1],
@@ -344,7 +344,7 @@
 
         {
             "type": "cube",
-            "shader_program": "vertexLighting",
+            "shader_program": "fragmentLighting",
             "halfExtent": 1,
             "position": [-8, 1, 0],
             "color": [0, 1, 0],

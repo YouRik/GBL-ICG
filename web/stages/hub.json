@@ -1,7 +1,7 @@
 {
     "resources": {
         "shaders": [
-            ["vertLightingV", "shaders/tasks/fragment_lighting.vs"],
+            ["fragLightingV", "shaders/tasks/fragment_lighting.vs"],
             ["fragLightingF", "shaders/tasks/fragment_lighting.fs"],
             ["defaultV", "shaders/default.vs"],
             ["defaultF", "shaders/default.fs"]
@@ -41,7 +41,7 @@
     "shader_programs": {
         "fragmentLighting": {
             "type": "lit",
-            "vertex": "vertLightingV",
+            "vertex": "fragLightingV",
             "fragment": "fragLightingF"
         },
         "colored": {
