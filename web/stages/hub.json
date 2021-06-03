@@ -10,6 +10,8 @@
 
         ],
         "meshes": [
+            ["island", "meshes/island.ply"],
+            ["islandC", "meshes/island_collider.ply"],
             ["pedestalD1", "meshes/pedestal_convdecomp1.ply"],
             ["pedestalD2", "meshes/pedestal_convdecomp2.ply"],
             ["pedestalD3", "meshes/pedestal_convdecomp3.ply"],
@@ -72,10 +74,12 @@
             "mesh": "icoSphere"
         },
         {
-            "type": "box",
+            "type": "mesh",
+            "meshes": ["islandC"],
+            "graphical_mesh": "island",
+            "scale": [3, 5, 2],
             "shader_program": "fragmentLighting",
-            "halfExtents": [20, 0.2, 20],
-            "position": [0, -0.2, 0],
+            "position": [0, 0, 0],
             "lightParams": {
                 "ka": [0.0, 0.4, 0.0],
                 "kd": [0.0, 0.5, 0],

@@ -124,7 +124,7 @@
             "scale": [4, 4, 4],
             "orientation": [0, 160, 0],
             "shader_program": "fragmentLighting",
-            "position": [0, -0.2, 0],
+            "position": [0, 0, 0],
             "color": [0.47, 0.27, 0.23],
             "mass": 0
         },
