@@ -6,5 +6,6 @@ uniform sampler2D uSampler;
 
 void main()
 {
-    fColor = texture(uSampler, fTexCoord);
+    float depthValue = texture(uSampler, fTexCoord).r;
+    fColor = vec4(vec3(depthValue), 1.0);
 }

@@ -4,6 +4,7 @@ import HubStage from './stages/HubStage.js';
 import TransformationsStage from './stages/TransformationsStage.js';
 import SplinesStage from './stages/SplinesStage.js';
 import LightingStage from './stages/LightingStage.js';
+import ShadowsStage from './stages/ShadowsStage.js';
 import TestStage from './stages/TestStage.js';
 
 // Global WebGL rendering context
@@ -30,6 +31,9 @@ switch (stageName) {
         break;
     case 'lighting':
         stage = new LightingStage();
+        break;
+    case 'shadows':
+        stage = new ShadowsStage();
         break;
 }
 

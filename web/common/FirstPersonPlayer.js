@@ -52,6 +52,7 @@ export default class FirstPersonPlayer {
         this.sensitivity = 0.25;
         this.yaw = yaw;
         this.pitch = pitch;
+        this.viewDirection = GLMAT.vec3.create();
         this.viewMatrix = GLMAT.mat4.create();
 
         // Set and pass perspective matrix
@@ -110,6 +111,20 @@ export default class FirstPersonPlayer {
         this.programs.forEach(program => {
             GL.useProgram(program[0]);
             GL.uniformMatrix4fv(program[2], false, this.projectionMatrix);
+        });
+    }
+
+    setViewMatrix() {
+        // Calculate target position to look at
+        const target = GLMAT.vec3.create();
+        GLMAT.vec3.add(target, this.position, this.viewDirection);
+        // Calculate view matrix
+        GLMAT.mat4.lookAt(this.viewMatrix, this.position, target,
+            [0, 1, 0]);
+        // Pass to all shaders
+        this.programs.forEach(program => {
+            GL.useProgram(program[0]);
+            GL.uniformMatrix4fv(program[1], false, this.viewMatrix);
         });
     }
 
@@ -247,6 +262,7 @@ export default class FirstPersonPlayer {
             * Math.cos(this.pitch * Math.PI / 180)
         ];
         GLMAT.vec3.normalize(viewDirection, viewDirection);
+        this.viewDirection = viewDirection;
 
         // Get move direction factors
         let forwardFactor = 0;
@@ -319,16 +335,8 @@ export default class FirstPersonPlayer {
         this.position = GLMAT.vec3.fromValues(
             posValues[0], posValues[1] + this.cameraOffsetY, posValues[2]);
 
-        // Calculate target vector to look at
-        const target = GLMAT.vec3.create();
-        GLMAT.vec3.add(target, this.position, viewDirection);
-
         // Calculate view matrix and pass to all shaders
-        GLMAT.mat4.lookAt(this.viewMatrix, this.position, target, [0, 1, 0]);
-        this.programs.forEach(program => {
-            GL.useProgram(program[0]);
-            GL.uniformMatrix4fv(program[1], false, this.viewMatrix);
-        });
+        this.setViewMatrix();
 
         // Update joint body and constraint positions
         this.jointSphere.physicsBody.position = new CANNON.Vec3(

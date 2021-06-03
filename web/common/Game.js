@@ -143,10 +143,10 @@ export default class Game {
         this.gameObjects = [];
 
         // Remember shaders that implement lighting
-        const lightPrograms = [];
+        this.lightPrograms = [];
         for (const programName in this.programs) {
             if (shaderDefs[programName].type == 'lit') {
-                lightPrograms.push(this.programs[programName]);
+                this.lightPrograms.push(this.programs[programName]);
             }
         }
 
@@ -171,8 +171,8 @@ export default class Game {
                 this.gameObjects.push(this.player.jointSphere);
             } else if (setting == 'ambient_light') {
                 const Ia = sceneDefs['ambient_light'];
-                for (const programIndex in lightPrograms) {
-                    const program = lightPrograms[programIndex];
+                for (const programIndex in this.lightPrograms) {
+                    const program = this.lightPrograms[programIndex];
                     GL.useProgram(program);
 
                     const IaLocV = GL.getUniformLocation(program, 'Ia');
@@ -188,14 +188,13 @@ export default class Game {
                 // Create light source
                 if (objectDef.directed) {
                     const lightSource = new DirectedLightSource(
-                        objectDef.direction, lightPrograms, {
+                        objectDef.direction, this.lightPrograms, {
                         Id: objectDef.Id,
-                        Is: objectDef.Is,
-                        c: objectDef.c
+                        Is: objectDef.Is
                     });
                 } else {
                     const lightSource = new LightSource(
-                        objectDef.position, lightPrograms, {
+                        objectDef.position, this.lightPrograms, {
                         Id: objectDef.Id,
                         Is: objectDef.Is,
                         c: objectDef.c
@@ -257,11 +256,7 @@ export default class Game {
         });
 
         // Pass number of lights to the relevant shaders
-        for (const programIndex in this.programs) {
-            const program = this.programs[programIndex];
-            const lightCountLoc = GL.getUniformLocation(program, 'lightsCount');
-            GL.uniform1i(lightCountLoc, LightSource.lightsCount);
-        }
+        this.updateLightSourceAmount();
 
         // Input callbacks
         const handleKeyUp = (event) => {
@@ -330,6 +325,15 @@ export default class Game {
             this.player.setPerspectiveMatrix(canvas.width / canvas.height);
             this.render();
         });
+    }
+
+    updateLightSourceAmount() {
+        for (const programIndex in this.programs) {
+            const program = this.programs[programIndex];
+            const lightCountLoc = GL.getUniformLocation(program, 'lightsCount');
+            GL.useProgram(program);
+            GL.uniform1i(lightCountLoc, LightSource.lightsCount);
+        }
     }
 
     /**
