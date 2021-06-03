@@ -346,6 +346,7 @@ export default class Game {
 
     removeGameObject(object) {
         this.world.removeBody(object.physicsBody);
-        this.gameObjects.pop(object);
+        const index = this.gameObjects.indexOf(object);
+        this.gameObjects.splice(index, 1);
     }
 }
