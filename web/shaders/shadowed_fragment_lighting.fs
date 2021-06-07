@@ -25,24 +25,35 @@ uniform float c3[MAX_LIGHTS_COUNT];
 
 out vec4 fColor;
 
-float shadowCalculation() {
+float shadow(int lIndex) {
+    // Set bias based on angle between fragment and light direction
     // Do perspective divide in case a perspective projection was used
     vec3 projected = positionLightSpace.xyz / positionLightSpace.w;
     // Range correction to [0; 1]
     projected = (projected + 1.0) / 2.0;
-    // Check if fragment is in shadow or not
-    float closest = texture(shadowMap, projected.xy).r;
+    // Check if fragment is in shadow
+    float closest = 0.0;
+    // TODO: set closest value for z values that are out of far plane
+    // TODO: make soft shadows
+    if (projected.x > 1.0 || projected.x < 0.0
+        || projected.y > 1.0 || projected.y < 0.0) {
+        closest = 1.0;
+    } else {
+        closest = texture(shadowMap, projected.xy).r;
+    }
     float current = projected.z;
-    return current > closest ? 0.0 : 1.0;
+    return closest > current ? 1.0 : 0.0;
 }
 
 vec3 calculateIntensity(int lIndex, vec3 N, vec3 V) {
     float fAtt = 1.0;
     vec3 L;
+    float shadowFactor = 1.0;
 
     if (lightPosCam[lIndex].w == 0.0) {
         // Directed light, position represents the light direction
         L = normalize(-lightPosCam[lIndex].xyz);
+        shadowFactor = shadow(lIndex);
     } else {
         // Point light
         L = normalize((lightPosCam[lIndex] - positionCam).xyz);
@@ -53,7 +64,7 @@ vec3 calculateIntensity(int lIndex, vec3 N, vec3 V) {
     }
     vec3 R = reflect(-L, N);
 
-    return shadowCalculation() * fAtt *
+    return shadowFactor * fAtt *
         (Id[lIndex] * kd * max(dot(N, L), 0.0)
         + Is[lIndex] * ks * pow(max(dot(R, V), 0.0), specExp));
 }

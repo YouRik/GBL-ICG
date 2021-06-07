@@ -1,7 +1,7 @@
 {
     "resources": {
         "shaders": [
-            ["vertLightingV", "shaders/fragment_lighting.vs"],
+            ["fragLightingV", "shaders/fragment_lighting.vs"],
             ["fragLightingF", "shaders/fragment_lighting.fs"],
             ["defaultV", "shaders/default.vs"],
             ["defaultF", "shaders/default.fs"],
@@ -46,7 +46,7 @@
     "shader_programs": {
         "fragmentLighting": {
             "type": "lit",
-            "vertex": "vertLightingV",
+            "vertex": "fragLightingV",
             "fragment": "fragLightingF"
         },
         "colored": {
@@ -82,15 +82,6 @@
         "ambient_light": [0.7, 0.7, 0.7]
     },
     "objects": [
-        {
-            "type": "sphere",
-            "shader_program": "colored",
-            "radius": 15,
-            "color": [1, 0.9, 0.7],
-            "position": [-100, 150, -200],
-            "mass": 0,
-            "mesh": "icoSphere"
-        },
         {
             "type": "box",
             "shader_program": "shadowedFragmentLighting",

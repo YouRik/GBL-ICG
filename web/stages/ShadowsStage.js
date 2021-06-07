@@ -35,8 +35,8 @@ export default class ShadowsStage extends Game {
             'shadowMap');
 
         // Shadow map properties
-        this.shadowWidth = 1024;
-        this.shadowHeight = 1024;
+        this.shadowWidth = 2048;
+        this.shadowHeight = 2048;
 
         // Create shadow casting light source
         this.lightDirection = [100, -150, 200];
@@ -60,8 +60,8 @@ export default class ShadowsStage extends Game {
         GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MAG_FILTER, GL.NEAREST);
         GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_S, GL.CLAMP_TO_EDGE);
         GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.CLAMP_TO_EDGE);
-        GL.texImage2D(GL.TEXTURE_2D, 0, GL.DEPTH_COMPONENT16, this.shadowWidth,
-            this.shadowHeight, 0, GL.DEPTH_COMPONENT, GL.UNSIGNED_SHORT, null);
+        GL.texImage2D(GL.TEXTURE_2D, 0, GL.DEPTH_COMPONENT32F, this.shadowWidth,
+            this.shadowHeight, 0, GL.DEPTH_COMPONENT, GL.FLOAT, null);
         GL.framebufferTexture2D(GL.FRAMEBUFFER, GL.DEPTH_ATTACHMENT,
             GL.TEXTURE_2D, this.depthMap, 0);
         // GL.drawBuffers([GL.NONE]);
@@ -75,33 +75,37 @@ export default class ShadowsStage extends Game {
         GL.bindFramebuffer(GL.FRAMEBUFFER, this.shadowFramebuffer);
         GL.viewport(0, 0, this.shadowWidth, this.shadowHeight);
         GL.clear(GL.DEPTH_BUFFER_BIT);
+        GL.cullFace(GL.FRONT);
+        this.setLightSourceViewAndPerspective();
         // Render each object to shadow map, pass shadow map shader program
         this.gameObjects.forEach(object => {
             object.renderToShadowMap(this.shadowMapShader,
                 this.shadowMapModMatLoc);
         });
+        GL.cullFace(GL.BACK);
         GL.bindFramebuffer(GL.FRAMEBUFFER, null);
 
-        // TODO: render depth map as texture to quad to test
-        this.renderDepthMapQuad();
+        this.setViewPort(this.canvas);
+        GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT);
+        // Bind texture and set as uniform for shadow map
+        GL.useProgram(this.shadowedShader);
+		GL.activeTexture(GL.TEXTURE0);
+		GL.bindTexture(GL.TEXTURE_2D, this.depthMap);
+		GL.uniform1i(GL.getUniformLocation(this.shadowedShader, 'shadowMap'), 0);
+        GL.uniformMatrix4fv(GL.getUniformLocation(this.shadowedShader, 'lightSpaceMatrix'), false, this.lightSpaceMatrix);
+        // Render all objects
+        this.gameObjects.forEach(object => {
+            object.render();
+        });
 
-        // this.setViewPort(this.canvas);
-        // GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT);
-        // // Bind texture and set as uniform for shadow map
-		// GL.activeTexture(GL.TEXTURE0);
-        // GL.bindTexture(GL.TEXTURE_2D, this.depthMap);
-        // GL.useProgram(this.shadowedShader);
-		// GL.uniform1i(this.shadowMapLoc, 0);
-        // // Render all objects
-        // this.gameObjects.forEach(object => {
-        //     object.render();
-        // });
+        // TODO: render depth map as texture to quad to test
+        // this.renderDepthMapQuad();
     }
 
     setLightSourceViewAndPerspective() {
         // Set orthographic projection matrix
         const projectionMatrix = GLMAT.mat4.create();
-        GLMAT.mat4.ortho(projectionMatrix, -10, 10, -10, 10, 1, 100);
+        GLMAT.mat4.ortho(projectionMatrix, -20, 20, -20, 20, 1, 500);
 
         // Set view matrix
         const viewMatrix = GLMAT.mat4.create();
@@ -116,18 +120,19 @@ export default class ShadowsStage extends Game {
         // Pass multiplied to shadow map shader
         this.lightSpaceMatrix = GLMAT.mat4.create();
         GLMAT.mat4.mul(this.lightSpaceMatrix, projectionMatrix, viewMatrix);
-        GL.uniformMatrix4fv(this.shadowMapLightSpaceMatLoc, false, viewMatrix);
+        GL.useProgram(this.shadowMapShader);
+        GL.uniformMatrix4fv(this.shadowMapLightSpaceMatLoc, false, this.lightSpaceMatrix);
     }
 
     renderDepthMapQuad() {
         // Init arrays
         const positions = [
-            -1.0, -1.0, 		// lower left
-            1.0, -1.0,			// lower right
-            -1.0, 1.0, 			// upper left
-            1.0, 1.0,			// upper right
-            -1.0, 1.0, 			// upper left
-            1.0, -1.0			// lower right
+            -0.75, -0.75, 		// lower left
+            0.75, -0.75,		// lower right
+            -0.75, 0.75, 		// upper left
+            0.75, 0.75,			// upper right
+            -0.75, 0.75, 		// upper left
+            0.75, -0.75			// lower right
         ];
 
         const texCoords = [
@@ -151,7 +156,7 @@ export default class ShadowsStage extends Game {
             GL.DYNAMIC_DRAW);
 
         // Use shader
-        const program = this.programs['textured'];
+        const program = this.programs['depthTextured'];
         GL.useProgram(program);
 
         // const texture = GL.createTexture();
@@ -162,9 +167,9 @@ export default class ShadowsStage extends Game {
 		// GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MAG_FILTER, GL.NEAREST);
 		// GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MIN_FILTER, GL.NEAREST);
         // Activate texture
-		GL.activeTexture(GL.TEXTURE1);
+		GL.activeTexture(GL.TEXTURE0);
 		GL.bindTexture(GL.TEXTURE_2D, this.depthMap);
-		GL.uniform1i(GL.getUniformLocation(program, "uSampler"), 1);
+		GL.uniform1i(GL.getUniformLocation(program, "uSampler"), 0);
 
         // Bind VBOs
         GL.bindBuffer(GL.ARRAY_BUFFER, posVBO);
