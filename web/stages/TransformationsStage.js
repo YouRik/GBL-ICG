@@ -55,7 +55,7 @@ export default class TransformationsStage extends Game {
                 scale: [1, 1, 1],
                 orientation: [0, 90, 0],
                 color: [0.2, 0, 0.7],
-                position: [-51, 20, -15]
+                position: [-46, 18, -16]
             }
         );
         this.gameObjects.push(gate1);

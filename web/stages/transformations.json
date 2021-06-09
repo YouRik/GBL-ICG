@@ -171,9 +171,9 @@
             "meshes": ["islandC"],
             "graphical_mesh": "island",
             "scale": [2, 10, 2],
-            "orientation": [0, 235, 0],
+            "orientation": [0, 200, 0],
             "shader_program": "fragmentLighting",
-            "position": [-50, 20, -10],
+            "position": [-45, 18, -10],
             "color": [0.47, 0.27, 0.23],
             "mass": 0
         },
@@ -358,11 +358,11 @@
         {
             "type": "box",
             "shader_program": "fragmentLighting",
-            "halfExtents": [2, 0.2, 10],
-            "orientation": [80, 0, 0],
-            "position": [-45, 30, 20],
+            "halfExtents": [2, 0.2, 15],
+            "orientation": [0, 0, 0],
+            "position": [-45, 28, 10],
             "color": [0.44, 0.16, 0.39],
-            "mass": 10
+            "mass": 80
         }
     ]
 }
