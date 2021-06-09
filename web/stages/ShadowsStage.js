@@ -49,8 +49,6 @@ export default class ShadowsStage extends Game {
         GL.useProgram(this.shadowMapShader);
         this.setLightSourceViewAndPerspective();
 
-        this.testImage = resources.textures['test'];
-
         // Create framebuffer for shadow map
         this.shadowFramebuffer = GL.createFramebuffer();
         GL.bindFramebuffer(GL.FRAMEBUFFER, this.shadowFramebuffer);
@@ -98,7 +96,7 @@ export default class ShadowsStage extends Game {
             object.render();
         });
 
-        // TODO: render depth map as texture to quad to test
+        // render depth map as texture to quad to test
         // this.renderDepthMapQuad();
     }
 
@@ -109,14 +107,14 @@ export default class ShadowsStage extends Game {
 
         // Set view matrix
         const viewMatrix = GLMAT.mat4.create();
-        // Look at scene center from negative light direction
-        GLMAT.mat4.lookAt(viewMatrix,
-            [
-                -this.lightDirection[0],
-                -this.lightDirection[1],
-                -this.lightDirection[2],
-            ],
-            [0, 0, 0], [0, 1, 0]);
+        // Look at player from player position minus light direction
+        const lightPos = [
+            this.player.position[0] - this.lightDirection[0],
+            this.player.position[1] - this.lightDirection[1],
+            this.player.position[2] - this.lightDirection[2]
+        ];
+        GLMAT.mat4.lookAt(viewMatrix, lightPos, this.player.position,
+            [0, 1, 0]);
         // Pass multiplied to shadow map shader
         this.lightSpaceMatrix = GLMAT.mat4.create();
         GLMAT.mat4.mul(this.lightSpaceMatrix, projectionMatrix, viewMatrix);
@@ -159,13 +157,6 @@ export default class ShadowsStage extends Game {
         const program = this.programs['depthTextured'];
         GL.useProgram(program);
 
-        // const texture = GL.createTexture();
-        // GL.activeTexture(GL.TEXTURE1);
-		// GL.bindTexture(GL.TEXTURE_2D, texture);
-		// GL.texImage2D(GL.TEXTURE_2D, 0, GL.RGB, GL.RGB, GL.UNSIGNED_BYTE, 
-        //     this.testImage);
-		// GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MAG_FILTER, GL.NEAREST);
-		// GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MIN_FILTER, GL.NEAREST);
         // Activate texture
 		GL.activeTexture(GL.TEXTURE0);
 		GL.bindTexture(GL.TEXTURE_2D, this.depthMap);

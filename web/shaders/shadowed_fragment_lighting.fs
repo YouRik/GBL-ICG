@@ -32,28 +32,27 @@ float shadow(int lIndex) {
     // Range correction to [0; 1]
     projected = (projected + 1.0) / 2.0;
     // Check if fragment is in shadow
-    float closest = 0.0;
-    // TODO: set closest value for z values that are out of far plane
-    // TODO: make soft shadows
+    float shadow = 0.0;
     if (projected.x > 1.0 || projected.x < 0.0
-        || projected.y > 1.0 || projected.y < 0.0) {
-        closest = 1.0;
+        || projected.y > 1.0 || projected.y < 0.0 || projected.z > 1.0) {
+        shadow = 0.0;
     } else {
-        closest = texture(shadowMap, projected.xy).r;
+        float closest = texture(shadowMap, projected.xy).r;
+        float current = projected.z;
+        shadow = closest > current ? 0.0 : 1.0;
     }
-    float current = projected.z;
-    return closest > current ? 1.0 : 0.0;
+    return shadow;
 }
 
 vec3 calculateIntensity(int lIndex, vec3 N, vec3 V) {
     float fAtt = 1.0;
     vec3 L;
-    float shadowFactor = 1.0;
+    float shadowFactor = 0.0;
 
     if (lightPosCam[lIndex].w == 0.0) {
         // Directed light, position represents the light direction
         L = normalize(-lightPosCam[lIndex].xyz);
-        shadowFactor = shadow(lIndex);
+        shadowFactor = 1.0 - shadow(lIndex);
     } else {
         // Point light
         L = normalize((lightPosCam[lIndex] - positionCam).xyz);
