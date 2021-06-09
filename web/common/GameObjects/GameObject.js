@@ -18,7 +18,7 @@ export default class GameObject {
      *  orientation
      * @param {GLMAT.vec3} [options.scale] The object's default scale
      * @param {GLMAT.vec3} [options.mass] The object's mass
-     * @param {GLMAT.vec3} [options.color] The object's color
+     * @param {(GLMAT.vec3|GLMAT.vec4)} [options.color] The object's color
      * @param {GLMAT.vec3} [options.lightParams] The object's light coefficients
      * @param {GLMAT.vec3} [options.portable] Whether the object can be picked
      * @param {GLMAT.vec3} [options.collisionFilterGroup] The object's collision
@@ -54,6 +54,7 @@ export default class GameObject {
         this.shaderType = shaderType;
         this.modelMatLoc = GL.getUniformLocation(this.program, 'modelMatrix');
         this.posLoc = GL.getAttribLocation(this.program, 'vPosition');
+        this.visible = true;
 
         this.calculateLightParams(lightParams);
 
@@ -208,14 +209,16 @@ export default class GameObject {
      * Render step, draw graphics according to shader type
      */
     render() {
-        if (this.shaderType == 'colored') {
-            this.renderColored();
-        } else if (this.shaderType == 'lit') {
-            this.renderLit();
-        } else if (this.shaderType == 'textured') {
-            // TODO: render textured
-        } else if (this.shaderType == 'textured-lit') {
-            // TODO: render textured and lit
+        if (this.visible) {
+            if (this.shaderType == 'colored') {
+                this.renderColored();
+            } else if (this.shaderType == 'lit') {
+                this.renderLit();
+            } else if (this.shaderType == 'textured') {
+                // TODO: render textured
+            } else if (this.shaderType == 'textured-lit') {
+                // TODO: render textured and lit
+            }
         }
     }
 

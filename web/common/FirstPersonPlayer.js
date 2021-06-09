@@ -2,10 +2,11 @@
 
 import * as CANNON from './lib/cannon/cannon-es.js';
 import * as GLMAT from './lib/gl-matrix/index.js';
+import SphereObject from './GameObjects/SphereObject.js';
 
 // TODO: documentation
 export default class FirstPersonPlayer {
-    constructor(world, position, programs, aspectRatio, yaw = 0, pitch = 0) {
+    constructor(world, position, programs, jointMesh, aspectRatio, yaw = 0, pitch = 0) {
         this.programs = [];
         for (const programName in programs) {
             const program = programs[programName];
@@ -81,13 +82,17 @@ export default class FirstPersonPlayer {
         });
         world.addBody(this.physicsBody);
 
-        // Create joint body for picking up objects
-        this.jointBody = new CANNON.Body({
-            collisionFilterMask: 0,
+        // Create sphere as joint body and visual indicator
+        this.jointSphere = new SphereObject(world, programs['colored'],
+            'colored', jointMesh, {
+            radius: 0.1,
+            color: [1, 0, 0, 0.75],
+            mass: 0,
             collisionFilterGroup: 0,
+            collisionFilterMask: 0,
             fixedRotation: true
         });
-        world.addBody(this.jointBody);
+        this.jointSphere.visible = false;
 
         this.update(0);
     }
@@ -317,7 +322,7 @@ export default class FirstPersonPlayer {
         });
 
         // Update joint body and constraint positions
-        this.jointBody.position = new CANNON.Vec3(
+        this.jointSphere.physicsBody.position = new CANNON.Vec3(
             this.position[0] + viewDirection[0] * this.controls.carryDistance,
             this.position[1] + viewDirection[1] * this.controls.carryDistance,
             this.position[2] + viewDirection[2] * this.controls.carryDistance);
@@ -363,12 +368,16 @@ export default class FirstPersonPlayer {
                 // Set constraint to carry the object
                 this.jointConstraint = new CANNON.PointToPointConstraint(
                     castResult.body, pivot,
-                    this.jointBody, new CANNON.Vec3(0, 0, 0), this.carryForce);
+                    this.jointSphere.physicsBody, new CANNON.Vec3(0, 0, 0),
+                    this.carryForce);
                 this.world.addConstraint(this.jointConstraint);
                 // Reduce rotation of object with angular damping
                 this.prevCarriedAngularDamping =
                     this.jointConstraint.bodyA.angularDamping;
                 this.jointConstraint.bodyA.angularDamping = 0.9;
+
+                // Make indicator visible
+                this.jointSphere.visible = true;
             }
         }
 
@@ -386,6 +395,9 @@ export default class FirstPersonPlayer {
             // Remove constraint
             this.world.removeConstraint(this.jointConstraint);
             this.jointConstraint = undefined;
+
+            // Make indicator invisible
+            this.jointSphere.visible = false;
         }
     }
 }

@@ -92,7 +92,9 @@ export default class Game {
                 const yaw = sceneDefs['player']['yaw'];
                 const pitch = sceneDefs['player']['pitch'];
                 this.player = new FirstPersonPlayer(this.world, startPos,
-                    this.programs, canvas.width / canvas.height, yaw, pitch);
+                    this.programs, resources.meshes['icoSphere'],
+                    canvas.width / canvas.height, yaw, pitch);
+                this.gameObjects.push(this.player.jointSphere);
             } else if (setting == 'ambient_light') {
                 const Ia = sceneDefs['ambient_light'];
                 for (const programIndex in lightPrograms) {
