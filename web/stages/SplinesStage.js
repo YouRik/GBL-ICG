@@ -135,6 +135,14 @@ export default class SplinesStage extends Game {
                 [y3Element.value, z3Element.value]));
             this.spline1segments.push(this.placeSplineSegmentYZ(meshes,
                 [y3Element.value, z3Element.value], [-8, 40]));
+
+            // Store input field values in local storage
+            const spliceValues = [
+                y1Element.value, z1Element.value,
+                y2Element.value, z2Element.value,
+                y3Element.value, z3Element.value
+            ];
+            localStorage.setItem('spliceValues', JSON.stringify(spliceValues));
             this.render();
         });
         btnReset.addEventListener('click', () => {
@@ -154,7 +162,18 @@ export default class SplinesStage extends Game {
             btnApply.click();
         });
 
-        btnReset.click();
+        if (localStorage.spliceValues === undefined) {
+            btnReset.click();
+        } else {
+            const spliceValues = JSON.parse(localStorage.spliceValues);
+            y1Element.value = spliceValues[0];
+            z1Element.value = spliceValues[1];
+            y2Element.value = spliceValues[2];
+            z2Element.value = spliceValues[3];
+            y3Element.value = spliceValues[4];
+            z3Element.value = spliceValues[5];
+            btnApply.click();
+        }
 
         this.spline2segments = [];
         const bridgePoints = deCasteljau(

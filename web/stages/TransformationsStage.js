@@ -207,13 +207,30 @@ export default class TransformationsStage extends Game {
             this.resetMatrixInputs('yellow', btnYellowApply);
         });
 
-        btnCyanReset.click();
-        btnMagentaReset.click();
-        btnYellowReset.click();
+        // Initalize matrices with default values or retrieve stored ones
+        if (localStorage.cyanMatrixInputs === undefined) {
+            btnCyanReset.click();
+        } else {
+            this.resetMatrixInputs('cyan', btnCyanApply,
+                JSON.parse(localStorage.cyanMatrixInputs));
+        }
+        if (localStorage.magentaMatrixInputs === undefined) {
+            btnMagentaReset.click();
+        } else {
+            this.resetMatrixInputs('magenta', btnMagentaApply,
+                JSON.parse(localStorage.magentaMatrixInputs));
+        }
+        if (localStorage.yellowMatrixInputs === undefined) {
+            btnYellowReset.click();
+        } else {
+            this.resetMatrixInputs('yellow', btnYellowApply,
+                JSON.parse(localStorage.yellowMatrixInputs));
+        }
     }
 
-    resetMatrixInputs(color, applyButton) {
-        const mat4Default = GLMAT.mat4.create();
+    resetMatrixInputs(color, applyButton, defaultMatrix) {
+        const mat4Default = defaultMatrix === undefined ? GLMAT.mat4.create()
+            : defaultMatrix;
         for (let i = 0; i < 4; i++) {
             for (let j = 0; j < 4; j++) {
                 document.getElementById(`${color}${j}${i}`).value =
@@ -231,6 +248,11 @@ export default class TransformationsStage extends Game {
                     document.getElementById(`${color}${j}${i}`).value;
             }
         }
+
+        // Store matrix inputs in local storage
+        localStorage.setItem(color + 'MatrixInputs',
+            JSON.stringify(transformation));
+
         const rotationQuat = GLMAT.quat.create();
         const scale = GLMAT.vec3.create();
         const translation = GLMAT.vec3.create();

@@ -261,7 +261,11 @@ export default class Game {
         };
         const handleKeyDown = (event) => {
             event.preventDefault();
-            this.player.keyDown(event);
+            if (event.key == 'r') {
+                location.reload();
+            } else {
+                this.player.keyDown(event);
+            }
         };
         const handlePointerDown = (event) => {
             this.player.pointerDown(event);
