@@ -94,6 +94,13 @@ export default class FirstPersonPlayer {
         });
         this.jointSphere.visible = false;
 
+        this.groundObjects = new Set();
+
+        // World event listener for contact exits
+        this.world.addEventListener('endContact', (event) => {
+            this.handleCollisionEnd(event);
+        });
+
         this.update(0);
     }
 
@@ -201,6 +208,19 @@ export default class FirstPersonPlayer {
         // Check if collision normal points up enough
         if (contactNormal.dot(new CANNON.Vec3(0, 1, 0)) > 0.5) {
             this.controls.isOnGround = true;
+            this.groundObjects.add(event.body);
+        }
+    }
+
+    handleCollisionEnd(event) {
+        if (event.bodyA === this.physicsBody) {
+            this.groundObjects.delete(event.bodyB);
+        }
+        if (event.bodyB === this.physicsBody) {
+            this.groundObjects.delete(event.bodyA);
+        }
+        if (this.groundObjects.size == 0) {
+            this.controls.isOnGround = false;
         }
     }
 
@@ -227,19 +247,6 @@ export default class FirstPersonPlayer {
             * Math.cos(this.pitch * Math.PI / 180)
         ];
         GLMAT.vec3.normalize(viewDirection, viewDirection);
-
-        // Check if player has left the ground
-        const posValues = this.physicsBody.position.toArray();
-        if (this.controls.isOnGround) {
-            const groundRay = new CANNON.Ray(this.physicsBody.position,
-                new CANNON.Vec3(posValues[0],
-                    posValues[1] - this.groundCheckDistance, posValues[2]));
-            const leftGround = !(groundRay.intersectWorld(this.world,
-                { collisionFilterMask: 1 }));
-            if (leftGround) {
-                this.controls.isOnGround = false;
-            }
-        }
 
         // Get move direction factors
         let forwardFactor = 0;
@@ -307,6 +314,7 @@ export default class FirstPersonPlayer {
             brakeForce[0], brakeForce[1], brakeForce[2]));
 
         // Update player position from physics
+        const posValues = this.physicsBody.position.toArray();
         this.position = GLMAT.vec3.fromValues(
             posValues[0], posValues[1] + this.cameraOffsetY, posValues[2]);
 
