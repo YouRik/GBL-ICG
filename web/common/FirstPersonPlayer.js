@@ -36,7 +36,7 @@ export default class FirstPersonPlayer {
 
         // Player configuration
         this.moveForce = 1000;
-        this.jumpForce = 40000;
+        this.jumpForce = 80000;
         this.brakeForce = 400;
         this.maxMoveSpeed = 9;
         this.maxCarryDistance = 4;

@@ -78,9 +78,9 @@ export default class SplinesStage extends Game {
             this.programs['fragmentLighting'], 'lit', resources,
             pedestal1Filled,
             {
-                position: [105, -114, 61],
+                position: [104, -112, 61],
                 color: [0.5, 0.5, 1],
-                orientation: [0, 0, 0],
+                orientation: [0, 45, 0],
                 scale: [20, 30, 20],
             }
         );
@@ -97,10 +97,10 @@ export default class SplinesStage extends Game {
         // Orange glass wall
         const orangeWall = new BoxObject(this.world, this.programs['colored'],
             'colored', {
-            halfExtents: [0.1, 1.5, 3],
+            halfExtents: [0.1, 2, 3],
             color: [1, 0.5, 0, 0.4],
             orientation: [0, 9, 0],
-            position: [5, 6.5, -2],
+            position: [5, 7, -2],
             mass: 0
         });
         // Don't collide with player
@@ -158,7 +158,7 @@ export default class SplinesStage extends Game {
 
         this.spline2segments = [];
         const bridgePoints = deCasteljau(
-            [9, -11], [20, -100], [50, -85], [60, -75],
+            [9.2, -11], [20, -100], [50, -85], [60, -75],
             0.1
         );
 
