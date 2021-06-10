@@ -1,0 +1,29 @@
+<h2>Pass the labyrinth</h2>
+<p>
+    Get to the end of the labyrinth. But as you can see... you can't see...
+    <br />
+    So good luck!
+    <br />
+    Or, well, you could just get some light in here.
+    <ol>
+        <li>
+            Open the file <div class=code>shaders/tasks/vertex_lighting.vs</div>. Notice that all required attributes and uniforms are already defined in the shader.
+        </li>
+        <li>
+            Before you can use these variables in the shader, the correct values need to be passed. Open the file <div class=code>common/GameObject.js</div> and get the correct uniform locations in the constructor. <br />
+            You will need the following WebGL function: <br />
+            <a href=https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/getUniformLocation>GL.getUniformLocation()</a>
+        </li>
+        <li>
+            Now you need to pass the uniform values to the correct locations in the shader in render method. <br />
+            You will need the following WebGL function: <br />
+            <a href=https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/uniform>GL.uniform[1234][fi][v]()</a>
+        </li>
+        <li>
+            Implement the ambient light in the shader based on the Phong lighting model in the file <div class=code>shaders/tasks/vertex_lighting.vs</div>.
+        </li>
+        <li>
+            Pass the labyrinth.
+        </li>
+    </ol>
+</p>

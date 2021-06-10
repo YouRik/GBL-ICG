@@ -1,0 +1,1729 @@
+{
+    "resources": {
+        "shaders": [
+            ["vertLightingV", "shaders/vertex_lighting.vs"],
+            ["fragLightingV", "shaders/fragment_lighting.vs"],
+            ["fragLightingF", "shaders/fragment_lighting.fs"],
+            ["defaultF", "shaders/default.fs"],
+            ["defaultV", "shaders/default.vs"],
+            ["defaultF", "shaders/default.fs"]
+        ],
+        "textures": [
+        ],
+        "meshes": [
+            ["icoSphere", "meshes/icosphere.ply"],
+            ["island", "meshes/island.ply"],
+            ["islandC", "meshes/island_collider.ply"],
+            ["pedestalD1", "meshes/pedestal_convdecomp1.ply"],
+            ["pedestalD2", "meshes/pedestal_convdecomp2.ply"],
+            ["pedestalD3", "meshes/pedestal_convdecomp3.ply"],
+            ["pedestalD4", "meshes/pedestal_convdecomp4.ply"],
+            ["pedestalD5", "meshes/pedestal_convdecomp5.ply"],
+            ["pedestalD6", "meshes/pedestal_convdecomp6.ply"],
+            ["pedestalD7", "meshes/pedestal_convdecomp7.ply"],
+            ["pedestalD8", "meshes/pedestal_convdecomp8.ply"],
+            ["pedestalD9", "meshes/pedestal_convdecomp9.ply"],
+            ["pedestalD10", "meshes/pedestal_convdecomp10.ply"],
+            ["pedestalD11", "meshes/pedestal_convdecomp11.ply"],
+            ["pedestalG", "meshes/pedestal.ply"],
+            ["gateD1", "meshes/gate_convdecomp1.ply"],
+            ["gateD2", "meshes/gate_convdecomp2.ply"],
+            ["gateD3", "meshes/gate_convdecomp3.ply"],
+            ["gateD4", "meshes/gate_convdecomp4.ply"],
+            ["gateD5", "meshes/gate_convdecomp5.ply"],
+            ["gateD6", "meshes/gate_convdecomp6.ply"],
+            ["gateD7", "meshes/gate_convdecomp7.ply"],
+            ["gateD8", "meshes/gate_convdecomp8.ply"],
+            ["gateD9", "meshes/gate_convdecomp9.ply"],
+            ["gateD10", "meshes/gate_convdecomp10.ply"],
+            ["gateG", "meshes/gate.ply"],
+            ["arrow", "meshes/arrow.ply"]
+        ]
+    },
+    "shader_programs": {
+        "vertexLighting": {
+            "type": "lit",
+            "vertex": "vertLightingV",
+            "fragment": "defaultF"
+        },
+        "colored": {
+            "type": "colored",
+            "vertex": "defaultV",
+            "fragment": "defaultF"
+        },
+        "fragmentLighting": {
+            "type": "lit",
+            "vertex": "fragLightingV",
+            "fragment": "fragLightingF"
+        }
+    },
+    "scene": {
+        "player": {
+            "start_position": [-8, 0.9, -40],
+            "yaw": -30,
+            "pitch": 10
+        },
+        "ambient_light": [0.6, 0.6, 0.6]
+    },
+    "objects": [
+        {
+            "type": "lightSource",
+            "directed": true,
+            "direction": [200, -160, -400],
+            "Id": [0.7, 0.7, 0.7],
+            "Is": [0.9, 0.9, 0.9]
+        },
+        {
+            "type": "sphere",
+            "shader_program": "colored",
+            "radius": 30,
+            "color": [1, 0.8, 0.5],
+            "position": [-200, 160, 400],
+            "mass": 0,
+            "mesh": "icoSphere"
+        },
+        {
+            "type": "mesh",
+            "meshes": ["islandC"],
+            "graphical_mesh": "island",
+            "scale": [10, 30, 10],
+            "shader_program": "fragmentLighting",
+            "position": [0, 0, 0],
+            "color": [0.6, 0.4, 0.6],
+            "mass": 0
+        },
+
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [23.8, 0.1, 23.2],
+            "position": [2.5, 0.1, -2.2],
+            "lightParams": {
+                "ka": [0.6, 0.4, 0.6],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [15, 2.2, 0.2],
+            "position": [5, 2.1, -2],
+            "lightParams": {
+                "ka": [0.60, 0.40, 0.08],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [5, 2.2, 0.2],
+            "position": [-3.8, 2.1, 2],
+            "lightParams": {
+                "ka": [0.60, 0.40, 0.08],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [6.2, 2.2, 0.2],
+            "position": [-8, 2.1, 13.2],
+            "lightParams": {
+                "ka": [0.60, 0.40, 0.08],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [12, 2.2, 0.2],
+            "position": [10.2, 2.1, 9.6],
+            "lightParams": {
+                "ka": [0.60, 0.40, 0.08],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [5, 2.2, 0.2],
+            "position": [3.2, 2.1, 5.6],
+            "lightParams": {
+                "ka": [0.60, 0.40, 0.08],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [5, 2.2, 0.2],
+            "position": [17.2, 2.1, 5.6],
+            "lightParams": {
+                "ka": [0.60, 0.40, 0.08],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [7, 2.2, 0.2],
+            "position": [10, 2.1, 13.2],
+            "lightParams": {
+                "ka": [0.60, 0.40, 0.08],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [6.5, 2.2, 0.2],
+            "position": [-7.7, 2.1, -8.4],
+            "lightParams": {
+                "ka": [0.60, 0.40, 0.08],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [5, 2.2, 0.2],
+            "position": [-6.6, 2.1, -12],
+            "lightParams": {
+                "ka": [0.60, 0.40, 0.08],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [10, 2.2, 0.2],
+            "position": [-1.6, 2.1, -16],
+            "lightParams": {
+                "ka": [0.60, 0.40, 0.08],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [5, 2.2, 0.2],
+            "position": [-5, 2.1, -6],
+            "lightParams": {
+                "ka": [0.60, 0.40, 0.08],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [3, 2.2, 0.2],
+            "position": [7, 2.1, -6],
+            "lightParams": {
+                "ka": [0.60, 0.40, 0.08],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [8, 2.2, 0.2],
+            "position": [12, 2.1, 2],
+            "lightParams": {
+                "ka": [0.60, 0.40, 0.08],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [20, 2.2, 0.2],
+            "position": [2.6, 2.1, 17.6],
+            "lightParams": {
+                "ka": [0.60, 0.40, 0.08],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [24, 2.2, 0.2],
+            "position": [2.6, 2.1, 21],
+            "lightParams": {
+                "ka": [0.60, 0.40, 0.08],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [1.6, 2.2, 0.2],
+            "position": [-19.4, 2.1, -20],
+            "lightParams": {
+                "ka": [0.60, 0.40, 0.08],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [17, 2.2, 0.2],
+            "position": [2.8, 2.1, -20.8],
+            "lightParams": {
+                "ka": [0.60, 0.40, 0.08],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [23, 2.2, 0.2],
+            "position": [3.6, 2.1, -25.4],
+            "lightParams": {
+                "ka": [0.60, 0.40, 0.08],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [2, 2.2, 2],
+            "position": [-8, 2.1, 7.5],
+            "lightParams": {
+                "ka": [0.60, 0.40, 0.08],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 1.8],
+            "position": [1, 2.1, 0],
+            "lightParams": {
+                "ka": [0.51, 0.34, 0.07],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 1.8],
+            "position": [-2, 2.1, 4],
+            "lightParams": {
+                "ka": [0.51, 0.34, 0.07],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 1.8],
+            "position": [-2, 2.1, 11.2],
+            "lightParams": {
+                "ka": [0.51, 0.34, 0.07],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 10.6],
+            "position": [-14, 2.1, 2.4],
+            "lightParams": {
+                "ka": [0.51, 0.34, 0.07],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 6],
+            "position": [-14, 2.1, -14.6],
+            "lightParams": {
+                "ka": [0.51, 0.34, 0.07],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 1.8],
+            "position": [-11.4, 2.1, -14],
+            "lightParams": {
+                "ka": [0.51, 0.34, 0.07],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 1.8],
+            "position": [8.2, 2.1, -14],
+            "lightParams": {
+                "ka": [0.51, 0.34, 0.07],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 1.8],
+            "position": [-9.8, 2.1, -4],
+            "lightParams": {
+                "ka": [0.51, 0.34, 0.07],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 1.8],
+            "position": [9.8, 2.1, -4],
+            "lightParams": {
+                "ka": [0.51, 0.34, 0.07],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 3],
+            "position": [4.2, 2.1, -9.2],
+            "lightParams": {
+                "ka": [0.51, 0.34, 0.07],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 6],
+            "position": [22.4, 2.1, 11.4],
+            "lightParams": {
+                "ka": [0.51, 0.34, 0.07],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 1.8],
+            "position": [19.8, 2.1, 0],
+            "lightParams": {
+                "ka": [0.51, 0.34, 0.07],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 19],
+            "position": [-17.6, 2.1, -1.2],
+            "lightParams": {
+                "ka": [0.51, 0.34, 0.07],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 23],
+            "position": [-21.2, 2.1, -2.2],
+            "lightParams": {
+                "ka": [0.51, 0.34, 0.07],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 23],
+            "position": [26.4, 2.1, -2.2],
+            "lightParams": {
+                "ka": [0.51, 0.34, 0.07],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 1.4],
+            "position": [-19.2, 2.1, -23.8],
+            "lightParams": {
+                "ka": [0.51, 0.34, 0.07],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 8],
+            "position": [16, 2.1, -12.6],
+            "lightParams": {
+                "ka": [0.51, 0.34, 0.07],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 9.4],
+            "position": [20, 2.1, -11.6],
+            "lightParams": {
+                "ka": [0.51, 0.34, 0.07],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [12.9, 0.2, 23.4],
+            "position": [13.7, 4.5, -2.2],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [9.8, 0.2, 23.4],
+            "position": [-11.6, 4.5, -2.2],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [1.3, 0.2, 11.9],
+            "position": [-0.5, 4.5, -13.7],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [1.3, 0.2, 9.7],
+            "position": [-0.5, 4.5, 11.5],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [16.4, 2.2, 0.2],
+            "position": [3.5, 6.9, 16],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [7, 2.2, 0.2],
+            "position": [8, 6.9, 14],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [1, 2.2, 0.2],
+            "position": [-9, 6.9, 14],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [11.6, 2.2, 0.2],
+            "position": [3.5, 6.9, 11],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [5.5, 2.2, 0.2],
+            "position": [9.5, 6.9, 8],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [2, 2.2, 0.2],
+            "position": [-8, 6.9, 8],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [2.3, 2.2, 0.2],
+            "position": [-10.5, 6.9, 5],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [2, 2.2, 0.2],
+            "position": [13, 6.9, 5],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.8, 2.2, 0.2],
+            "position": [-9, 6.9, 2],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [2.8, 2.2, 0.2],
+            "position": [1, 6.9, 2],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [4.3, 2.2, 0.2],
+            "position": [11.5, 6.9, 2],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [1, 2.2, 0.2],
+            "position": [-7, 6.9, -2],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [2.8, 2.2, 0.2],
+            "position": [1, 6.9, -2],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [6.3, 2.2, 0.2],
+            "position": [10.5, 6.9, -2],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [2.5, 2.2, 0.2],
+            "position": [-1.5, 6.9, -6],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [4, 2.2, 0.2],
+            "position": [11, 6.9, -6],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [5, 2.2, 0.2],
+            "position": [-1, 6.9, -10],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [2, 2.2, 0.2],
+            "position": [9, 6.9, -10],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [6, 2.2, 0.2],
+            "position": [-2, 6.9, -14],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [2, 2.2, 0.2],
+            "position": [9, 6.9, -14],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [8.5, 2.2, 0.2],
+            "position": [-1.5, 6.9, -17],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [2, 2.2, 0.2],
+            "position": [13, 6.9, -17],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [16.4, 2.2, 0.2],
+            "position": [3.5, 6.9, -20.4],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 18],
+            "position": [-13, 6.9, -2.2],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 2],
+            "position": [-10, 6.9, 10],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 9.6],
+            "position": [-10, 6.9, -7.4],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 1.5],
+            "position": [-8, 6.9, 12.5],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 1.5],
+            "position": [-8, 6.9, 3.5],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 6],
+            "position": [-8, 6.9, -8],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 2.5],
+            "position": [-6, 6.9, 13.5],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 9],
+            "position": [-6, 6.9, -1],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 1.5],
+            "position": [-4, 6.9, 14.5],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 7],
+            "position": [-4, 6.9, 1],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 4.6],
+            "position": [-2, 6.9, 6.4],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 1.5],
+            "position": [1, 6.9, 12.5],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 4],
+            "position": [1, 6.9, -2],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 3.1],
+            "position": [4, 6.9, 4.9],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 4.1],
+            "position": [4, 6.9, -5.9],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 2],
+            "position": [7, 6.9, 3.8],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 4.1],
+            "position": [7, 6.9, -6],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 1.5],
+            "position": [7, 6.9, -15.5],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 1.8],
+            "position": [12, 6.9, 0],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 1.5],
+            "position": [15, 6.9, 6.5],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 2],
+            "position": [15, 6.9, -8],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 1.6],
+            "position": [15, 6.9, -15.5],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 2.2, 18],
+            "position": [20, 6.9, -2.2],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [7.2, 0.2, 18.4],
+            "position": [-6, 9.3, -2.2],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [8, 0.2, 18.4],
+            "position": [12.2, 9.3, -2.2],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [1.5, 0.2, 7.2],
+            "position": [2.7, 9.3, 9],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [1.5, 0.2, 9.4],
+            "position": [2.7, 9.3, -11.2],
+            "lightParams": {
+                "ka": [0.69, 0.45, 0.09],
+                "kd": [0.69, 0.45, 0.09],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 0
+        },
+
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 3, 4],
+            "position": [-7.3, 12.5, 5],
+            "color": [1, 0.64, 0.26],
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 3, 4],
+            "position": [-7.3, 12.5, -7],
+            "color": [1, 0.64, 0.26],
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [0.2, 3, 10],
+            "position": [12.3, 12.5, -1],
+            "color": [1, 0.64, 0.26],
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [10, 3, 0.2],
+            "position": [2.5, 12.5, 9],
+            "color": [1, 0.64, 0.26],
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [10, 3, 0.2],
+            "position": [2.5, 12.5, -11],
+            "color": [1, 0.64, 0.26],
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "vertexLighting",
+            "halfExtents": [10, 0.2, 10],
+            "position": [2.5, 15.7, -1],
+            "color": [1, 0.64, 0.26],
+            "mass": 0
+        },
+
+        {
+            "type": "cube",
+            "shader_program": "vertexLighting",
+            "halfExtent": 0.7,
+            "position": [-11, 1, -18],
+            "lightParams": {
+                "ka": [1, 0, 0],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 10,
+            "portable": true
+        },
+        {
+            "type": "cube",
+            "shader_program": "vertexLighting",
+            "halfExtent": 1.0,
+            "position": [20, 0.7, 11],
+            "lightParams": {
+                "ka": [1, 0, 0],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 10,
+            "portable": true
+        },
+        {
+            "type": "cube",
+            "shader_program": "vertexLighting",
+            "halfExtent": 0.7,
+            "position": [-5, 6, 15],
+            "lightParams": {
+                "ka": [0, 0, 1],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 10,
+            "portable": true
+        },
+        {
+            "type": "cube",
+            "shader_program": "vertexLighting",
+            "halfExtent": 1.0,
+            "position": [2, 6, 0],
+            "lightParams": {
+                "ka": [0, 0, 1],
+                "kd": [0, 0, 0],
+                "ks": [0, 0, 0],
+                "specExp": 1
+            },
+            "mass": 10,
+            "portable": true
+        },
+
+        {
+            "type": "pedestal",
+            "shader_program": "vertexLighting",
+            "position": [-5, 9.5, 7],
+            "color": [0, 0.49, 0.48],
+            "scale": [1.2, 0.5, 1.2],
+            "mass": 0
+        },
+        {
+            "type": "sphere",
+            "shader_program": "vertexLighting",
+            "radius": 0.4,
+            "lightParams": {
+                "ka": [0.03, 0.53, 0.41],
+                "kd": [0.24, 0.82, 0.05],
+                "ks": [0.73, 0.98, 0.65],
+                "specExp": 10
+            },
+            "position": [-5, 11, 7],
+            "mass": 5,
+            "mesh": "icoSphere",
+            "portable": true
+        },
+        {
+            "type": "pedestal",
+            "shader_program": "vertexLighting",
+            "position": [0, 9.5, 7],
+            "color": [0, 0.49, 0.48],
+            "scale": [1.2, 0.5, 1.2],
+            "mass": 0
+        },
+        {
+            "type": "sphere",
+            "shader_program": "vertexLighting",
+            "radius": 0.4,
+            "lightParams": {
+                "ka": [0.03, 0.53, 0.41],
+                "kd": [0.24, 0.82, 0.05],
+                "ks": [0.73, 0.98, 0.65],
+                "specExp": 10
+            },
+            "position": [0, 11, 7],
+            "mass": 5,
+            "mesh": "icoSphere",
+            "portable": true
+        },
+        {
+            "type": "pedestal",
+            "shader_program": "vertexLighting",
+            "position": [5, 9.5, 7],
+            "color": [0, 0.49, 0.48],
+            "scale": [1.2, 0.5, 1.2],
+            "mass": 0
+        },
+        {
+            "type": "sphere",
+            "shader_program": "vertexLighting",
+            "radius": 0.4,
+            "lightParams": {
+                "ka": [0.03, 0.53, 0.41],
+                "kd": [0.24, 0.82, 0.05],
+                "ks": [0.73, 0.98, 0.65],
+                "specExp": 10
+            },
+            "position": [5, 11, 7],
+            "mass": 5,
+            "mesh": "icoSphere",
+            "portable": true
+        },
+        {
+            "type": "pedestal",
+            "shader_program": "vertexLighting",
+            "position": [10, 9.5, 7],
+            "color": [0, 0.49, 0.48],
+            "scale": [1.2, 0.5, 1.2],
+            "mass": 0
+        },
+        {
+            "type": "pedestal",
+            "shader_program": "vertexLighting",
+            "position": [-5, 9.5, -8],
+            "color": [0, 0.49, 0.48],
+            "scale": [1.2, 0.5, 1.2],
+            "mass": 0
+        },
+        {
+            "type": "sphere",
+            "shader_program": "vertexLighting",
+            "radius": 0.4,
+            "lightParams": {
+                "ka": [0.03, 0.53, 0.41],
+                "kd": [0.24, 0.82, 0.05],
+                "ks": [0.73, 0.98, 0.65],
+                "specExp": 10
+            },
+            "position": [-5, 11, -8],
+            "mass": 5,
+            "mesh": "icoSphere",
+            "portable": true
+        },
+        {
+            "type": "pedestal",
+            "shader_program": "vertexLighting",
+            "position": [0, 9.5, -8],
+            "color": [0, 0.49, 0.48],
+            "scale": [1.2, 0.5, 1.2],
+            "mass": 0
+        },
+        {
+            "type": "sphere",
+            "shader_program": "vertexLighting",
+            "radius": 0.4,
+            "lightParams": {
+                "ka": [0.03, 0.53, 0.41],
+                "kd": [0.24, 0.82, 0.05],
+                "ks": [0.73, 0.98, 0.65],
+                "specExp": 10
+            },
+            "position": [0, 11, -8],
+            "mass": 5,
+            "mesh": "icoSphere",
+            "portable": true
+        },
+        {
+            "type": "pedestal",
+            "shader_program": "vertexLighting",
+            "position": [5, 9.5, -8],
+            "color": [0, 0.49, 0.48],
+            "scale": [1.2, 0.5, 1.2],
+            "mass": 0
+        },
+        {
+            "type": "sphere",
+            "shader_program": "vertexLighting",
+            "radius": 0.4,
+            "lightParams": {
+                "ka": [0.03, 0.53, 0.41],
+                "kd": [0.24, 0.82, 0.05],
+                "ks": [0.73, 0.98, 0.65],
+                "specExp": 10
+            },
+            "position": [10, 11, 7],
+            "mass": 5,
+            "mesh": "icoSphere",
+            "portable": true
+        },
+        {
+            "type": "pedestal",
+            "shader_program": "vertexLighting",
+            "position": [10, 9.5, -8],
+            "color": [0, 0.49, 0.48],
+            "scale": [1.2, 0.5, 1.2],
+            "mass": 0
+        },
+        {
+            "type": "sphere",
+            "shader_program": "vertexLighting",
+            "radius": 0.4,
+            "lightParams": {
+                "ka": [0.03, 0.53, 0.41],
+                "kd": [0.24, 0.82, 0.05],
+                "ks": [0.73, 0.98, 0.65],
+                "specExp": 10
+            },
+            "position": [10, 11, -8],
+            "mass": 5,
+            "mesh": "icoSphere",
+            "portable": true
+        },
+
+        {
+            "type": "cube",
+            "shader_program": "fragmentLighting",
+            "halfExtent": 4,
+            "position": [2.5, 19.6, -1.5],
+            "color": [1, 0.8, 0.4],
+            "mass": 0
+        },
+
+        {
+            "type": "mesh",
+            "shader_program": "colored",
+            "meshes": [],
+            "graphical_mesh": "arrow",
+            "color": [0, 0, 1],
+            "orientation": [0, 90, 0],
+            "scale": [0.3, 0.3, 0.3],
+            "mass": 0,
+            "position": [-20.3, 0.1, -26]
+        },
+        {
+            "type": "mesh",
+            "shader_program": "colored",
+            "meshes": [],
+            "graphical_mesh": "arrow",
+            "color": [0, 1, 0],
+            "orientation": [0, 0, -90],
+            "scale": [0.3, 0.3, 0.3],
+            "mass": 0,
+            "position": [-0.5, 4, 0]
+        },
+
+        {
+            "type": "lit_platform",
+            "position": [-20, 10, 7]
+        },
+        {
+            "type": "lit_platform",
+            "position": [-20, 10, 0]
+        },
+        {
+            "type": "lit_platform",
+            "position": [-20, 10, -7],
+            "solid": true
+        },
+        {
+            "type": "lit_platform",
+            "position": [-27, 11, 7],
+            "solid": true
+        },
+        {
+            "type": "lit_platform",
+            "position": [-27, 8, 0],
+            "solid": true
+        },
+        {
+            "type": "lit_platform",
+            "position": [-27, 15, -7],
+            "solid": true
+        },
+        {
+            "type": "lit_platform",
+            "position": [-34, 12.5, 7],
+            "solid": true
+        },
+        {
+            "type": "lit_platform",
+            "position": [-34, 8, 0],
+            "solid": true
+        },
+        {
+            "type": "lit_platform",
+            "position": [-34, 13, -7],
+            "solid": true
+        },
+        {
+            "type": "lit_platform",
+            "position": [-41, 14, 7],
+            "solid": true
+        },
+        {
+            "type": "lit_platform",
+            "position": [-41, 9, 0],
+            "solid": true
+        },
+        {
+            "type": "lit_platform",
+            "position": [-41, 11, -7],
+            "solid": true
+        },
+        {
+            "type": "lit_platform",
+            "position": [-48, 9, 7]
+        },
+        {
+            "type": "lit_platform",
+            "position": [-48, 9, 0]
+        },
+        {
+            "type": "lit_platform",
+            "position": [-48, 11, -7]
+        },
+        {
+            "type": "lit_platform",
+            "position": [-55, 9, 7]
+        },
+        {
+            "type": "lit_platform",
+            "position": [-55, 8, 0],
+            "solid": true
+        },
+        {
+            "type": "lit_platform",
+            "position": [-55, 9, -7]
+        },
+        {
+            "type": "lit_platform",
+            "position": [-62, 7, 7]
+        },
+        {
+            "type": "lit_platform",
+            "position": [-62, 8, 0]
+        },
+        {
+            "type": "lit_platform",
+            "position": [-62, 9, -7],
+            "solid": true
+        },
+        {
+            "type": "lit_platform",
+            "position": [-69, 9, 7]
+        },
+        {
+            "type": "lit_platform",
+            "position": [-69, 8, 0],
+            "solid": true
+        },
+        {
+            "type": "lit_platform",
+            "position": [-69, 7, -7]
+        },
+        {
+            "type": "mesh",
+            "meshes": ["islandC"],
+            "graphical_mesh": "island",
+            "scale": [5, 10, 5],
+            "orientation": [0, 90, 0],
+            "shader_program": "fragmentLighting",
+            "position": [-92, 8, 0],
+            "color": [0.6, 0.4, 0.6],
+            "mass": 0
+        }
+    ]
+}

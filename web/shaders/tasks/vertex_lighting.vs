@@ -52,8 +52,9 @@ void main()
     vec3 V = normalize((-position).xyz);
     vec3 R = normalize(reflect(-L, N));
 
-    vec3 I 	= Ia * ka + fAtt * (Id[0] * kd * max(dot(N, L), 0.0));
-        // + Is[0] * ks * pow(max(dot(R, V), 0.0), specExp));
+    vec3 I 	= vec3(0.73, 0.52, 0.3);
+    //Ia * ka + fAtt * (Id[0] * kd * max(dot(N, L), 0.0)
+    //    + Is[0] * ks * pow(max(dot(R, V), 0.0), specExp));
     vfColor = vec4(I.rgb, 1.0);
     
     gl_Position = projectionMatrix * position;

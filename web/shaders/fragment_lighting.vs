@@ -1,5 +1,5 @@
 #version 300 es
-#define MAX_LIGHTS_COUNT 10
+#define MAX_LIGHTS_COUNT 20
 precision mediump int;
 			
 in vec4 vPosition;

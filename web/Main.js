@@ -1,6 +1,7 @@
 /** @module Main */
 
 import HubStage from './stages/HubStage.js';
+import LightingStage from './stages/LightingStage.js';
 import Lighting1Stage from './stages/Lighting1Stage.js';
 import Lighting2Stage from './stages/Lighting2Stage.js';
 import Lighting4Stage from './stages/Lighting4Stage.js';
@@ -20,6 +21,9 @@ let stage = null;
 switch (stageName) {
     case 'test':
         stage = new TestStage();
+        break;
+    case 'lighting':
+        stage = new LightingStage();
         break;
     case 'lighting1':
         stage = new Lighting1Stage();

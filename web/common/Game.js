@@ -11,6 +11,7 @@ import BoxObject from './GameObjects/BoxObject.js';
 import MeshObject from './GameObjects/MeshObject.js';
 import CubeObject from './GameObjects/CubeObject.js';
 import SphereObject from './GameObjects/SphereObject.js';
+import LitPlatform from './GameObjects/LitPlatform.js';
 import * as CANNON from './lib/cannon/cannon-es.js';
 
 /**
@@ -172,6 +173,11 @@ export default class Game {
                         this.gameObjects.push(new Pedestal(this.world,
                             this.programs[program], shaderDefs[program].type,
                             resources, null, options));
+                        break;
+                    case 'lit_platform':
+                        this.gameObjects.push(new LitPlatform(this.world,
+                            this.programs, lightPrograms,
+                            options));
                         break;
                 }
             }
