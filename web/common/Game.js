@@ -93,8 +93,7 @@ export default class Game {
                 ...levelData['shader_programs'],
                 ...baseResources.programs
             }
-            console.log(shaderPrograms);
-
+            
             const scene = levelData['scene'];
             const objects = levelData['objects'];
             return loadResources(
