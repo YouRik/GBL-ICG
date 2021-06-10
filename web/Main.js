@@ -1,13 +1,10 @@
 /** @module Main */
 
 import HubStage from './stages/HubStage.js';
-import LightingStage from './stages/LightingStage.js';
-import Lighting1Stage from './stages/Lighting1Stage.js';
-import Lighting2Stage from './stages/Lighting2Stage.js';
-import Lighting4Stage from './stages/Lighting4Stage.js';
-import SplinesStage from './stages/SplinesStage.js';
-import TestStage from './stages/TestStage.js';
 import TransformationsStage from './stages/TransformationsStage.js';
+import SplinesStage from './stages/SplinesStage.js';
+import LightingStage from './stages/LightingStage.js';
+import TestStage from './stages/TestStage.js';
 
 // Global WebGL rendering context
 window.GL = null;
@@ -22,18 +19,6 @@ switch (stageName) {
     case 'test':
         stage = new TestStage();
         break;
-    case 'lighting':
-        stage = new LightingStage();
-        break;
-    case 'lighting1':
-        stage = new Lighting1Stage();
-        break;
-    case 'lighting2':
-        stage = new Lighting2Stage();
-        break;
-    case 'lighting4':
-        stage = new Lighting4Stage();
-        break;
     case 'hub':
         stage = new HubStage();
         break;
@@ -42,6 +27,9 @@ switch (stageName) {
         break;
     case 'splines':
         stage = new SplinesStage();
+        break;
+    case 'lighting':
+        stage = new LightingStage();
         break;
 }
 
