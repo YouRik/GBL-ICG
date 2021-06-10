@@ -27,9 +27,74 @@ export default class Game {
      * Load stage data
      */
     load() {
+        // Resources required to be loaded in any stage
+        const baseResources = {
+            shaders: [
+                ["fragLightingV", "shaders/tasks/fragment_lighting.vs"],
+                ["fragLightingF", "shaders/tasks/fragment_lighting.fs"],
+                ["defaultV", "shaders/default.vs"],
+                ["defaultF", "shaders/default.fs"]
+            ],
+            textures: [],
+            meshes: [
+                ["icoSphere", "meshes/icosphere.ply"],
+                ["icoSphereSoft", "meshes/icosphere_soft.ply"],
+                ["island", "meshes/island.ply"],
+                ["islandC", "meshes/island_collider.ply"],
+                ["pedestalD1", "meshes/pedestal_convdecomp1.ply"],
+                ["pedestalD2", "meshes/pedestal_convdecomp2.ply"],
+                ["pedestalD3", "meshes/pedestal_convdecomp3.ply"],
+                ["pedestalD4", "meshes/pedestal_convdecomp4.ply"],
+                ["pedestalD5", "meshes/pedestal_convdecomp5.ply"],
+                ["pedestalD6", "meshes/pedestal_convdecomp6.ply"],
+                ["pedestalD7", "meshes/pedestal_convdecomp7.ply"],
+                ["pedestalD8", "meshes/pedestal_convdecomp8.ply"],
+                ["pedestalD9", "meshes/pedestal_convdecomp9.ply"],
+                ["pedestalD10", "meshes/pedestal_convdecomp10.ply"],
+                ["pedestalD11", "meshes/pedestal_convdecomp11.ply"],
+                ["pedestalG", "meshes/pedestal.ply"],
+                ["gateD1", "meshes/gate_convdecomp1.ply"],
+                ["gateD2", "meshes/gate_convdecomp2.ply"],
+                ["gateD3", "meshes/gate_convdecomp3.ply"],
+                ["gateD4", "meshes/gate_convdecomp4.ply"],
+                ["gateD5", "meshes/gate_convdecomp5.ply"],
+                ["gateD6", "meshes/gate_convdecomp6.ply"],
+                ["gateD7", "meshes/gate_convdecomp7.ply"],
+                ["gateD8", "meshes/gate_convdecomp8.ply"],
+                ["gateD9", "meshes/gate_convdecomp9.ply"],
+                ["gateD10", "meshes/gate_convdecomp10.ply"],
+                ["gateG", "meshes/gate.ply"]
+            ],
+            programs: {
+                fragmentLighting: {
+                    type: "lit",
+                    vertex: "fragLightingV",
+                    fragment: "fragLightingF"
+                },
+                colored: {
+                    type: "colored",
+                    vertex: "defaultV",
+                    fragment: "defaultF"
+                }
+            }
+        };
+
         return loadStage(`stages/${this.stageName}.json`).then(levelData => {
             const resourceFiles = levelData['resources'];
-            const shaderPrograms = levelData['shader_programs'];
+
+            // Combine stage resource lists with game base resource lists
+            resourceFiles.shaders =
+                baseResources.shaders.concat(resourceFiles.shaders);
+            resourceFiles.textures =
+                baseResources.textures.concat(resourceFiles.textures);
+            resourceFiles.meshes =
+                baseResources.meshes.concat(resourceFiles.meshes);
+            const shaderPrograms = {
+                ...levelData['shader_programs'],
+                ...baseResources.programs
+            }
+            console.log(shaderPrograms);
+
             const scene = levelData['scene'];
             const objects = levelData['objects'];
             return loadResources(

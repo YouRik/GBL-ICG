@@ -2,9 +2,7 @@
     "resources": {
         "shaders": [
             ["fragLightingV", "shaders/fragment_lighting.vs"],
-            ["fragLightingF", "shaders/fragment_lighting.fs"],
-            ["defaultV", "shaders/default.vs"],
-            ["defaultF", "shaders/default.fs"]
+            ["fragLightingF", "shaders/fragment_lighting.fs"]
         ],
         "textures": [
 
@@ -14,22 +12,10 @@
             ["thingD1", "meshes/thing_convdecomp1.ply"],
             ["thingD2", "meshes/thing_convdecomp2.ply"],
             ["sphere", "meshes/sphere.ply"],
-            ["sphereSoft", "meshes/sphere_soft.ply"],
-            ["icoSphere", "meshes/icosphere.ply"],
-            ["icoSphereSoft", "meshes/icosphere_soft.ply"]
+            ["sphereSoft", "meshes/sphere_soft.ply"]
         ]
     },
     "shader_programs": {
-        "fragmentLighting": {
-            "type": "lit",
-            "vertex": "fragLightingV",
-            "fragment": "fragLightingF"
-        },
-        "colored": {
-            "type": "colored",
-            "vertex": "defaultV",
-            "fragment": "defaultF"
-        }
     },
     "scene": {
         "player": {
