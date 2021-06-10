@@ -33,6 +33,8 @@ export default class ShadowsStage extends Game {
             'modelMatrix');
         this.shadowMapLoc = GL.getUniformLocation(this.shadowedShader,
             'shadowMap');
+        this.shadowedLightSpaceMatLoc = 
+            GL.getUniformLocation(this.shadowedShader, 'lightSpaceMatrix');
 
         // Shadow map properties
         this.shadowWidth = 2048;
@@ -83,21 +85,20 @@ export default class ShadowsStage extends Game {
         GL.cullFace(GL.BACK);
         GL.bindFramebuffer(GL.FRAMEBUFFER, null);
 
+        // Reset view port to default
         this.setViewPort(this.canvas);
-        GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT);
         // Bind texture and set as uniform for shadow map
         GL.useProgram(this.shadowedShader);
 		GL.activeTexture(GL.TEXTURE0);
 		GL.bindTexture(GL.TEXTURE_2D, this.depthMap);
-		GL.uniform1i(GL.getUniformLocation(this.shadowedShader, 'shadowMap'), 0);
-        GL.uniformMatrix4fv(GL.getUniformLocation(this.shadowedShader, 'lightSpaceMatrix'), false, this.lightSpaceMatrix);
-        // Render all objects
-        this.gameObjects.forEach(object => {
-            object.render();
-        });
+		GL.uniform1i(this.shadowMapLoc, 0);
+        GL.uniformMatrix4fv(this.shadowedLightSpaceMatLoc, false,
+            this.lightSpaceMatrix);
+        // Render as usual
+        super.render();
 
         // render depth map as texture to quad to test
-        // this.renderDepthMapQuad();
+        this.renderDepthMapQuad();
     }
 
     setLightSourceViewAndPerspective() {
@@ -119,7 +120,8 @@ export default class ShadowsStage extends Game {
         this.lightSpaceMatrix = GLMAT.mat4.create();
         GLMAT.mat4.mul(this.lightSpaceMatrix, projectionMatrix, viewMatrix);
         GL.useProgram(this.shadowMapShader);
-        GL.uniformMatrix4fv(this.shadowMapLightSpaceMatLoc, false, this.lightSpaceMatrix);
+        GL.uniformMatrix4fv(this.shadowMapLightSpaceMatLoc,
+            false, this.lightSpaceMatrix);
     }
 
     renderDepthMapQuad() {
