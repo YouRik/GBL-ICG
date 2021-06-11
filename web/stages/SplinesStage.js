@@ -48,6 +48,7 @@ export default class SplinesStage extends Game {
         // Gate 1
         const gate1Entered = (event) => {
             if (event.body === this.player.physicsBody) {
+                localStorage.setItem('stage2Done', 'true');
                 window.location.replace('hub');
             }
         }

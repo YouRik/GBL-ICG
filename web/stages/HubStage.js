@@ -35,24 +35,53 @@ export default class HubStage extends Game {
         }
         );
         this.gameObjects.push(orb1);
-        // Orb 2
-        const orb2 = new SphereObject(this.world,
-            this.programs['fragmentLighting'], 'lit',
-            meshes['icoSphere'],
-            {
-                mass: 5,
-                lightParams: {
-                    ka: [0.9, 0.17, 0.31],
-                    kd: [0.78, 0.91, 0.34],
-                    ks: [1, 1, 1],
-                    specExp: 10
-                },
-                radius: 0.4,
-                position: [3, 0.4, -3],
-                portable: true
-            }
-        );
-        this.gameObjects.push(orb2);
+
+        var orb2 = null;
+
+        if (localStorage.stage1Done == 'true') {
+            // Orb 2
+            orb2 = new SphereObject(this.world,
+                this.programs['fragmentLighting'], 'lit',
+                meshes['icoSphere'],
+                {
+                    mass: 5,
+                    lightParams: {
+                        ka: [0.9, 0.17, 0.31],
+                        kd: [0.78, 0.91, 0.34],
+                        ks: [1, 1, 1],
+                        specExp: 10
+                    },
+                    radius: 0.4,
+                    position: [3, 0.4, -3],
+                    portable: true
+                }
+            );
+            this.gameObjects.push(orb2);
+        }
+
+
+        var orb3 = null;
+
+        if (localStorage.stage2Done == 'true') {
+            // Orb 3
+            orb3 = new SphereObject(this.world,
+                this.programs['fragmentLighting'], 'lit',
+                meshes['icoSphere'],
+                {
+                    mass: 5,
+                    lightParams: {
+                        ka: [0.93, 0.53, 0.18],
+                        kd: [0, 0.5, 1.0],
+                        ks: [0.76, 0.13, 0.28],
+                        specExp: 10
+                    },
+                    radius: 0.4,
+                    position: [0, 0.4, -3],
+                    portable: true
+                }
+            );
+            this.gameObjects.push(orb3);
+        }
 
         // Gate 1
         const gate1Entered = (event) => {
@@ -104,17 +133,26 @@ export default class HubStage extends Game {
         const pedestalFilled = (event) => {
             if (event.body === orb1.physicsBody) {
                 gate1.activate();
-            } else if (event.body === orb2.physicsBody) {
+            } else if (localStorage.stage1Done == 'true' &&
+                event.body === orb2.physicsBody) {
                 gate2.activate();
+            } else if (localStorage.stage2Done == 'true' &&
+                event.body === orb3.physicsBody) {
+                gate3.activate();
             }
         };
         const pedestalEmptied = (event) => {
             if (event.bodyA === orb1.physicsBody
                 || event.bodyB === orb1.physicsBody) {
-                    gate1.deactivate();
-            } else if (event.bodyA === orb2.physicsBody
-                || event.bodyB === orb2.physicsBody) {
-                    gate2.deactivate();
+                gate1.deactivate();
+            } else if (localStorage.stage1Done == 'true' &&
+                (event.bodyA === orb2.physicsBody
+                    || event.bodyB === orb2.physicsBody)) {
+                gate2.deactivate();
+            } else if (localStorage.stage1Done == 'true' &&
+                (event.bodyA === orb3.physicsBody
+                    || event.bodyB === orb3.physicsBody)) {
+                gate3.deactivate();
             }
         };
         const pedestal = new Pedestal(this.world,

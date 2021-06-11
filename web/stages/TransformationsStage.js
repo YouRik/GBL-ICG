@@ -47,6 +47,7 @@ export default class TransformationsStage extends Game {
         // Gate 1
         const gate1Entered = (event) => {
             if (event.body === this.player.physicsBody) {
+                localStorage.setItem('stage1Done', 'true');
                 window.location.replace('hub');
             }
         }
