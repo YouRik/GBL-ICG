@@ -30,7 +30,7 @@ export default class HubStage extends Game {
             mass: 5,
             color: [1, 1, 0],
             radius: 0.4,
-            position: [-3, 0.4, -3],
+            position: [11, 0.8, -4],
             portable: true
         }
         );
@@ -52,7 +52,7 @@ export default class HubStage extends Game {
                         specExp: 10
                     },
                     radius: 0.4,
-                    position: [3, 0.4, -3],
+                    position: [12, 0.8, -3],
                     portable: true
                 }
             );
@@ -76,7 +76,7 @@ export default class HubStage extends Game {
                         specExp: 10
                     },
                     radius: 0.4,
-                    position: [0, 0.4, -3],
+                    position: [13, 0.8, -4],
                     portable: true
                 }
             );
