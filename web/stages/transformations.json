@@ -250,7 +250,7 @@
             "type": "cube",
             "shader_program": "fragmentLighting",
             "halfExtent": 0.7,
-            "position": [-6, 0.5, -6],
+            "position": [-6, 0.7, -6],
             "color": [0, 1, 0.5],
             "mass": 5,
             "portable": true

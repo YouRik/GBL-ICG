@@ -5,6 +5,7 @@ import SphereObject from '../common/GameObjects/SphereObject.js';
 import Pedestal from '../common/GameObjects/Pedestal.js';
 import Gate from '../common/GameObjects/Gate.js';
 import LightSource from '../common/LightSource.js';
+import Checkpoint from '../common/GameObjects/Checkpoint.js';
 
 /**
  * TODO: documentation
@@ -22,6 +23,16 @@ export default class LightingStage extends Game {
 
         const meshes = resources.meshes;
 
+        // Add checkpoints
+        this.gameObjects.push(
+            new Checkpoint(this.world, this.programs['colored'],
+            meshes['icoSphere'], [0, 10.5, 0], [0, 10.4, 0],
+            this.player));
+        this.gameObjects.push(
+            new Checkpoint(this.world, this.programs['colored'],
+            meshes['icoSphere'], [-2.8, 5.7, 0], [-2.8, 5.6, 0],
+            this.player));
+
         // Orb 1
         const orb1 = new SphereObject(this.world,
             this.programs['vertexLighting'], 'lit',
@@ -34,7 +45,7 @@ export default class LightingStage extends Game {
                 specExp: 10
             },
             radius: 0.4,
-            position: [5, 11, -8],
+            position: [5, 10.5, -8],
             portable: true
         }
         );

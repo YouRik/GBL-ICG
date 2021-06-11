@@ -153,9 +153,15 @@ export default class Game {
         // Set up scene settings
         for (const setting in sceneDefs) {
             if (setting == 'player') {
-                const startPos = sceneDefs['player']['start_position'];
+                var startPos = sceneDefs['player']['start_position'];
                 const yaw = sceneDefs['player']['yaw'];
                 const pitch = sceneDefs['player']['pitch'];
+
+                // Retrieve stored respawn position if exists
+                if (localStorage.respawnPosition !== undefined) {
+                    startPos = JSON.parse(localStorage.respawnPosition);
+                }
+
                 this.player = new FirstPersonPlayer(this.world, startPos,
                     this.programs, resources.meshes['icoSphere'],
                     canvas.width / canvas.height, yaw, pitch);

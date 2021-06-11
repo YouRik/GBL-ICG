@@ -6,8 +6,9 @@ import Pedestal from '../common/GameObjects/Pedestal.js';
 import BoxObject from '../common/GameObjects/BoxObject.js';
 import MeshObject from '../common/GameObjects/MeshObject.js';
 import SphereObject from '../common/GameObjects/SphereObject.js';
+import Checkpoint from '../common/GameObjects/Checkpoint.js';
 import * as GLMAT from '../common/lib/gl-matrix/index.js';
-import * as CANNON from '../common/lib/cannon/cannon-es.js'
+import * as CANNON from '../common/lib/cannon/cannon-es.js';
 
 /**
  * TODO: documentation
@@ -143,6 +144,21 @@ export default class TransformationsStage extends Game {
         });
         this.gameObjects.push(lockingBolt);
 
+        // Add checkpoints
+        this.gameObjects.push(
+            new Checkpoint(this.world, this.programs['colored'],
+            meshes['icoSphere'], [-10, 1, -10], [-10, 0.9, -10],
+            this.player));
+        this.gameObjects.push(
+            new Checkpoint(this.world, this.programs['colored'],
+            meshes['icoSphere'], [-12, 6.5, 38], [-12, 6.4, 38],
+            this.player));
+        this.gameObjects.push(
+            new Checkpoint(this.world, this.programs['colored'],
+            meshes['icoSphere'], [-50, 16, 30], [-50, 15.9, 30],
+            this.player));
+
+        // Input fields
         const cyanTranslationDefault = boxCyan.position;
         const cyanQuaternionDefault = boxCyan.quaternion;
         const magentaTranslationDefault = boxMagenta.position;

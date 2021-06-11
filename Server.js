@@ -82,7 +82,7 @@ function respondHTML(req, res) {
             res.write(rendered);
         } catch (error) {
             const rendered = ejs.render(data,
-                { filename: './web/index.ejs', StageName: 'test' });
+                { filename: './web/index.ejs', StageName: 'hub' });
             res.write(rendered);
         }
         return res.end();

@@ -11,6 +11,7 @@
 		<%- include(`./html/${StageName}-title.html`); %>
 		<table>
 			<tr>
+				<td><button id="btnToHub">Return to hub</button></td>
 				<td>
 					<p>Frametime / FPS: </p>
 				</td>
@@ -39,6 +40,12 @@
 		<p>
 			Remember ... from the lecture? No worries! Here's a short summary of the most important bits you will need.
 		</p>
+		<script type="text/javascript">
+			const btn = document.getElementById('btnToHub');
+			btn.addEventListener('click', () => {
+				location.replace('hub');
+			});
+		</script>
 		<script type="text/javascript">
 			var stageName = '<%= StageName %>';
 		</script>

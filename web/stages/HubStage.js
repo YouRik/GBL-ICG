@@ -17,6 +17,8 @@ export default class HubStage extends Game {
 
     // Override parent's setup to enable level-specific logic
     setup(resources, shaderDefs, sceneDefs, objectDefs) {
+        // Reset player respawn position
+        localStorage.removeItem('respawnPosition');
         super.setup(resources, shaderDefs, sceneDefs, objectDefs);
 
         const meshes = resources.meshes;
@@ -28,7 +30,7 @@ export default class HubStage extends Game {
             mass: 5,
             color: [1, 1, 0],
             radius: 0.4,
-            position: [-3, 0.5, -3],
+            position: [-3, 0.4, -3],
             portable: true
         }
         );
@@ -46,7 +48,7 @@ export default class HubStage extends Game {
                     specExp: 10
                 },
                 radius: 0.4,
-                position: [3, 0.5, -3],
+                position: [3, 0.4, -3],
                 portable: true
             }
         );
