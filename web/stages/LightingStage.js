@@ -26,11 +26,11 @@ export default class LightingStage extends Game {
         // Add checkpoints
         this.gameObjects.push(
             new Checkpoint(this.world, this.programs['colored'],
-            meshes['icoSphere'], [0, 10.5, 0], [0, 10.4, 0],
+            meshes['icoSphere'], [-2.8, 5.7, 0], [-2.8, 5.6, 0], 90, 0,
             this.player));
         this.gameObjects.push(
             new Checkpoint(this.world, this.programs['colored'],
-            meshes['icoSphere'], [-2.8, 5.7, 0], [-2.8, 5.6, 0],
+            meshes['icoSphere'], [0, 10.5, 0], [0, 10.4, 0], -90, 0,
             this.player));
 
         // Orb 1

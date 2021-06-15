@@ -38,7 +38,7 @@ export default class TransformationsStage extends Game {
                 specExp: 10
             },
             radius: 0.4,
-            position: [-90, 19.6, 23],
+            position: [-90, 19.5, 23],
             portable: true
         }
         );
@@ -66,6 +66,7 @@ export default class TransformationsStage extends Game {
         const pedestal1Filled = (event) => {
             if (event.body === orb1.physicsBody) {
                 gate1.activate();
+                changeTask(5);
             }
         };
         const pedestal1Emptied = (event) => {
@@ -148,16 +149,23 @@ export default class TransformationsStage extends Game {
         // Add checkpoints
         this.gameObjects.push(
             new Checkpoint(this.world, this.programs['colored'],
-            meshes['icoSphere'], [-10, 1, -10], [-10, 0.9, -10],
-            this.player));
+            meshes['icoSphere'], [-10, 1, -10], [-10, 0.9, -10], 25, 5,
+            this.player, () => {
+                changeTask(1);
+            }));
+
         this.gameObjects.push(
             new Checkpoint(this.world, this.programs['colored'],
-            meshes['icoSphere'], [-12, 6.5, 38], [-12, 6.4, 38],
-            this.player));
+            meshes['icoSphere'], [-12, 6.5, 38], [-12, 6.4, 38], -82, 12,
+            this.player, () => {
+                changeTask(2);
+            }));
         this.gameObjects.push(
             new Checkpoint(this.world, this.programs['colored'],
-            meshes['icoSphere'], [-50, 16, 30], [-50, 15.9, 30],
-            this.player));
+            meshes['icoSphere'], [-50, 16, 34], [-50, 15.9, 34], 208, 12,
+            this.player, () => {
+                changeTask(4);
+            }));
 
         // Input fields
         const cyanTranslationDefault = boxCyan.position;
@@ -209,13 +217,16 @@ export default class TransformationsStage extends Game {
                         && key.quaternion[2] == targetQuat[2]
                         && key.quaternion[3] == targetQuat[3]) {
                             lock.color = [1, 1, 0];
-                            lockingBolt.physicsBody.position.x -= 5;
+                            lockingBolt.physicsBody.position.x = -50.2;
+                            changeTask(3);
                     } else {
                         lock.color = [0.7, 0.7, 0.3];
+                        lockingBolt.physicsBody.position.x = -45.2;
                     }
                     lock.calculateLightParams();
             } else {
                 lock.color = [0.47, 0.47, 0.47];
+                lockingBolt.physicsBody.position.x = -45.2;
                 lock.calculateLightParams();
             }
             this.render();

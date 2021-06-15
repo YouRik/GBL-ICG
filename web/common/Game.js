@@ -153,13 +153,16 @@ export default class Game {
         // Set up scene settings
         for (const setting in sceneDefs) {
             if (setting == 'player') {
-                var startPos = sceneDefs['player']['start_position'];
-                const yaw = sceneDefs['player']['yaw'];
-                const pitch = sceneDefs['player']['pitch'];
+                let startPos = sceneDefs['player']['start_position'];
+                let yaw = sceneDefs['player']['yaw'];
+                let pitch = sceneDefs['player']['pitch'];
 
                 // Retrieve stored respawn position if exists
-                if (localStorage.respawnPosition !== undefined) {
-                    startPos = JSON.parse(localStorage.respawnPosition);
+                if (localStorage.respawn !== undefined) {
+                    const respawnPosition = JSON.parse(localStorage.respawn);
+                    startPos = respawnPosition[0];
+                    yaw = respawnPosition[1];
+                    pitch = respawnPosition[2];
                 }
 
                 this.player = new FirstPersonPlayer(this.world, startPos,

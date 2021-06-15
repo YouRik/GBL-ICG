@@ -6,8 +6,8 @@ import SphereObject from './SphereObject.js';
  * TODO: docs
  */
 export default class Checkpoint extends SphereObject {
-    constructor(world, shader, mesh, indicatorPosition, resetPosition, player,
-        stageName) {
+    constructor(world, shader, mesh, indicatorPosition, resetPosition, resetYaw,
+        resetPitch, player, callback) {
         super(world, shader, 'colored', mesh, {
             position: indicatorPosition,
             radius: 1,
@@ -18,7 +18,9 @@ export default class Checkpoint extends SphereObject {
 
         this.playerBody = player.physicsBody;
         this.resetPosition = resetPosition;
-        this.stageName = stageName;
+        this.resetYaw = resetYaw;
+        this.resetPitch = resetPitch;
+        this.callback = callback;
 
         this.physicsBody.addEventListener('collide', (event) => {
             if (event.body == this.playerBody) {
@@ -28,7 +30,11 @@ export default class Checkpoint extends SphereObject {
     }
 
     handleActivation() {
-        localStorage.setItem('respawnPosition',
-            JSON.stringify(this.resetPosition));
+        localStorage.setItem('respawn',
+            JSON.stringify(
+                [this.resetPosition, this.resetYaw, this.resetPitch]));
+        if (typeof(this.callback) == 'function') {
+            this.callback();
+        }
     }
 }

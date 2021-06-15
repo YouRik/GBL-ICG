@@ -21,7 +21,9 @@
     },
     "scene": {
         "player": {
-            "start_position": [-50, -3.1, -35]
+            "start_position": [-50, -3.1, -35],
+            "pitch": 25,
+            "yaw": 10
         },
         "ambient_light": [0.7, 0.7, 0.7]
     },
@@ -233,7 +235,7 @@
             "orientation": [0, -45, 0],
             "position": [-40, -2.7, -44],
             "color": [1, 0.5, 1],
-            "mass": 10,
+            "mass": 20,
             "portable": true
         },
         {
@@ -318,7 +320,7 @@
             "shader_program": "fragmentLighting",
             "halfExtents": [2, 0.2, 15],
             "orientation": [0, 0, 0],
-            "position": [-45, 28, 10],
+            "position": [-45, 24.7, 10],
             "color": [0.44, 0.16, 0.39],
             "mass": 80
         }

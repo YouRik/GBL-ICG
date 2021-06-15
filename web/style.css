@@ -32,11 +32,22 @@ h2 {
   width: 60%;
 }
 
+#triangle_img {
+  width: 4vw;
+  height: 4vw;
+}
+
 #tasks-container {
   width: 40%;
   padding-left: 2vw;
   vertical-align: top;
 }
+
+#tasks-container h2 {
+  display: inline;
+  vertical-align: 100%;
+}
+
 #tasks-container * {
   margin-top: 0;
 }

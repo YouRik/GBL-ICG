@@ -18,7 +18,7 @@ export default class HubStage extends Game {
     // Override parent's setup to enable level-specific logic
     setup(resources, shaderDefs, sceneDefs, objectDefs) {
         // Reset player respawn position
-        localStorage.removeItem('respawnPosition');
+        localStorage.removeItem('respawn');
         super.setup(resources, shaderDefs, sceneDefs, objectDefs);
 
         const meshes = resources.meshes;
@@ -36,7 +36,7 @@ export default class HubStage extends Game {
         );
         this.gameObjects.push(orb1);
 
-        var orb2 = null;
+        let orb2 = null;
 
         if (localStorage.stage1Done == 'true') {
             // Orb 2
@@ -60,7 +60,7 @@ export default class HubStage extends Game {
         }
 
 
-        var orb3 = null;
+        let orb3 = null;
 
         if (localStorage.stage2Done == 'true') {
             // Orb 3
@@ -149,7 +149,7 @@ export default class HubStage extends Game {
                 (event.bodyA === orb2.physicsBody
                     || event.bodyB === orb2.physicsBody)) {
                 gate2.deactivate();
-            } else if (localStorage.stage1Done == 'true' &&
+            } else if (localStorage.stage2Done == 'true' &&
                 (event.bodyA === orb3.physicsBody
                     || event.bodyB === orb3.physicsBody)) {
                 gate3.deactivate();
