@@ -41,7 +41,7 @@ export default class ShadowsStage extends Game {
         this.shadowHeight = 2048;
 
         // Create shadow casting light source
-        this.lightDirection = [100, -150, 200];
+        this.lightDirection = [50, -75, 100];
         this.dirLightSource = new DirectedLightSource(this.lightDirection,
             this.lightPrograms, {
             Id: [0.7, 0.7, 0.7],
@@ -64,11 +64,35 @@ export default class ShadowsStage extends Game {
             this.shadowHeight, 0, GL.DEPTH_COMPONENT, GL.FLOAT, null);
         GL.framebufferTexture2D(GL.FRAMEBUFFER, GL.DEPTH_ATTACHMENT,
             GL.TEXTURE_2D, this.depthMap, 0);
-        // GL.drawBuffers([GL.NONE]);
-        // GL.readBuffer(GL.NONE);
+
+        // Create depth map in color attachment to read from on CPU
+        this.depthMapColor = GL.createTexture();
+        GL.bindTexture(GL.TEXTURE_2D, this.depthMapColor);
+        GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MIN_FILTER, GL.NEAREST);
+        GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MAG_FILTER, GL.NEAREST);
+        GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_S, GL.CLAMP_TO_EDGE);
+        GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.CLAMP_TO_EDGE);
+        GL.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, this.shadowWidth,
+            this.shadowHeight, 0, GL.RGBA, GL.UNSIGNED_BYTE, null);
+        GL.framebufferTexture2D(GL.FRAMEBUFFER, GL.COLOR_ATTACHMENT0,
+            GL.TEXTURE_2D, this.depthMapColor, 0);
         GL.bindTexture(GL.TEXTURE_2D, null);
         GL.bindFramebuffer(GL.FRAMEBUFFER, null);
         // GL.checkFramebufferStatus(GL.FRAMEBUFFER, this.shadowFramebuffer);
+    }
+
+    update(deltaTime) {
+        GL.bindFramebuffer(GL.FRAMEBUFFER, this.shadowFramebuffer);
+        
+        // TODO: Read pixel value from depth texture
+        GL.readBuffer(GL.COLOR_ATTACHMENT0);
+        const pixelArr = new Uint8Array(4);
+        GL.readPixels(1024, 1024, 1, 1, GL.RGBA, GL.UNSIGNED_BYTE, pixelArr);
+        console.log(pixelArr[0]);
+
+        GL.bindFramebuffer(GL.FRAMEBUFFER, null);
+
+        super.update(deltaTime);
     }
 
     render() {
@@ -98,13 +122,13 @@ export default class ShadowsStage extends Game {
         super.render();
 
         // render depth map as texture to quad to test
-        this.renderDepthMapQuad();
+        // this.renderDepthMapQuad();
     }
 
     setLightSourceViewAndPerspective() {
         // Set orthographic projection matrix
         const projectionMatrix = GLMAT.mat4.create();
-        GLMAT.mat4.ortho(projectionMatrix, -20, 20, -20, 20, 1, 500);
+        GLMAT.mat4.ortho(projectionMatrix, -30, 30, -20, 20, 1, 200);
 
         // Set view matrix
         const viewMatrix = GLMAT.mat4.create();

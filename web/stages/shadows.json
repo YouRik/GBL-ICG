@@ -98,8 +98,8 @@
         {
             "type": "box",
             "shader_program": "shadowedFragmentLighting",
-            "halfExtents": [1, 5, 1],
-            "position": [5, 5, 5],
+            "halfExtents": [5, 10, 5],
+            "position": [20, 10, 20],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
                 "kd": [0.76, 0.6, 0.42],

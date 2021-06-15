@@ -35,7 +35,7 @@ float shadow(int lIndex) {
     float shadow = 0.0;
     if (projected.x > 1.0 || projected.x < 0.0
         || projected.y > 1.0 || projected.y < 0.0 || projected.z > 1.0) {
-        shadow = 0.0;
+        shadow = 1.0;
     } else {
         float closest = texture(shadowMap, projected.xy).r;
         float current = projected.z;
