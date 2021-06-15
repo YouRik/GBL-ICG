@@ -107,7 +107,32 @@
                 "specExp": 10
             },
             "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "shadowedFragmentLighting",
+            "halfExtents": [1, 5, 1],
+            "position": [10, 5, 10],
+            "lightParams": {
+                "ka": [0.62, 0.45, 0.26],
+                "kd": [0.76, 0.6, 0.42],
+                "ks": [0.33, 0.46, 0.22],
+                "specExp": 10
+            },
+            "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "shadowedFragmentLighting",
+            "halfExtents": [1, 5, 1],
+            "position": [15, 5, 5],
+            "lightParams": {
+                "ka": [0.62, 0.45, 0.26],
+                "kd": [0.76, 0.6, 0.42],
+                "ks": [0.33, 0.46, 0.22],
+                "specExp": 10
+            },
+            "mass": 0
         }
-
     ]
 }
