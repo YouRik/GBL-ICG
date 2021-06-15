@@ -133,6 +133,20 @@
                 "specExp": 10
             },
             "mass": 0
+        },
+        {
+            "type": "box",
+            "shader_program": "shadowedFragmentLighting",
+            "halfExtents": [0.2, 5, 3],
+            "position": [5, 5, 15],
+            "orientation": [0, -45, 0],
+            "lightParams": {
+                "ka": [0.62, 0.45, 0.26],
+                "kd": [0.76, 0.6, 0.42],
+                "ks": [0.33, 0.46, 0.22],
+                "specExp": 10
+            },
+            "mass": 0
         }
     ]
 }

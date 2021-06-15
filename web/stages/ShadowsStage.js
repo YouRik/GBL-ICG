@@ -84,11 +84,18 @@ export default class ShadowsStage extends Game {
     update(deltaTime) {
         GL.bindFramebuffer(GL.FRAMEBUFFER, this.shadowFramebuffer);
         
-        // TODO: Read pixel value from depth texture
+        // Calculate player depth in light space
+        const playerPosLightSpace = GLMAT.vec3.create();
+        GLMAT.vec3.transformMat4(playerPosLightSpace,
+            this.player.position, this.lightSpaceMatrix);
+        const playerDepth = 255 - Math.round(playerPosLightSpace[2] * 255);
+
+        // Read pixel value from depth texture
         GL.readBuffer(GL.COLOR_ATTACHMENT0);
         const pixelArr = new Uint8Array(4);
-        GL.readPixels(1024, 1024, 1, 1, GL.RGBA, GL.UNSIGNED_BYTE, pixelArr);
-        console.log(pixelArr[0]);
+        GL.readPixels(this.shadowWidth / 2, this.shadowHeight / 2, 1, 1,
+            GL.RGBA, GL.UNSIGNED_BYTE, pixelArr);
+        console.log(playerDepth, pixelArr[0]);
 
         GL.bindFramebuffer(GL.FRAMEBUFFER, null);
 
@@ -122,7 +129,7 @@ export default class ShadowsStage extends Game {
         super.render();
 
         // render depth map as texture to quad to test
-        // this.renderDepthMapQuad();
+        this.renderDepthMapQuad();
     }
 
     setLightSourceViewAndPerspective() {
@@ -160,12 +167,12 @@ export default class ShadowsStage extends Game {
         ];
 
         const texCoords = [
-            0.0, 1.0,			// lower left
-            1.0, 1.0,			// lower right
-            0.0, 0.0,			// upper left
-            1.0, 0.0,			// upper right
-            0.0, 0.0,			// upper left
-            1.0, 1.0			// lower right
+            0.0, 0.0,			// lower left
+            1.0, 0.0,			// lower right
+            0.0, 1.0,			// upper left
+            1.0, 1.0,			// upper right
+            0.0, 1.0,			// upper left
+            1.0, 0.0			// lower right
         ];
 
         // Init VBOs
@@ -200,7 +207,6 @@ export default class ShadowsStage extends Game {
         GL.vertexAttribPointer(texCoordsLoc, 2, GL.FLOAT, false, 0, 0);
     
         // Render
-        GL.clear(GL.COLOR_BUFFER_BIT);
         GL.drawArrays(GL.TRIANGLES, 0, 6);
     }
 }
