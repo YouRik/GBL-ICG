@@ -277,19 +277,22 @@ export default class GameObject {
     }
 
     renderToShadowMap(shaderProgram, modelMatLoc) {
-        // Bind buffers and shader program
-        GL.bindBuffer(GL.ARRAY_BUFFER, this.dataVBO);
-        GL.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, this.indexVBO);
-        GL.useProgram(shaderProgram);
+        if (this.visible) {
+            // Bind buffers and shader program
+            GL.bindBuffer(GL.ARRAY_BUFFER, this.dataVBO);
+            GL.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, this.indexVBO);
+            GL.useProgram(shaderProgram);
 
-        // Set model matrix
-        GL.uniformMatrix4fv(modelMatLoc, false, this.modelMatrix);
+            // Set model matrix
+            GL.uniformMatrix4fv(modelMatLoc, false, this.modelMatrix);
 
-        // Set attribute pointer for positions
-        GL.enableVertexAttribArray(this.posLoc);
-        GL.vertexAttribPointer(this.posLoc, 3, GL.FLOAT, false, 0, 0);
-        
-        // Draw all the indices
-        GL.drawElements(GL.TRIANGLES, this.indexCount, GL.UNSIGNED_SHORT, 0);
+            // Set attribute pointer for positions
+            GL.enableVertexAttribArray(this.posLoc);
+            GL.vertexAttribPointer(this.posLoc, 3, GL.FLOAT, false, 0, 0);
+            
+            // Draw all the indices
+            GL.drawElements(GL.TRIANGLES, this.indexCount, GL.UNSIGNED_SHORT,
+                0);
+        }
     }
 }
