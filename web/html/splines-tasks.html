@@ -4,73 +4,95 @@
     <button id="nextButton">Next</button>
 </div>
 <div id="tasks">
+    <div id="task0">
+        <p>
+            Nice observation platform. What a view... well, maybe not so much. <br />
+            Anyway, it looks like you can bend these half pipes into shape to roll the orb to that huge pedestal.
+        </p>
+        <ol>
+            <li>Calculate three approximation points <i>Q<sub>1</sub>(t)</i> for the first curve using De Casteljau's algorithm. Use the following control points: <br />
+                <b>
+                    <i>P<sub>0</sub><sup>(0)</sup></i> = (8, 4) <br />
+                    <i>P<sub>1</sub><sup>(0)</sup></i> = (-20, 12) <br />
+                    <i>P<sub>2</sub><sup>(0)</sup></i> = (-8, 40) <br />
+                </b>
+                <br />
+                <table>
+                    <tr>
+                        <td><i>Q<sub>1</sub>(0.25)</i> = </td>
+                        <td>(<input id="y1" type="number" size="5" />,</td>
+                        <td><input id="z1" type="number" size="5" />)</td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <td><i>Q<sub>1</sub>(0.50)</i> = </td>
+                        <td>(<input id="y2" type="number" size="5" />,</td>
+                        <td><input id="z2" type="number" size="5" />)</td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <td><i>Q<sub>1</sub>(0.75)</i> = </td>
+                        <td>(<input id="y3" type="number" size="5" />,</td>
+                        <td><input id="z3" type="number" size="5" />)</td>
+                    </tr>
+                </table>
+                <button id="btnApply">Apply</button>
+                <button id="btnReset">Reset</button>
+            </li>
+            <li>
+                Get the orb rolling and see if it reaches the next island.
+            </li>
+        </ol>
+    </div>
     <div id="task1">
-        The pedestal that activates the gate is not reachable... Build some slides to move the orb over there, then get to the gate
+        <p>
+            Well done! How about you fix the code for generating those splines so you won't have to calculate them all by hand.
+            <ol>
+                <li>Open the file <div class=code>web/tasks/decasteljau.js</div> in a text editor.</li>
+                <li>Read the comments and follow the existing code.</li>
+                <li>Fix the missing parts marked with TASK.</li>
+                <li>Come back here and observe the generated splines.</li>
+                <li>If your changes are correct, you should now be able to roll the orb into the pedestal.</li>
+            </ol>
+        </p>
     </div>
     <div id="task2">
         <p>
-            Calculate three approximation points <i>Q<sub>1</sub>(t)</i> for the first curve using De Casteljau's algorithm. Use the following control points:<br /><br />
-            <b>
-                <i>P<sub>0</sub><sup>(0)</sup></i> = (8, 4) <br />
-                <i>P<sub>1</sub><sup>(0)</sup></i> = (-20, 12) <br />
-                <i>P<sub>2</sub><sup>(0)</sup></i> = (-8, 40) <br />
-            </b>
+            Great!
+            <ul>
+                <li>Now you only need to jump over these splines on the left and get through the gate.</li>
+            </ul> 
         </p>
-        <table>
-            <tr>
-                <td><i>Q<sub>1</sub>(0.25)</i> = </td>
-                <td>(<input id="y1" type="number" size="5" />,</td>
-                <td><input id="z1" type="number" size="5" />)</td>
-            </tr>
-        </table>
-        <table>
-            <tr>
-                <td><i>Q<sub>1</sub>(0.50)</i> = </td>
-                <td>(<input id="y2" type="number" size="5" />,</td>
-                <td><input id="z2" type="number" size="5" />)</td>
-            </tr>
-        </table>
-        <table>
-            <tr>
-                <td><i>Q<sub>1</sub>(0.75)</i> = </td>
-                <td>(<input id="y3" type="number" size="5" />,</td>
-                <td><input id="z3" type="number" size="5" />)</td>
-            </tr>
-        </table>
-        <button id="btnApply">Apply</button>
-        <button id="btnReset">Reset</button>
     </div>
 </div>
 
 <script defer>
-    const taskCount = 2;
+    const taskCount = 3;
     let taskIndex = 0;
     const prevButton = document.getElementById('prevButton');
     const nextButton = document.getElementById('nextButton');
     const tasks = [];
 
     for (let i = 0; i < taskCount; i++) {
-        tasks.push(document.getElementById(`task${i + 1}`));
+        tasks.push(document.getElementById(`task${i}`));
         tasks[i].style.display = 'none';
     }
     tasks[taskIndex].style.display = 'block';
 
     prevButton.addEventListener('click', (event) => {
-        tasks[taskIndex].style.display = 'none';
-        taskIndex--;
-        if (taskIndex < 0) {
-            taskIndex = 0;
-        }
-        tasks[taskIndex].style.display = 'block';
+        changeTask(taskIndex - 1);
     });
 
     nextButton.addEventListener('click', (event) => {
-        tasks[taskIndex].style.display = 'none';
-        taskIndex++;
-        if (taskIndex >= taskCount) {
-            taskIndex = taskCount - 1;
-        }
-        tasks[taskIndex].style.display = 'block';
+        changeTask(taskIndex + 1);
     });
 
+    function changeTask(index = taskIndex) {
+        tasks[taskIndex].style.display = 'none';
+        taskIndex = index;
+        taskIndex = Math.max(0, Math.min(taskIndex, taskCount - 1));
+        tasks[taskIndex].style.display = 'block';
+    }
 </script>

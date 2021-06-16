@@ -37,8 +37,7 @@ export default class SplinesStage extends Game {
                 specExp: 10
             },
             radius: 0.4,
-            position: [2, 6, -2],
-            // position: [0, 8, 4],
+            position: [2, 5.6, -2],
             portable: true
         });
         orb1.physicsBody.angularDamping = 0;
@@ -58,7 +57,7 @@ export default class SplinesStage extends Game {
                 scale: [1, 1, 1],
                 orientation: [0, -60, 0],
                 color: [0.2, 0, 0.7],
-                position: [0, -10, 55]
+                position: [120, -112, 80]
             }
         );
         this.gameObjects.push(gate1);
@@ -67,6 +66,7 @@ export default class SplinesStage extends Game {
         const pedestal1Filled = (event) => {
             if (event.body === orb1.physicsBody) {
                 gate1.activate();
+                changeTask(2);
             }
         };
         const pedestal1Emptied = (event) => {
@@ -108,6 +108,24 @@ export default class SplinesStage extends Game {
         orangeWall.physicsBody.collisionFilterMask = ~4;
         this.gameObjects.push(orangeWall);
 
+        // Add thick wall on second island. Use it to change to next task when
+        // the orb has collided and thus successfully been rolled to the second
+        // island
+        const thickWall = new BoxObject(this.world,
+            this.programs['fragmentLighting'], 'lit', {
+                halfExtents: [6, 1, 0.5],
+                color: [0.12, 0.44, 0.44],
+                orientation: [0, -45, 0],
+                position: [0, -9, 58],
+                mass: 0
+            });
+        thickWall.physicsBody.addEventListener('collide', event => {
+            if (event.body === orb1.physicsBody) {
+                changeTask(1);
+            }
+        });
+        this.gameObjects.push(thickWall);
+
         // Get buttons and input elements
         const btnApply = document.getElementById('btnApply');
         const btnReset = document.getElementById('btnReset');
@@ -118,6 +136,7 @@ export default class SplinesStage extends Game {
         const y3Element = document.getElementById('y3');
         const z3Element = document.getElementById('z3');
 
+        // First spline for orb
         this.spline1segments = [];
 
         // Handle button clicks
@@ -147,19 +166,12 @@ export default class SplinesStage extends Game {
             this.render();
         });
         btnReset.addEventListener('click', () => {
-            // TODO: remove correct values
-            y1Element.value = -3.5;
-            z1Element.value = 9.25;
-            y2Element.value = -10.0;
-            z2Element.value = 17.0;
-            y3Element.value = -11.5;
-            z3Element.value = 27.25;
-            // y1Element.value = 8;
-            // z1Element.value = 4;
-            // y2Element.value = -20;
-            // z2Element.value = 12;
-            // y3Element.value = -8;
-            // z3Element.value = 40;
+            y1Element.value = 8;
+            z1Element.value = 4;
+            y2Element.value = -20;
+            z2Element.value = 12;
+            y3Element.value = -8;
+            z3Element.value = 40;
             btnApply.click();
         });
 
@@ -176,15 +188,42 @@ export default class SplinesStage extends Game {
             btnApply.click();
         }
 
-        this.spline2segments = [];
-        const bridgePoints = deCasteljau(
+        // Second spline for orb
+        let bridgePoints = deCasteljau(
             [9.2, -11], [20, -100], [50, -85], [60, -75],
             0.1
         );
-
         for (let i = 1; i < bridgePoints.length; i++) {
-            this.spline2segments.push(this.placeSplineSegmentXY(meshes,
-                bridgePoints[i-1], bridgePoints[i], 61.4));
+            this.placeSplineSegmentXY(meshes,
+                bridgePoints[i-1], bridgePoints[i], 61.4);
+        }
+
+        // First spline for player
+        bridgePoints = deCasteljau(
+            [9.2, -11], [20, -50], [50, -50], [60, -45],
+            0.1
+        );
+        for (let i = 1; i < bridgePoints.length; i++) {
+            this.placeSplineSegmentXY(meshes,
+                bridgePoints[i-1], bridgePoints[i], -10);
+        }
+        // Second spline for player
+        bridgePoints = deCasteljau(
+            [60, -45], [75, -80], [90, -80], [105, -70],
+            0.1
+        );
+        for (let i = 1; i < bridgePoints.length; i++) {
+            this.placeSplineSegmentXY(meshes,
+                bridgePoints[i-1], bridgePoints[i], -20);
+        }
+        // Third spline for player
+        bridgePoints = deCasteljau(
+            [-70, -10], [-100, 10], [-100, 30], [-90, 50],
+            0.1
+        );
+        for (let i = 1; i < bridgePoints.length; i++) {
+            this.placeSplineSegmentYZ(meshes,
+                bridgePoints[i-1], bridgePoints[i], 110);
         }
     }
 

@@ -1,6 +1,5 @@
 /** @module DeCasteljau */
 
-// TODO: Remove lines that should be part of task
 /**
  * This function takes control points for a spline and should calculate a new
  *  array of interpolated curve points according to De Casteljau's algorithm
@@ -13,14 +12,15 @@
  * @returns {Array<number>} Array of interpolated spline points
  */
 export default function deCasteljau(p0, p1, p2, p3, tStep) {
+    // Array for final spline curve points
     const splinePoints = [];
     // Add starting point of spline
     splinePoints.push(p0);
 
     // Add control points of spline
     // TASK: Do not add the actual control points themselves
-    // splinePoints.push(p1);
-    // splinePoints.push(p2);
+    splinePoints.push(p1);
+    splinePoints.push(p2);
 
     // Number of points to add to the spline
     const numQPoints = parseInt(1 / tStep);
@@ -41,16 +41,15 @@ export default function deCasteljau(p0, p1, p2, p3, tStep) {
             // Iterate through current points
             for (let j = 1; j < currentPoints.length; j++) {
                 // TASK: Interpolate one new point from two current ones
-                const interpolated = interpolatePoint(
-                    currentPoints[j-1], currentPoints[j], t);
-                // TASK: and add it to the next points array
-                nextPoints.push(interpolated);
+                
+                // TASK: and add it to the points array for next iteration
             }
-            // Set the new current points for next iteration
+            // Set new current points for next iteration
             currentPoints = nextPoints;
         }
-        // TASK: Add the fully interpolated point Q_1(t) to the spline curve
-        splinePoints.push(currentPoints[0]);
+        // TASK: Add the fully interpolated point Q_1(t) to the final spline
+        //       curve array
+        
     }
 
     // Add end point of spline
@@ -59,7 +58,7 @@ export default function deCasteljau(p0, p1, p2, p3, tStep) {
 }
 
 /**
- * This function received two points a and b and should return a new point that
+ * This function receives two points a and b and should return a new point that
  * is placed between them. The parameter t determines the step/distance between
  * a and b that the new point should be placed at.
  * @param {Array<number>} a The first 2D point
@@ -72,7 +71,8 @@ function interpolatePoint(a, b, t) {
     //       with parameter t
     //       You can access the points' components with point[index]
     return [
-        (1-t) * a[0] + t * b[0],
-        (1-t) * a[1] + t * b[1]
+        // first component of new point
+        ,
+        // second component of new point
     ];
 }
