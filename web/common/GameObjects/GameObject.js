@@ -64,22 +64,19 @@ export default class GameObject {
             this.colLoc = GL.getAttribLocation(this.program, 'vColor');
         } else if (this.shaderType == 'lit') {
             this.normalLoc = GL.getAttribLocation(this.program, 'vNormal');
-            // TASK: Get the shader locations for the lighting uniforms
             this.kaLoc = GL.getUniformLocation(this.program, 'ka');
-            this.kdLoc = GL.getUniformLocation(this.program, 'kd');
-            this.ksLoc = GL.getUniformLocation(this.program, 'ks');
-            this.specExpLoc = GL.getUniformLocation(this.program, 'specExp');
+            // TASK: Get uniform locations of remaining lighting parameters
+            
+
+
         } else if (this.shaderType == 'textured') {
             // TODO: get uniform sampler location
             this.texCoordLoc = GL.getAttribLocation(this.program, 'vTexCoord');
         } else if (this.shaderType == 'textured-lit') {
             this.texCoordLoc = GL.getAttribLocation(this.program, 'vTexCoord');
             // TODO: get uniform sampler location
+            // TODO: get light parameters uniform location
             this.normalLoc = GL.getAttribLocation(this.program, 'vNormal');
-            this.kaLoc = GL.getUniformLocation(this.program, 'ka');
-            this.kdLoc = GL.getUniformLocation(this.program, 'kd');
-            this.ksLoc = GL.getUniformLocation(this.program, 'ks');
-            this.specExpLoc = GL.getUniformLocation(this.program, 'specExp');
         }
 
         // Set initial values for position, orientation and scale
@@ -269,11 +266,11 @@ export default class GameObject {
             this.positionCount * 4);
 
         // Pass lighting values
-        // TASK: Pass the lighting uniforms to the shader
         GL.uniform3fv(this.kaLoc, this.ka);
-        GL.uniform3fv(this.kdLoc, this.kd);
-        GL.uniform3fv(this.ksLoc, this.ks);
-        GL.uniform1f(this.specExpLoc, this.specExp);
+        // TASK: pass remaining lighting parameters to the shader
+        
+        
+        
 
         // Draw all the indices
         GL.drawElements(GL.TRIANGLES, this.indexCount, GL.UNSIGNED_SHORT, 0);

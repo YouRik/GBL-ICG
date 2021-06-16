@@ -25,36 +25,46 @@ out vec4 vfColor;
 
 void main()
 {
-    // TODO: put TASK TODOs here for lighting1 and lighting2
     mat4 modelViewMatrix = viewMatrix * modelMatrix;
-    mat4 normalMatrix = inverse(transpose(modelViewMatrix));
+    // TASK: Calculate normalMatrix, a variation of the modelViewMatrix used
+    //       for normals
+    
+    // Variation of the viewMatrix used for normals
     mat4 invViewMatrix = inverse(transpose(viewMatrix));
 
     vec4 position = modelViewMatrix * vPosition;
-    vec4 normal = normalMatrix * vec4(normalize(vNormal), 0.0);
+    // TASK: Transform normals to world space with the normalMatrix
+    
 
     float fAtt = 1.0;
     vec3 L;
+
+    // TASK: Calculate the vector L. Note the two cases of directed light and
+    //       point light
     if (lPosition[0].w == 0.0) {
-        // Directed light, position represents the light direction
+        // Directed light, position represents the vector light direction from
+        // the light source in world coordinates
         vec4 lightDir = invViewMatrix * lPosition[0];
         L = normalize(-lightDir.xyz);
     } else {
         // Point light
-        vec4 lightPos = viewMatrix * lPosition[0];
-        L = normalize((lightPos - position).xyz);
+        // TASK: Calculate the vector L in the case of a point light
+        
+        
 
-        float d = distance(lightPos, position);
-        fAtt = min(1.0/(c1[0] + c2[0] * d + c3[0] * pow(d, 2.0)), 1.0);
+        // TASK: Calculate the attenuation factor fAtt
+        
+        
     }
     
-    vec3 N = normalize(normal.xyz);
-    vec3 V = normalize((-position).xyz);
-    vec3 R = normalize(reflect(-L, N));
+    // TASK: Calculate the vectors N and V
+    
+    
+    // TASK: Calculate the vector R
+    
 
-    vec3 I 	= vec3(0.73, 0.52, 0.3);
-    //Ia * ka + fAtt * (Id[0] * kd * max(dot(N, L), 0.0)
-    //    + Is[0] * ks * pow(max(dot(R, V), 0.0), specExp));
+    // TASK: Calculate the light/color intensity with Phong's lighting equation
+    vec3 I = vec3(0.73, 0.52, 0.3);
     vfColor = vec4(I.rgb, 1.0);
     
     gl_Position = projectionMatrix * position;

@@ -6,6 +6,7 @@ import Pedestal from '../common/GameObjects/Pedestal.js';
 import Gate from '../common/GameObjects/Gate.js';
 import LightSource from '../common/LightSource.js';
 import Checkpoint from '../common/GameObjects/Checkpoint.js';
+import TaskSwitcher from '../common/TaskSwitcher.js';
 
 /**
  * TODO: documentation
@@ -23,15 +24,21 @@ export default class LightingStage extends Game {
 
         const meshes = resources.meshes;
 
+        const taskSwitcher = new TaskSwitcher(4);
+
         // Add checkpoints
         this.gameObjects.push(
             new Checkpoint(this.world, this.programs['colored'],
             meshes['icoSphere'], [-2.8, 5.7, 0], [-2.8, 5.6, 0], 90, 0,
-            this.player));
+            this.player, () => {
+                taskSwitcher.switchTask(1);
+            }));
         this.gameObjects.push(
             new Checkpoint(this.world, this.programs['colored'],
             meshes['icoSphere'], [0, 10.5, 0], [0, 10.4, 0], -90, 0,
-            this.player));
+            this.player, () => {
+                taskSwitcher.switchTask(2);
+            }));
 
         // Orb 1
         const orb1 = new SphereObject(this.world,

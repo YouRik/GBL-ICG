@@ -13,12 +13,11 @@ export default class LitPlatform extends Box {
         options.portable = false;
         options.color = [0.65, 0.38, 0.58];
         options.collisionFilterMask = options.solid ? -1 : ~4;
-        super(world, programs['fragmentLighting'], 'lit', options);
+        super(world, programs['vertexLighting'], 'lit', options);
 
         const lightPosition = [
             options.position[0], options.position[1] + 0.5, options.position[2]
         ];
-
 
         if (options.solid) {
             const light = new LightSource(lightPosition, lightPrograms,

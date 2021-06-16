@@ -27,34 +27,42 @@ vec3 calculateIntensity(int lIndex, vec3 N, vec3 V) {
     vec3 L;
     
     if (lightPosCam[lIndex].w == 0.0) {
-        // Directed light, position represents the light direction
+        // Directed light, position represents the light direction coming from
+        // the light source in world space
         L = normalize(-lightPosCam[lIndex].xyz);
     } else {
         // Point light
-        L = normalize((lightPosCam[lIndex] - positionCam).xyz);
+        // TASK: Calculate L for point lights
+        
 
-        float d = distance(lightPosCam[lIndex], positionCam);
-        fAtt = min(1.0/(c1[lIndex] + c2[lIndex] * d + c3[lIndex] * pow(d, 2.0)),
-            1.0);
+        // TASK: Calculate the light attenuation factor fAtt
+        
+        
+
     }
-    vec3 R = reflect(-L, N);
+    // TASK: Calculate the reflection vector R
     
-    return fAtt *
-            (Id[lIndex] * kd * max(dot(N, L), 0.0)
-            + Is[lIndex] * ks * pow(max(dot(R, V), 0.0), specExp));
-}
+    
+    // TASK: Return the diffuse and specular part of the Phong lighting equation
+    
+    
 
-// TODO: TASK notes for lighting3 and lighting4
+    return vec3(0, 0, 0);
+}
 
 void main()
 {
-    vec3 N = normalize(normalCam.xyz);
-    vec3 V = normalize((-positionCam).xyz);
+    // TASK: Calculate the vectors N and V
+    
+    
 
-    vec3 I = Ia * ka;
+    // TASK Set ambient component of color/intensity vector I
+    
     for (int i = 0; i < lightsCount; i++) {
-        I += calculateIntensity(i, N, V);
+        // TASK: for each light source, add the calculated intensity
+        
     }
 
-    fColor = vec4(ka, 1.0);
+    // TASK: Set RGB components to those of newly calculated intensity
+    fColor = vec4(ka.rgb, 1.0);
 }

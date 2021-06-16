@@ -16,8 +16,6 @@ out vec4 positionCam;
 out vec4 normalCam;
 out vec4 lightPosCam[MAX_LIGHTS_COUNT];
 
-// TODO: TASK notes for lighting3 and lighting4
-
 void main()
 {
     mat4 modelViewMatrix = viewMatrix * modelMatrix;

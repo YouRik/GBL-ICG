@@ -1,29 +1,77 @@
 <h2>Pass the labyrinth</h2>
+<div>
+    <button id="prevButton">Previous</button>
+    <button id="nextButton">Next</button>
+</div>
+<div id="tasks">
+    <div id="task0">
+        <p>
+            The next orb must be somewhere in that labyrinth. So get in there! But as you can see... you can't see much... <br />
+            So good luck! <br />
+            Well, or you could just get some light in here.
+        </p>
+        <ol>
+            <li>Open the file <div class=code>web/shaders/tasks/vertex_lighting.vs</div> in a text editor. Notice that all required attributes and uniforms are already defined in the shader.</li>
+            <li>Implement ambient lighting in the shader based on the Phong lighting model.</li>
+            <li>Find a way through to the next level of the labyrinth.</li>
+        </ol>
+    </div>
+    <div id="task1">
+        <p>
+            I guess we were lucky with the different colored walls down there. You should implement diffuse lighting next to add a little depth.
+        </p>
+        <ol>
+            <li>Some required uniforms are not yet passed to the shader. Open the file <div class=code>web/common/GameObject.js</div> and look for the comments marked with TASK. <br />
+                You will need the following WebGL functions: <br />
+                <ul>
+                    <li><a href=https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/getUniformLocation>GL.getUniformLocation()</a></li>
+                    <li><a href=https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/uniform>GL.uniform[1234][fi][v]()</a></li>
+                </ul>
+            </li>
+            <li>
+                Look for the comments marked with TASK and calculate the normalMatrix, transform the normals, calculate the vectors L, V and N and the attenuation factor fAtt.
+            </li>
+            <li>Then add the diffuse part of the equation.</li>
+            <li>
+                Here are some useful GLSL functions to keep in mind:
+                <ul>
+                    <li><a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/normalize.xhtml">normalize()</a></li>
+                    <li><a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/reflect.xhtml">reflect()</a></li>
+                    <li><a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/inverse.xhtml">inverse()</a></li>
+                    <li><a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/transpose.xhtml">transpose()</a></li>
+                    <li><a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/distance.xhtml">distance()</a></li>
+                    <li><a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/dot.xhtml">dot()</a></li>
+                    <li><a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/min.xhtml">min()</a></li>
+                    <li><a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/max.xhtml">max()</a></li>
+                    <li><a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/pow.xhtml">pow()</a></li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+    <div id="task2">
+        <p>
+            Get the orb and let's go. But which one is it? They all look the same... or do they?
+        </p>
+        <ol>
+            <li>Look for the remaining comments marked with TASK and calculate the vector R.</li>
+            <li>Then add the specular part of Phong's lighting equation.</li>
+            <li>Now choose the shiny orb that looks different from the rest. When you think you've got it, click to the next task.</li>
+        </ol>
+    </div>
+    <div id="task3">
+        <p>
+            Those purple platforms seem conveniently placed to move to the final island. But beware, only those that have a light shining on their middle will hold you.
+            You can't see a light shining on any of their middles? We will need fragment lighting then.
+        </p>
+        <ol>
+            <li>Open the file <div class=code>web/common/GameObjects/LitPlatform.js</div> and change the shader from <div class=code>vertexLighting</div> to <div class=code>fragmentLighting</div></li>
+            <li>Open the file <div class=code>web/common/shaders/tasks/fragmentLighting.fs</div> and look for the comments marked with TASK. Note that this shader uses multiple light sources and loops over them.</li>
+            <li>When your fragment lighting is correct, you will be able to see a glow in the middle of the platforms that can hold you. Take the orb and get to the last island!</li>
+        </ol>
+        </ol>
+    </div>
+</div>
 <p>
-    Get to the end of the labyrinth. But as you can see... you can't see...
-    <br />
-    So good luck!
-    <br />
-    Or, well, you could just get some light in here.
-    <ol>
-        <li>
-            Open the file <div class=code>shaders/tasks/vertex_lighting.vs</div>. Notice that all required attributes and uniforms are already defined in the shader.
-        </li>
-        <li>
-            Before you can use these variables in the shader, the correct values need to be passed. Open the file <div class=code>common/GameObject.js</div> and get the correct uniform locations in the constructor. <br />
-            You will need the following WebGL function: <br />
-            <a href=https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/getUniformLocation>GL.getUniformLocation()</a>
-        </li>
-        <li>
-            Now you need to pass the uniform values to the correct locations in the shader in render method. <br />
-            You will need the following WebGL function: <br />
-            <a href=https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/uniform>GL.uniform[1234][fi][v]()</a>
-        </li>
-        <li>
-            Implement the ambient light in the shader based on the Phong lighting model in the file <div class=code>shaders/tasks/vertex_lighting.vs</div>.
-        </li>
-        <li>
-            Pass the labyrinth.
-        </li>
-    </ol>
+    
+    
 </p>
