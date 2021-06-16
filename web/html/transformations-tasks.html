@@ -145,32 +145,3 @@
         </ul>
     </div>
 </div>
-
-<script defer>
-    const taskCount = 6;
-    let taskIndex = 0;
-    const prevButton = document.getElementById('prevButton');
-    const nextButton = document.getElementById('nextButton');
-    const tasks = [];
-
-    for (let i = 0; i < taskCount; i++) {
-        tasks.push(document.getElementById(`task${i}`));
-        tasks[i].style.display = 'none';
-    }
-    tasks[taskIndex].style.display = 'block';
-
-    prevButton.addEventListener('click', (event) => {
-        changeTask(taskIndex - 1);
-    });
-
-    nextButton.addEventListener('click', (event) => {
-        changeTask(taskIndex + 1);
-    });
-
-    function changeTask(index = taskIndex) {
-        tasks[taskIndex].style.display = 'none';
-        taskIndex = index;
-        taskIndex = Math.max(0, Math.min(taskIndex, taskCount - 1));
-        tasks[taskIndex].style.display = 'block';
-    }
-</script>

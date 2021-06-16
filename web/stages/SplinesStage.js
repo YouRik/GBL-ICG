@@ -8,6 +8,7 @@ import MeshObject from '../common/GameObjects/MeshObject.js';
 import SphereObject from '../common/GameObjects/SphereObject.js';
 import deCasteljau from '../tasks/decasteljau.js';
 import * as GLMAT from '../common/lib/gl-matrix/index.js';
+import TaskSwitcher from '../common/TaskSwitcher.js';
 
 /**
  * TODO: documentation
@@ -24,6 +25,8 @@ export default class SplinesStage extends Game {
         super.setup(resources, shaderDefs, sceneDefs, objectDefs);
 
         const meshes = resources.meshes;
+
+        const taskSwitcher = new TaskSwitcher(3);
 
         // Orb 1
         const orb1 = new SphereObject(this.world,
@@ -66,7 +69,7 @@ export default class SplinesStage extends Game {
         const pedestal1Filled = (event) => {
             if (event.body === orb1.physicsBody) {
                 gate1.activate();
-                changeTask(2);
+                taskSwitcher.switchTask(2);
             }
         };
         const pedestal1Emptied = (event) => {
@@ -121,7 +124,7 @@ export default class SplinesStage extends Game {
             });
         thickWall.physicsBody.addEventListener('collide', event => {
             if (event.body === orb1.physicsBody) {
-                changeTask(1);
+                taskSwitcher.switchTask(1);
             }
         });
         this.gameObjects.push(thickWall);

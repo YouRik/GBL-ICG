@@ -9,6 +9,7 @@ import SphereObject from '../common/GameObjects/SphereObject.js';
 import Checkpoint from '../common/GameObjects/Checkpoint.js';
 import * as GLMAT from '../common/lib/gl-matrix/index.js';
 import * as CANNON from '../common/lib/cannon/cannon-es.js';
+import TaskSwitcher from '../common/TaskSwitcher.js';
 
 /**
  * TODO: documentation
@@ -25,6 +26,8 @@ export default class TransformationsStage extends Game {
         super.setup(resources, shaderDefs, sceneDefs, objectDefs);
 
         const meshes = resources.meshes;
+
+        const taskSwitcher = new TaskSwitcher(6);
 
         // Orb 1
         const orb1 = new SphereObject(this.world,
@@ -66,7 +69,7 @@ export default class TransformationsStage extends Game {
         const pedestal1Filled = (event) => {
             if (event.body === orb1.physicsBody) {
                 gate1.activate();
-                changeTask(5);
+                taskSwitcher.switchTask(5);
             }
         };
         const pedestal1Emptied = (event) => {
@@ -151,20 +154,20 @@ export default class TransformationsStage extends Game {
             new Checkpoint(this.world, this.programs['colored'],
             meshes['icoSphere'], [-10, 1, -10], [-10, 0.9, -10], 25, 5,
             this.player, () => {
-                changeTask(1);
+                taskSwitcher.switchTask(1);
             }));
 
         this.gameObjects.push(
             new Checkpoint(this.world, this.programs['colored'],
             meshes['icoSphere'], [-12, 6.5, 38], [-12, 6.4, 38], -82, 12,
             this.player, () => {
-                changeTask(2);
+                taskSwitcher.switchTask(2);
             }));
         this.gameObjects.push(
             new Checkpoint(this.world, this.programs['colored'],
             meshes['icoSphere'], [-50, 16, 34], [-50, 15.9, 34], 208, 12,
             this.player, () => {
-                changeTask(4);
+                taskSwitcher.switchTask(4);
             }));
 
         // Input fields
@@ -218,7 +221,7 @@ export default class TransformationsStage extends Game {
                         && key.quaternion[3] == targetQuat[3]) {
                             lock.color = [1, 1, 0];
                             lockingBolt.physicsBody.position.x = -50.2;
-                            changeTask(3);
+                            taskSwitcher.switchTask(3);
                     } else {
                         lock.color = [0.7, 0.7, 0.3];
                         lockingBolt.physicsBody.position.x = -45.2;
