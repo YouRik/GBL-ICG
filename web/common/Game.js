@@ -361,7 +361,7 @@ export default class Game {
      */
     update(deltaTime) {
         // Update physics
-        this.world.step(1 / 120, deltaTime);
+        this.world.step(1 / 90, deltaTime);
         // Update objects
         this.gameObjects.forEach(object => {
             object.update();
