@@ -36,7 +36,7 @@ export default class FirstPersonPlayer {
 
         // Player configuration
         this.moveForce = 1000;
-        this.jumpForce = 80000;
+        this.jumpImpulse = 666;
         this.brakeForce = 400;
         this.maxMoveSpeed = 9;
         this.maxCarryDistance = 4;
@@ -264,7 +264,8 @@ export default class FirstPersonPlayer {
             rightFactor += 1;
         }
         if (this.controls.wantsToJump && this.controls.isOnGround) {
-            this.physicsBody.applyForce(new CANNON.Vec3(0, this.jumpForce, 0));
+            this.physicsBody.applyImpulse(
+                new CANNON.Vec3(0, this.jumpImpulse, 0));
             this.controls.isOnGround = false;
         }
 
