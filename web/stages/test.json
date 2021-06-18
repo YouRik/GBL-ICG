@@ -1,8 +1,6 @@
 {
     "resources": {
         "shaders": [
-            ["fragLightingV", "shaders/fragment_lighting.vs"],
-            ["fragLightingF", "shaders/fragment_lighting.fs"]
         ],
         "textures": [
 
