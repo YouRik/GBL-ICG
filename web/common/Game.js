@@ -248,7 +248,7 @@ export default class Game {
                         break;
                     case 'lit_platform':
                         this.gameObjects.push(new LitPlatform(this.world,
-                            this.programs, lightPrograms,
+                            this.programs, this.lightPrograms,
                             options));
                         break;
                 }
