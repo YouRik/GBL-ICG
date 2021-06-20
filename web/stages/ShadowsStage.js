@@ -72,8 +72,8 @@ export default class ShadowsStage extends Game {
         GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MAG_FILTER, GL.NEAREST);
         GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_S, GL.CLAMP_TO_EDGE);
         GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.CLAMP_TO_EDGE);
-        GL.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, this.shadowWidth,
-            this.shadowHeight, 0, GL.RGBA, GL.UNSIGNED_BYTE, null);
+        GL.texImage2D(GL.TEXTURE_2D, 0, GL.R8, this.shadowWidth,
+            this.shadowHeight, 0, GL.RED, GL.UNSIGNED_BYTE, null);
         GL.framebufferTexture2D(GL.FRAMEBUFFER, GL.COLOR_ATTACHMENT0,
             GL.TEXTURE_2D, this.depthMapColor, 0);
         GL.bindTexture(GL.TEXTURE_2D, null);
@@ -88,13 +88,14 @@ export default class ShadowsStage extends Game {
         const playerPosLightSpace = GLMAT.vec3.create();
         GLMAT.vec3.transformMat4(playerPosLightSpace,
             this.player.position, this.lightSpaceMatrix);
-        const playerDepth = 255 - Math.round(playerPosLightSpace[2] * 255);
+        const playerDepth = Math.round((playerPosLightSpace[2] + 1) / 2 * 255);
 
         // Read pixel value from depth texture
         GL.readBuffer(GL.COLOR_ATTACHMENT0);
         const pixelArr = new Uint8Array(4);
         GL.readPixels(this.shadowWidth / 2, this.shadowHeight / 2, 1, 1,
-            GL.RGBA, GL.UNSIGNED_BYTE, pixelArr);
+            GL.getParameter(GL.IMPLEMENTATION_COLOR_READ_FORMAT),
+            GL.UNSIGNED_BYTE, pixelArr);
         console.log(playerDepth, pixelArr[0]);
 
         GL.bindFramebuffer(GL.FRAMEBUFFER, null);
@@ -129,7 +130,7 @@ export default class ShadowsStage extends Game {
         super.render();
 
         // render depth map as texture to quad to test
-        this.renderDepthMapQuad();
+        // this.renderDepthMapQuad();
     }
 
     setLightSourceViewAndPerspective() {
