@@ -41,7 +41,7 @@ export default class FirstPersonPlayer {
         this.maxMoveSpeed = 9;
         this.maxCarryDistance = 4;
         this.minCarryDistance = 1;
-        this.carryForce = 5;
+        this.carryForce = 10;
         this.groundCheckDistance = 1.3;
 
         // Store angular damping of carried object before picking up
