@@ -7,6 +7,7 @@ export default class TaskSwitcher {
     constructor(numberOfTasks) {
         this.taskCount = numberOfTasks;
         this.taskIndex = 0;
+        this.maxUnlockedTask = 0;
         const prevButton = document.getElementById('prevButton');
         const nextButton = document.getElementById('nextButton');
         this.tasks = [];
@@ -27,12 +28,20 @@ export default class TaskSwitcher {
 
         this.switchTask();
     }
+
+    unlockTasks(index) {
+        if (index >= this.numberOfTasks) {
+            this.maxUnlockedTask = this.numberOfTasks - 1
+        } else {
+            this.maxUnlockedTask = Math.max(index, this.maxUnlockedTask);
+        }
+    }
     
     switchTask(index = this.taskIndex) {
         this.tasks[this.taskIndex].style.display = 'none';
         this.taskIndex = index;
         this.taskIndex =
-            Math.max(0, Math.min(this.taskIndex, this.taskCount - 1));
+            Math.max(0, Math.min(this.taskIndex, this.maxUnlockedTask));
         this.tasks[this.taskIndex].style.display = 'block';
     }
 }

@@ -69,6 +69,7 @@ export default class SplinesStage extends Game {
         const pedestal1Filled = (event) => {
             if (event.body === orb1.physicsBody) {
                 gate1.activate();
+                taskSwitcher.unlockTasks(2);
                 taskSwitcher.switchTask(2);
             }
         };
@@ -124,6 +125,7 @@ export default class SplinesStage extends Game {
             });
         thickWall.physicsBody.addEventListener('collide', event => {
             if (event.body === orb1.physicsBody) {
+                taskSwitcher.unlockTasks(1)
                 taskSwitcher.switchTask(1);
             }
         });

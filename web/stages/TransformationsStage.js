@@ -69,6 +69,7 @@ export default class TransformationsStage extends Game {
         const pedestal1Filled = (event) => {
             if (event.body === orb1.physicsBody) {
                 gate1.activate();
+                taskSwitcher.unlockTasks(5);
                 taskSwitcher.switchTask(5);
             }
         };
@@ -154,6 +155,7 @@ export default class TransformationsStage extends Game {
             new Checkpoint(this.world, this.programs['colored'],
             meshes['icoSphere'], [-10, 1, -10], [-10, 0.9, -10], 25, 5,
             this.player, () => {
+                taskSwitcher.unlockTasks(1);
                 taskSwitcher.switchTask(1);
             }));
 
@@ -161,12 +163,14 @@ export default class TransformationsStage extends Game {
             new Checkpoint(this.world, this.programs['colored'],
             meshes['icoSphere'], [-12, 6.5, 38], [-12, 6.4, 38], -82, 12,
             this.player, () => {
-                taskSwitcher.switchTask(2);
+                taskSwitcher.unlockTasks(2);
+                taskSwitcher.switchTask(3);
             }));
         this.gameObjects.push(
             new Checkpoint(this.world, this.programs['colored'],
             meshes['icoSphere'], [-50, 16, 34], [-50, 15.9, 34], 208, 12,
             this.player, () => {
+                taskSwitcher.unlockTasks(4);
                 taskSwitcher.switchTask(4);
             }));
 
@@ -221,7 +225,7 @@ export default class TransformationsStage extends Game {
                         && key.quaternion[3] == targetQuat[3]) {
                             lock.color = [1, 1, 0];
                             lockingBolt.physicsBody.position.x = -50.2;
-                            taskSwitcher.switchTask(3);
+                            taskSwitcher.unlockTasks(3);
                     } else {
                         lock.color = [0.7, 0.7, 0.3];
                         lockingBolt.physicsBody.position.x = -45.2;
@@ -256,6 +260,7 @@ export default class TransformationsStage extends Game {
         } else {
             this.resetMatrixInputs('yellow', btnYellowApply,
                 JSON.parse(localStorage.yellowMatrixInputs));
+                btnYellowApply.click();
         }
     }
 

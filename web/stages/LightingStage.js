@@ -31,12 +31,14 @@ export default class LightingStage extends Game {
             new Checkpoint(this.world, this.programs['colored'],
             meshes['icoSphere'], [-2.8, 5.7, 0], [-2.8, 5.6, 0], 90, 0,
             this.player, () => {
+                taskSwitcher.unlockTasks(1);
                 taskSwitcher.switchTask(1);
             }));
         this.gameObjects.push(
             new Checkpoint(this.world, this.programs['colored'],
             meshes['icoSphere'], [0, 10.5, 0], [0, 10.4, 0], -90, 0,
             this.player, () => {
+                taskSwitcher.unlockTasks(3);
                 taskSwitcher.switchTask(2);
             }));
 
