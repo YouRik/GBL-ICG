@@ -83,6 +83,27 @@ export default class HubStage extends Game {
             this.gameObjects.push(orb3);
         }
 
+        let orb4 = null;
+
+        if (localStorage.stage3Done == 'true') {
+            orb4 = new SphereObject(this.world,
+                this.programs['fragmentLighting'], 'lit',
+                meshes['icoSphere'],
+                {
+                    mass: 5,
+                    lightParams: {
+                        ka: [0.03, 0.53, 0.41],
+                        kd: [0.24, 0.82, 0.05],
+                        ks: [0.77, 0.21, 0.95],
+                        specExp: 10
+                    },
+                    radius: 0.4,
+                    position: [12, 0.8, -5],
+                    portable: true
+                });
+            this.gameObjects.push(orb4);
+        }
+
         // Gate 1
         const gate1Entered = (event) => {
             if (event.body === this.player.physicsBody) {

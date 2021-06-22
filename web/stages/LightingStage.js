@@ -29,18 +29,18 @@ export default class LightingStage extends Game {
         // Add checkpoints
         this.gameObjects.push(
             new Checkpoint(this.world, this.programs['colored'],
-            meshes['icoSphere'], [-2.8, 5.7, 0], [-2.8, 5.6, 0], 90, 0,
-            this.player, () => {
-                taskSwitcher.unlockTasks(1);
-                taskSwitcher.switchTask(1);
-            }));
+                meshes['icoSphere'], [-2.8, 5.7, 0], [-2.8, 5.6, 0], 90, 0,
+                this.player, () => {
+                    taskSwitcher.unlockTasks(1);
+                    taskSwitcher.switchTask(1);
+                }));
         this.gameObjects.push(
             new Checkpoint(this.world, this.programs['colored'],
-            meshes['icoSphere'], [0, 10.5, 0], [0, 10.4, 0], -90, 0,
-            this.player, () => {
-                taskSwitcher.unlockTasks(3);
-                taskSwitcher.switchTask(2);
-            }));
+                meshes['icoSphere'], [0, 10.5, 0], [0, 10.4, 0], -90, 0,
+                this.player, () => {
+                    taskSwitcher.unlockTasks(3);
+                    taskSwitcher.switchTask(2);
+                }));
 
         // Orb 1
         const orb1 = new SphereObject(this.world,
@@ -56,8 +56,7 @@ export default class LightingStage extends Game {
             radius: 0.4,
             position: [5, 10.5, -8],
             portable: true
-        }
-        );
+        });
         this.gameObjects.push(orb1);
 
         // Gate 1
@@ -87,7 +86,7 @@ export default class LightingStage extends Game {
         const pedestal1Emptied = (event) => {
             if (event.bodyA === orb1.physicsBody
                 || event.bodyB === orb1.physicsBody) {
-                    gate1.deactivate();
+                gate1.deactivate();
             }
         };
         const pedestal1 = new Pedestal(this.world,
