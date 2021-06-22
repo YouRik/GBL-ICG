@@ -34,8 +34,8 @@ export default class SplinesStage extends Game {
             meshes['icoSphere'], {
             mass: 5,
             lightParams: {
-                ka: [0.93, 0.53, 0.18],
-                kd: [0, 0.5, 1.0],
+                ka: [0.73, 0.43, 0.13],
+                kd: [0.09, 0.5, 1.0],
                 ks: [0.76, 0.13, 0.28],
                 specExp: 10
             },
