@@ -104,6 +104,27 @@ export default class HubStage extends Game {
             this.gameObjects.push(orb4);
         }
 
+        let orb5 = null;
+
+        if (localStorage.stage4Done == 'true') {
+            orb5 = new SphereObject(this.world,
+                this.programs['fragmentLighting'], 'lit',
+                meshes['icoSphere'],
+                {
+                    mass: 5,
+                    lightParams: {
+                        ka: [0.57, 0.36, 0.51],
+                        kd: [0.31, 0.83, 0.63],
+                        ks: [0.93, 0.85, 0.2],
+                        specExp: 10
+                    },
+                    radius: 0.4,
+                    position: [12, 0.8, -4],
+                    portable: true
+                });
+            this.gameObjects.push(orb5);
+        }
+
         // Gate 1
         const gate1Entered = (event) => {
             if (event.body === this.player.physicsBody) {
@@ -194,6 +215,6 @@ export default class HubStage extends Game {
                 || event.bodyB === pedestal.triggerBody) {
                 pedestalEmptied(event);
             }
-        })
+        });
     }
 }

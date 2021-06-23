@@ -54,6 +54,11 @@ h2 {
 #tasks-container button {
   margin-bottom: 1em;
 }
+#tasks-container .heatslider {
+  appearance: none;
+  background: linear-gradient(to right, rgb(78, 78, 255), rgb(255, 75, 75));
+  vertical-align: top;
+}
 
 #gl-canvas {
   width: 100%;

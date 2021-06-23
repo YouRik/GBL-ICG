@@ -41,9 +41,11 @@ export default class GameObject {
         this.color = options.color == undefined ? [1, 0, 0]
             : options.color;
         let collisionFilterGroup = options.collisionFilterGroup == undefined
-            ? 1 : options.collisionFilterGroup
+            ? 1 : options.collisionFilterGroup;
         const collisionFilterMask = options.collisionFilterMask == undefined
-            ? -1 : options.collisionFilterMask
+            ? -1 : options.collisionFilterMask;
+        const castsShadow = options.castsShadow == undefined ? true
+            : options.castsShadow;
 
         // Required methods to be implemented
         if (typeof (this.initVBOs) != 'function') {
@@ -55,6 +57,7 @@ export default class GameObject {
         this.modelMatLoc = GL.getUniformLocation(this.program, 'modelMatrix');
         this.posLoc = GL.getAttribLocation(this.program, 'vPosition');
         this.visible = true;
+        this.castsShadow = castsShadow;
 
         this.calculateLightParams(lightParams);
 
@@ -69,7 +72,7 @@ export default class GameObject {
             this.kdLoc = GL.getUniformLocation(this.program, 'kd');
             this.ksLoc = GL.getUniformLocation(this.program, 'ks');
             this.specExpLoc = GL.getUniformLocation(this.program, 'specExp');
-            
+
 
 
         } else if (this.shaderType == 'textured') {
@@ -125,8 +128,8 @@ export default class GameObject {
                 // Calculate lighting parameters if needed but not provided
                 this.ka = this.color;
                 this.kd = [0.4 * this.color[0] + 0.6,
-                    0.4 * this.color[1] + 0.6,
-                    0.4 * this.color[2] + 0.6];
+                0.4 * this.color[1] + 0.6,
+                0.4 * this.color[2] + 0.6];
                 this.ks = [1, 1, 1];
                 this.specExp = 20;
             }
@@ -279,7 +282,7 @@ export default class GameObject {
     }
 
     renderToShadowMap(shaderProgram, modelMatLoc) {
-        if (this.visible) {
+        if (this.visible && this.castsShadow) {
             // Bind buffers and shader program
             GL.bindBuffer(GL.ARRAY_BUFFER, this.dataVBO);
             GL.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, this.indexVBO);
@@ -291,7 +294,7 @@ export default class GameObject {
             // Set attribute pointer for positions
             GL.enableVertexAttribArray(this.posLoc);
             GL.vertexAttribPointer(this.posLoc, 3, GL.FLOAT, false, 0, 0);
-            
+
             // Draw all the indices
             GL.drawElements(GL.TRIANGLES, this.indexCount, GL.UNSIGNED_SHORT,
                 0);

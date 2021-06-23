@@ -94,6 +94,7 @@ export default class FirstPersonPlayer {
             fixedRotation: true
         });
         this.jointSphere.visible = false;
+        this.jointSphere.castsShadow = false;
 
         this.groundObjects = new Set();
 

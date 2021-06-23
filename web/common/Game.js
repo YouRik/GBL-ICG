@@ -13,6 +13,7 @@ import CubeObject from './GameObjects/CubeObject.js';
 import SphereObject from './GameObjects/SphereObject.js';
 import LitPlatform from './GameObjects/LitPlatform.js';
 import * as CANNON from './lib/cannon/cannon-es.js';
+import Cloud from './GameObjects/Cloud.js';
 
 /**
  * TODO: documentation
@@ -251,6 +252,11 @@ export default class Game {
                             this.programs, this.lightPrograms,
                             options));
                         break;
+                    case 'cloud':
+                        this.gameObjects.push(new Cloud(this.world,
+                            this.programs, options.startPosition,
+                            options.endPosition, options.speed,
+                            resources.meshes, options));
                 }
             }
         });

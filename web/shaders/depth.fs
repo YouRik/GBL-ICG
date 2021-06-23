@@ -4,6 +4,9 @@ out vec4 fColor;
 
 void main()
 {
-    // gl_FragDepth = gl_FragCoord.z;
-    fColor = vec4(gl_FragCoord.z, 0.0, 0.0, 1.0);
+    // TASK4.1: Set the depth such that the whole shadow map is in shadow
+    // TASK4.2: Set the depth to the fragment's z coordinate
+    float depth = gl_FragCoord.z;
+    gl_FragDepth = depth;
+    fColor = vec4(depth, 0.0, 0.0, 1.0);
 }

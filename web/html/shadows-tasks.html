@@ -1,6 +1,43 @@
 <h2>Collect the orb</h2>
+<div>
+    <button id="prevButton">Previous</button>
+    <button id="nextButton">Next</button>
+</div>
+<div>
+    <p>
+        The left Orb must stay cool. If it gets too hot, we fail.<br />
+        Cold <input disabled="true" class="heatslider" id="heatslider1" type="range" min="-1000" max="1000" step="1" value="0" /> Hot
+        <br />
+        The right Orb must stay in a moderate temperature. If it gets too hot or cold, we fail.<br />
+        Cold <input disabled="true" class="heatslider" id="heatslider2" type="range" min="-1000" max="1000" step="1" value="0" /> Hot
+    </p>
+</div>
 <div id="tasks">
-    <ol>
-        <li>The orbs are switched</li>
-    </ol>
+    <div id="task0">
+        <p>
+            Great, the orb we need is behind that glass. To open it, bring the left orb to the blue pedestal. But to keep it cool on the way, we will need shadows.
+        </p>
+        <ol>
+            <li>Open the file <div class="code">web/stages/ShadowsStage.js</div>. Note that the shadow/depth map is already almost fully implemented in lines 60 onwards.</li>
+            <li>Finish the initialization as described in the comment marked with TASK. You will need the following function:</li>
+            <ul>
+                <li><a href=https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/framebufferTexture2D>GL.framebufferTexture2D()</a></li>
+            </ul>
+            <li>Then open the file <div class="code">web/shaders/tasks/depth.fs</div> and set the depth to a value that makes the whole shadow map appear in shadow.</li>
+        </ol>
+    </div>
+    <div id="task1">
+        <p>
+            Perfect. Now we need more accurate shadows to keep the second orb in a good temperature and get it to the gate.
+            <ol>
+                <li>Open the file <div class="code">web/shaders/tasks/depth.fs</div> and set the fragment's depth correctly. You will need this built-in variable:</li>
+                <ul>
+                    <li><a href=https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/gl_FragCoord.xhtml>gl_FragCoord</a></li>
+                </ul>
+                <li>Open the file <div class="code">web/shaders/tasks/fragmentLighting.vs</div> and implement the missing transformation.</li>
+                <li>Then open the file <div class="code">web/shaders/tasks/fragmentLighting.fs</div> and follow the remaining tasks for the shadow calculation.</li>
+                <li>Come back here and carry the orb to the gate using the cloudy path.</li>
+            </ol>
+        </p>
+    </div>
 </div>

@@ -7,12 +7,13 @@ import SphereObject from './SphereObject.js';
  */
 export default class Checkpoint extends SphereObject {
     constructor(world, shader, mesh, indicatorPosition, resetPosition, resetYaw,
-        resetPitch, player, callback) {
+        resetPitch, player, callback, size = 1) {
         super(world, shader, 'colored', mesh, {
             position: indicatorPosition,
-            radius: 1,
+            radius: size,
             color: [0, 1, 0, 0.3],
-            mass: 0
+            mass: 0,
+            castsShadow: false
         });
         this.physicsBody.isTrigger = true;
 
