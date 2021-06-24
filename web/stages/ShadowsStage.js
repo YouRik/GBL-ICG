@@ -35,11 +35,11 @@ export default class ShadowsStage extends Game {
         // Add checkpoints
         this.gameObjects.push(new Checkpoint(this.world,
             this.programs['colored'], meshes['icoSphere'], [-51, 3, -1],
-            [-51, 2.9, -1], 0, 0, this.player, null, 4));
+            [-51, 2.9, -1], 115, -5, this.player, null, 4));
 
         this.gameObjects.push(new Checkpoint(this.world,
-            this.programs['colored'], meshes['icoSphere'], [10, 1, -25],
-            [10, 0.9, -25], 0, 0, this.player, null, 1));
+            this.programs['colored'], meshes['icoSphere'], [15, 1, -33],
+            [15, 0.9, -33], 160, 0, this.player, null, 1));
 
         this.heatSlider1 = document.getElementById('heatslider1');
         this.heatSlider2 = document.getElementById('heatslider2');

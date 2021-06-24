@@ -19,7 +19,9 @@
     },
     "scene": {
         "player": {
-            "start_position": [10, 0.9, -25]
+            "start_position": [19.5, 0.9, -27],
+            "yaw": -25,
+            "pitch": 5
         },
         "ambient_light": [0.7, 0.7, 0.7],
         "directed_light": {
