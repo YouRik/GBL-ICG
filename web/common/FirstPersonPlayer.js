@@ -134,7 +134,7 @@ export default class FirstPersonPlayer {
      * @param {KeyboardEvent} event
      */
     keyUp(event) {
-        switch (event.key) {
+        switch (event.key.toLowerCase()) {
             case 'w':
                 this.controls.forward = false;
                 break;
@@ -158,7 +158,7 @@ export default class FirstPersonPlayer {
      * @param {KeyboardEvent} event 
      */
     keyDown(event) {
-        switch (event.key) {
+        switch (event.key.toLowerCase()) {
             case 'w':
                 this.controls.forward = true;
                 break;

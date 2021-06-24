@@ -341,7 +341,7 @@ export default class Game {
         };
         const handleKeyDown = (event) => {
             event.preventDefault();
-            if (event.key == 'r') {
+            if (event.key.toLowerCase() == 'r') {
                 location.reload();
             } else {
                 this.player.keyDown(event);
