@@ -6,7 +6,8 @@ import SphereObject from './GameObjects/SphereObject.js';
 
 // TODO: documentation
 export default class FirstPersonPlayer {
-    constructor(world, position, programs, jointMesh, aspectRatio, yaw = 0, pitch = 0) {
+    constructor(world, position, programs, jointMesh, aspectRatio, yaw = 0,
+        pitch = 0) {
         this.programs = [];
         for (const programName in programs) {
             const program = programs[programName];
@@ -35,10 +36,10 @@ export default class FirstPersonPlayer {
         };
 
         // Player configuration
-        this.moveForce = 1000;
+        this.moveForce = 80000;
+        this.brakeForce = 40000;
         this.jumpImpulse = 666;
-        this.brakeForce = 400;
-        this.maxMoveSpeed = 9;
+        this.maxMoveSpeed = 10;
         this.maxCarryDistance = 4;
         this.minCarryDistance = 1;
         this.carryForce = 10;
@@ -286,7 +287,7 @@ export default class FirstPersonPlayer {
             this.controls.isOnGround = false;
         }
 
-        // Get direction to move in
+        // Calculate desired direction to move in
         const forwardDirection = [viewDirection[0], 0, viewDirection[2]];
         const rightDirection = GLMAT.vec3.create();
         GLMAT.vec3.cross(rightDirection, forwardDirection, [0, 1, 0]);
@@ -300,14 +301,14 @@ export default class FirstPersonPlayer {
         ];
         GLMAT.vec2.normalize(movementDirection, movementDirection);
 
-        // Apply forces for movement
-        this.physicsBody.force = new CANNON.Vec3(
-            movementDirection[0] * this.moveForce,
-            this.physicsBody.force.y,
-            movementDirection[1] * this.moveForce
-        );
+        // Calculate forces for movement
+        const moveForce = [
+            movementDirection[0] * this.moveForce * deltaTime,
+            movementDirection[1] * this.moveForce * deltaTime
+        ];
 
-        // Apply counter forces for braking and limiting maximum velocity
+        // Calculate counter forces for braking and limiting maximum velocity
+        // TODO: simplify this whole calculation
         const hVelocity = GLMAT.vec3.fromValues(
             this.physicsBody.velocity.x, 0, this.physicsBody.velocity.z);
         const hVelocityDir = GLMAT.vec3.create();
@@ -318,18 +319,26 @@ export default class FirstPersonPlayer {
         const brakeFactorForward =
             GLMAT.vec3.dot(hVelocityDir, forwardDirection)
             * ((forwardFactor == 0) * -hVelocityLen * this.brakeForce
-                + (forwardFactor != 0) * -overspeedAmount * this.moveForce);
+                * deltaTime
+                + (forwardFactor != 0) * -overspeedAmount * this.moveForce
+                * deltaTime);
         const brakeFactorRight =
             GLMAT.vec3.dot(hVelocityDir, rightDirection)
             * ((rightFactor == 0) * -hVelocityLen * this.brakeForce
-                + (rightFactor != 0) * -overspeedAmount * this.moveForce);
-        
+                * deltaTime
+                + (rightFactor != 0) * -overspeedAmount * this.moveForce
+                * deltaTime);
+
         const brakeForce = GLMAT.vec3.create();
         GLMAT.vec3.scale(brakeForce, forwardDirection, brakeFactorForward);
         GLMAT.vec3.scaleAndAdd(brakeForce, brakeForce, rightDirection,
             brakeFactorRight);
+
+        // Apply forces for movement
         this.physicsBody.applyForce(new CANNON.Vec3(
-            brakeForce[0], brakeForce[1], brakeForce[2]));
+            moveForce[0] + brakeForce[0],
+            0,
+            moveForce[1] + brakeForce[2]));
 
         // Update player position from physics
         const posValues = this.physicsBody.position.toArray();
@@ -404,7 +413,7 @@ export default class FirstPersonPlayer {
             // || (this.controls.isCarrying
             //     && this.jointConstraint.bodyA.position.distanceTo(
             //         this.jointConstraint.bodyB.position) > 2.5)
-            ) {
+        ) {
             this.controls.isDropping = false;
             this.controls.isCarrying = false;
             // Reset angular damping on object
