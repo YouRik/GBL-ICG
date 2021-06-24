@@ -25,21 +25,21 @@
             "pitch": 25,
             "yaw": 10
         },
-        "ambient_light": [0.7, 0.7, 0.7]
-    },
-    "objects": [
-        {
-            "type": "lightSource",
-            "position": [-200, 150, -100],
+        "ambient_light": [0.7, 0.7, 0.7],
+        "directed_light": {
+            "direction": [50, -75, 100],
             "Id": [0.7, 0.7, 0.7],
             "Is": [0.9, 0.9, 0.9]
-        },
+        }
+    },
+    "objects": [
         {
             "type": "sphere",
             "shader_program": "colored",
             "radius": 15,
             "color": [1, 0.9, 0.7],
             "position": [-100, 150, -200],
+            "castsShadow": false,
             "mass": 0,
             "mesh": "icoSphere"
         },

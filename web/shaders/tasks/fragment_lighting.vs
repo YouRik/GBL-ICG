@@ -8,6 +8,7 @@ in vec3 vNormal;
 uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
+uniform mat4 lightSpaceMatrix;
 
 uniform int lightsCount;
 uniform vec4 lPosition[MAX_LIGHTS_COUNT];
@@ -15,6 +16,7 @@ uniform vec4 lPosition[MAX_LIGHTS_COUNT];
 out vec4 positionCam;
 out vec4 normalCam;
 out vec4 lightPosCam[MAX_LIGHTS_COUNT];
+out vec4 positionLightSpace;
 
 void main()
 {
@@ -33,5 +35,7 @@ void main()
         }
     }
 
+    // TASK4.2: transform vertex position to light space
+    positionLightSpace = lightSpaceMatrix * modelMatrix * vPosition;
     gl_Position = projectionMatrix * positionCam;
 }

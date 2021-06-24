@@ -1,49 +1,16 @@
 {
     "resources": {
         "shaders": [
-            ["fragLightingV", "shaders/fragment_lighting.vs"],
-            ["fragLightingF", "shaders/fragment_lighting.fs"],
-            ["depthV", "shaders/depth.vs"],
-            ["depthF", "shaders/depth.fs"],
-            ["shadowedVertLightingV", "shaders/shadowed_fragment_lighting.vs"],
-            ["shadowedFragLightingF", "shaders/shadowed_fragment_lighting.fs"],
             ["texturedV", "shaders/textured.vs"],
-            ["texturedF", "shaders/textured.fs"],
             ["depthTextureF", "shaders/depthTexture.fs"]
         ],
         "textures": [
-            ["test", "textures/test.png"]
         ],
         "meshes": [
             ["cloudG", "meshes/cloud.ply"]
         ]
     },
     "shader_programs": {
-        "fragmentLighting": {
-            "type": "lit",
-            "vertex": "fragLightingV",
-            "fragment": "fragLightingF"
-        },
-        "colored": {
-            "type": "colored",
-            "vertex": "defaultV",
-            "fragment": "defaultF"
-        },
-        "shadowMap": {
-            "type": "shadowMap",
-            "vertex": "depthV",
-            "fragment": "depthF"
-        },
-        "shadowedFragmentLighting": {
-            "type": "lit",
-            "vertex": "shadowedVertLightingV",
-            "fragment": "shadowedFragLightingF"
-        },
-        "textured": {
-            "type": "textured",
-            "vertex": "texturedV",
-            "fragment": "texturedF"
-        },
         "depthTextured": {
             "type": "textured",
             "vertex": "texturedV",
@@ -54,7 +21,12 @@
         "player": {
             "start_position": [10, 0.9, -25]
         },
-        "ambient_light": [0.7, 0.7, 0.7]
+        "ambient_light": [0.7, 0.7, 0.7],
+        "directed_light": {
+            "direction": [50, -75, 100],
+            "Id": [0.7, 0.7, 0.7],
+            "Is": [0.9, 0.9, 0.9]
+        }
     },
     "objects": [
         {
@@ -72,7 +44,7 @@
             "meshes": ["islandC"],
             "graphical_mesh": "island",
             "scale": [4, 5, 6],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [0, 0, 0],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -84,7 +56,7 @@
         },
         {
             "type": "box",
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [0.1, 2, 3],
             "position": [23, 2, -20],
             "lightParams": {
@@ -97,7 +69,7 @@
         },
         {
             "type": "box",
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [1, 2, 0.1],
             "position": [22, 2, -20],
             "lightParams": {
@@ -110,7 +82,7 @@
         },
         {
             "type": "box",
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [1, 2, 0.1],
             "position": [22, 2, -17],
             "lightParams": {
@@ -123,7 +95,7 @@
         },
         {
             "type": "box",
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [1, 2, 0.1],
             "position": [22, 2, -23],
             "lightParams": {
@@ -136,7 +108,7 @@
         },
         {
             "type": "box",
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [1, 0.1, 3],
             "position": [22, 4.1, -20],
             "lightParams": {
@@ -149,7 +121,7 @@
         },
         {
             "type": "box",
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [5, 2, 5],
             "position": [-3, 2, 0],
             "lightParams": {
@@ -162,7 +134,7 @@
         },
         {
             "type": "box",
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [1, 5, 1],
             "position": [-10, 5, -10],
             "lightParams": {
@@ -175,7 +147,7 @@
         },
         {
             "type": "box",
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [1, 5, 1],
             "position": [0, 5, -10],
             "lightParams": {
@@ -188,7 +160,7 @@
         },
         {
             "type": "box",
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [0.2, 5, 3],
             "position": [10, 5, -8],
             "orientation": [0, 45, 0],
@@ -202,7 +174,7 @@
         },
         {
             "type": "box",
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [1, 1, 2],
             "position": [-9, 1, 0],
             "lightParams": {
@@ -215,7 +187,7 @@
         },
         {
             "type": "box",
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [0.5, 0.5, 0.5],
             "position": [-13, 4, 5],
             "lightParams": {
@@ -228,7 +200,7 @@
         },
         {
             "type": "box",
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [0.5, 0.5, 0.5],
             "position": [-16, 5, 1],
             "lightParams": {
@@ -241,7 +213,7 @@
         },
         {
             "type": "box",
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [0.5, 0.5, 0.5],
             "position": [-21, 4, 0],
             "lightParams": {
@@ -254,7 +226,7 @@
         },
         {
             "type": "box",
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [5, 0.5, 0.4],
             "position": [-27, 3, -5],
             "lightParams": {
@@ -267,7 +239,7 @@
         },
         {
             "type": "box",
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "halfExtents": [5, 0.5, 0.4],
             "position": [-38, 2, 0],
             "lightParams": {
@@ -283,7 +255,7 @@
             "meshes": ["islandC"],
             "graphical_mesh": "island",
             "scale": [3, 10, 3],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [-68, 2, 0],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -299,7 +271,7 @@
             "meshes": ["islandC"],
             "graphical_mesh": "island",
             "scale": [3, 10, 3],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [50, 0, -200],
             "orientation": [0, 90, 0],
             "lightParams": {
@@ -317,7 +289,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 35, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [20, -1, -40],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -333,7 +305,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 190, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [30, 0, -40],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -349,7 +321,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 220, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [10, 0, -45],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -365,7 +337,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 190, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [15, -1, -60],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -381,7 +353,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 150, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [20, 0, -52],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -397,7 +369,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 20, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [27, 1, -49],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -413,7 +385,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 70, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [27, -1, -62],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -429,7 +401,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 260, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [22, -1, -68],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -445,7 +417,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 300, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [29, 1, -72],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -461,7 +433,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 0, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [20, 0, -72],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -477,7 +449,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 153, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [15, 0, -80],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -493,7 +465,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 230, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [20, 1, -90],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -509,7 +481,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 340, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [25, 2, -100],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -525,7 +497,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 50, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [30, 2, -80],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -541,7 +513,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 160, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [30, 2, -90],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -557,7 +529,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 160, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [30, 2, -110],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -573,7 +545,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 100, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [25, 0, -115],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -589,7 +561,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 60, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [30, 1, -120],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -605,7 +577,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 170, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [40, 1, -120],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -621,7 +593,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 200, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [15, 0, -120],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -637,7 +609,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 220, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [15, -1, -130],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -653,7 +625,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 220, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [20, -1, -140],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -669,7 +641,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 280, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [30, -0, -140],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -685,7 +657,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 80, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [30, 2, -130],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -701,7 +673,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 300, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [35, -1, -130],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -717,7 +689,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 310, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [15, 0, -150],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -733,7 +705,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 120, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [15, 1, -160],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -749,7 +721,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 102, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [16, 2, -165],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -765,7 +737,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 102, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [17, 3, -170],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -781,7 +753,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 190, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [14, 4, -175],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -797,7 +769,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 200, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [15, 5, -180],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -813,7 +785,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 210, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [16, 6, -185],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -829,7 +801,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 240, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [18, 7, -190],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -845,7 +817,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 40, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [30, 1, -150],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -861,7 +833,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 65, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [30, 2, -160],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -877,7 +849,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 271, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [27, 0, -172],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -893,7 +865,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 350, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [27, -1, -180],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -909,7 +881,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 350, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [30, 1, -190],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -925,7 +897,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 140, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [40, 2, -150],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -941,7 +913,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 180, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [50, 1, -158],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -957,7 +929,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 210, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [57, 2, -165],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -973,7 +945,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 180, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [57, 3, -175],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],
@@ -989,7 +961,7 @@
             "graphical_mesh": "island",
             "scale": [0.5, 3, 0.5],
             "orientation": [0, 180, 0],
-            "shader_program": "shadowedFragmentLighting",
+            "shader_program": "fragmentLighting",
             "position": [60, 1, -185],
             "lightParams": {
                 "ka": [0.62, 0.45, 0.26],

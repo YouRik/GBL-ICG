@@ -19,9 +19,24 @@
         "player": {
             "start_position": [0, 0.9, -6]
         },
-        "ambient_light": [0.7, 0.7, 0.7]
+        "ambient_light": [0.7, 0.7, 0.7],
+        "directed_light": {
+            "direction": [100, -75, 100],
+            "Id": [0.7, 0.7, 0.7],
+            "Is": [0.9, 0.9, 0.9]
+        }
     },
     "objects": [
+        {
+            "type": "sphere",
+            "shader_program": "colored",
+            "radius": 15,
+            "color": [1, 0.85, 0.5],
+            "position": [-200, 150, -200],
+            "castsShadow": false,
+            "mass": 0,
+            "mesh": "icoSphere"
+        },
         {
             "type": "box",
             "shader_program": "fragmentLighting",
@@ -187,21 +202,6 @@
             "mass": 5,
             "mesh": "icoSphereSoft",
             "portable": true
-        },
-        {
-            "type": "lightSource",
-            "position": [-200, 150, -200],
-            "Id": [0.7, 0.7, 0.7],
-            "Is": [0.9, 0.9, 0.9]
-        },
-        {
-            "type": "sphere",
-            "shader_program": "colored",
-            "radius": 15,
-            "color": [1, 0.85, 0.5],
-            "position": [-200, 150, -200],
-            "mass": 0,
-            "mesh": "icoSphere"
         }
     ]
 }

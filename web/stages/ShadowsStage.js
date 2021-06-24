@@ -26,69 +26,8 @@ export default class ShadowsStage extends Game {
     // Override parent's setup to enable level-specific logic
     setup(resources, shaderDefs, sceneDefs, objectDefs) {
         super.setup(resources, shaderDefs, sceneDefs, objectDefs);
-        this.canvas = document.getElementById('gl-canvas');
 
         const meshes = resources.meshes;
-
-        // Initialize everything shadow related
-
-        // Shadow map shader program
-        this.shadowMapShader = this.programs['shadowMap'];
-        this.shadowedShader = this.programs['shadowedFragmentLighting'];
-        this.shadowMapLightSpaceMatLoc = GL.getUniformLocation(
-            this.shadowMapShader, 'lightSpaceMatrix');
-        this.shadowMapModMatLoc = GL.getUniformLocation(this.shadowMapShader,
-            'modelMatrix');
-        this.shadowMapLoc = GL.getUniformLocation(this.shadowedShader,
-            'shadowMap');
-        this.shadowedLightSpaceMatLoc =
-            GL.getUniformLocation(this.shadowedShader, 'lightSpaceMatrix');
-
-        // Shadow map properties
-        this.shadowWidth = 2048;
-        this.shadowHeight = 2048;
-
-        // Create shadow casting light source
-        this.lightDirection = [50, -75, 100];
-        this.dirLightSource = new DirectedLightSource(this.lightDirection,
-            this.lightPrograms, {
-            Id: [0.7, 0.7, 0.7],
-            Is: [0.9, 0.9, 0.9]
-        });
-        this.updateLightSourceAmount();
-        GL.useProgram(this.shadowMapShader);
-        this.setLightSourceViewAndPerspective();
-
-        // Create framebuffer for shadow map
-        this.shadowFramebuffer = GL.createFramebuffer();
-        GL.bindFramebuffer(GL.FRAMEBUFFER, this.shadowFramebuffer);
-        this.depthMap = GL.createTexture();
-        GL.bindTexture(GL.TEXTURE_2D, this.depthMap);
-        GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MIN_FILTER, GL.NEAREST);
-        GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MAG_FILTER, GL.NEAREST);
-        GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_S, GL.CLAMP_TO_EDGE);
-        GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.CLAMP_TO_EDGE);
-        GL.texImage2D(GL.TEXTURE_2D, 0, GL.DEPTH_COMPONENT32F, this.shadowWidth,
-            this.shadowHeight, 0, GL.DEPTH_COMPONENT, GL.FLOAT, null);
-        // TASK4.1: Set this.depthMap texture as depth attachment on the framebuffer 
-        GL.framebufferTexture2D(GL.FRAMEBUFFER, GL.DEPTH_ATTACHMENT,
-            GL.TEXTURE_2D, this.depthMap, 0);
-
-        // Create depth map in color attachment to read from on CPU
-        this.depthMapColor = GL.createTexture();
-        GL.bindTexture(GL.TEXTURE_2D, this.depthMapColor);
-        GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MIN_FILTER, GL.NEAREST);
-        GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MAG_FILTER, GL.NEAREST);
-        GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_S, GL.CLAMP_TO_EDGE);
-        GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.CLAMP_TO_EDGE);
-        GL.texImage2D(GL.TEXTURE_2D, 0, GL.R8, this.shadowWidth,
-            this.shadowHeight, 0, GL.RED, GL.UNSIGNED_BYTE, null);
-        GL.framebufferTexture2D(GL.FRAMEBUFFER, GL.COLOR_ATTACHMENT0,
-            GL.TEXTURE_2D, this.depthMapColor, 0);
-        GL.bindTexture(GL.TEXTURE_2D, null);
-        GL.bindFramebuffer(GL.FRAMEBUFFER, null);
-        // GL.checkFramebufferStatus(GL.FRAMEBUFFER, this.shadowFramebuffer);
-
 
         // Initialize everything stage related
         this.taskSwitcher = new TaskSwitcher(2);
@@ -119,7 +58,7 @@ export default class ShadowsStage extends Game {
         // This orb has to be slightly bigger than the others because of low
         // shadow precision
         this.orb1 = new SphereObject(this.world,
-            this.programs['shadowedFragmentLighting'], 'lit',
+            this.programs['fragmentLighting'], 'lit',
             meshes['icoSphere'], {
             mass: 5,
             lightParams: {
@@ -136,7 +75,7 @@ export default class ShadowsStage extends Game {
         this.gameObjects.push(this.orb1);
 
         this.orb2 = new SphereObject(this.world,
-            this.programs['shadowedFragmentLighting'], 'lit',
+            this.programs['fragmentLighting'], 'lit',
             meshes['icoSphere'], {
             mass: 5,
             lightParams: {
@@ -166,7 +105,7 @@ export default class ShadowsStage extends Game {
             }
         }
         const pedestal1 = new Pedestal(this.world,
-            this.programs['shadowedFragmentLighting'], 'lit', resources,
+            this.programs['fragmentLighting'], 'lit', resources,
             pedestal1Filled, {
             position: [-68, 2, 0],
             color: [0, 0, 1],
@@ -204,7 +143,7 @@ export default class ShadowsStage extends Game {
             }
         };
         const pedestal2 = new Pedestal(this.world,
-            this.programs['shadowedFragmentLighting'], 'lit', resources,
+            this.programs['fragmentLighting'], 'lit', resources,
             pedestal2Filled, {
             position: [40, 0, -210],
             color: [0.5, 0.5, 1],
@@ -290,56 +229,11 @@ export default class ShadowsStage extends Game {
     }
 
     render() {
-        GL.bindFramebuffer(GL.FRAMEBUFFER, this.shadowFramebuffer);
-        GL.viewport(0, 0, this.shadowWidth, this.shadowHeight);
-        GL.clear(GL.DEPTH_BUFFER_BIT);
-        GL.cullFace(GL.FRONT);
-        this.setLightSourceViewAndPerspective();
-        // Render each object to shadow map, pass shadow map shader program
-        this.gameObjects.forEach(object => {
-            object.renderToShadowMap(this.shadowMapShader,
-                this.shadowMapModMatLoc);
-        });
-        GL.cullFace(GL.BACK);
-        GL.bindFramebuffer(GL.FRAMEBUFFER, null);
-
-        // Reset viewport to default
-        this.setViewPort(this.canvas);
-        // Bind texture and set as uniform for shadow map
-        GL.useProgram(this.shadowedShader);
-        GL.activeTexture(GL.TEXTURE0);
-        GL.bindTexture(GL.TEXTURE_2D, this.depthMap);
-        GL.uniform1i(this.shadowMapLoc, 0);
-        GL.uniformMatrix4fv(this.shadowedLightSpaceMatLoc, false,
-            this.lightSpaceMatrix);
         // Render as usual
         super.render();
 
-        // render depth map as texture to quad to test
+        // render depth map as texture to quad for testing
         // this.renderDepthMapQuad();
-    }
-
-    setLightSourceViewAndPerspective() {
-        // Set orthographic projection matrix
-        const projectionMatrix = GLMAT.mat4.create();
-        GLMAT.mat4.ortho(projectionMatrix, -40, 40, -25, 25, 1, 200);
-
-        // Set view matrix
-        const viewMatrix = GLMAT.mat4.create();
-        // Look at player from player position minus light direction
-        const lightPos = [
-            this.player.position[0] - this.lightDirection[0],
-            this.player.position[1] - this.lightDirection[1],
-            this.player.position[2] - this.lightDirection[2]
-        ];
-        GLMAT.mat4.lookAt(viewMatrix, lightPos, this.player.position,
-            [0, 1, 0]);
-        // Pass multiplied to shadow map shader
-        this.lightSpaceMatrix = GLMAT.mat4.create();
-        GLMAT.mat4.mul(this.lightSpaceMatrix, projectionMatrix, viewMatrix);
-        GL.useProgram(this.shadowMapShader);
-        GL.uniformMatrix4fv(this.shadowMapLightSpaceMatLoc,
-            false, this.lightSpaceMatrix);
     }
 
     renderDepthMapQuad() {

@@ -12,8 +12,9 @@ import MeshObject from './GameObjects/MeshObject.js';
 import CubeObject from './GameObjects/CubeObject.js';
 import SphereObject from './GameObjects/SphereObject.js';
 import LitPlatform from './GameObjects/LitPlatform.js';
-import * as CANNON from './lib/cannon/cannon-es.js';
 import Cloud from './GameObjects/Cloud.js';
+import * as CANNON from './lib/cannon/cannon-es.js';
+import * as GLMAT from './lib/gl-matrix/index.js';
 
 /**
  * TODO: documentation
@@ -34,7 +35,9 @@ export default class Game {
                 ["fragLightingV", "shaders/tasks/fragment_lighting.vs"],
                 ["fragLightingF", "shaders/tasks/fragment_lighting.fs"],
                 ["defaultV", "shaders/default.vs"],
-                ["defaultF", "shaders/default.fs"]
+                ["defaultF", "shaders/default.fs"],
+                ["depthV", "shaders/tasks/depth.vs"],
+                ["depthF", "shaders/tasks/depth.fs"]
             ],
             textures: [],
             meshes: [
@@ -76,6 +79,11 @@ export default class Game {
                     type: "colored",
                     vertex: "defaultV",
                     fragment: "defaultF"
+                },
+                shadowMap: {
+                    type: "shadowMap",
+                    vertex: "depthV",
+                    fragment: "depthF"
                 }
             }
         };
@@ -94,7 +102,7 @@ export default class Game {
                 ...levelData['shader_programs'],
                 ...baseResources.programs
             }
-            
+
             const scene = levelData['scene'];
             const objects = levelData['objects'];
             return loadResources(
@@ -179,6 +187,16 @@ export default class Game {
                     const IaLocV = GL.getUniformLocation(program, 'Ia');
                     GL.uniform3fv(IaLocV, Ia);
                 }
+            } else if (setting == 'directed_light') {
+                // Create shadow casting light source
+                const globalLightDirection =
+                    sceneDefs['directed_light']['direction'];
+                this.dirLightSource = new DirectedLightSource(
+                    globalLightDirection,
+                    this.lightPrograms, {
+                    Id: sceneDefs['directed_light']['Id'],
+                    Is: sceneDefs['directed_light']['Is']
+                });
             }
         }
 
@@ -260,6 +278,59 @@ export default class Game {
                 }
             }
         });
+
+        // Initialize everything shadow related
+        this.canvas = document.getElementById('gl-canvas');
+
+        // Shadow map shader program
+        this.shadowMapShader = this.programs['shadowMap'];
+        this.shadowedShader = this.programs['fragmentLighting'];
+        this.shadowMapLightSpaceMatLoc = GL.getUniformLocation(
+            this.shadowMapShader, 'lightSpaceMatrix');
+        this.shadowMapModMatLoc = GL.getUniformLocation(this.shadowMapShader,
+            'modelMatrix');
+        this.shadowMapLoc = GL.getUniformLocation(this.shadowedShader,
+            'shadowMap');
+        this.shadowedLightSpaceMatLoc =
+            GL.getUniformLocation(this.shadowedShader, 'lightSpaceMatrix');
+
+        // Shadow map properties
+        this.shadowWidth = 2048;
+        this.shadowHeight = 2048;
+
+        GL.useProgram(this.shadowMapShader);
+        this.setLightSourceViewAndPerspective();
+
+        // Create framebuffer for shadow map
+        this.shadowFramebuffer = GL.createFramebuffer();
+        GL.bindFramebuffer(GL.FRAMEBUFFER, this.shadowFramebuffer);
+        this.depthMap = GL.createTexture();
+        GL.bindTexture(GL.TEXTURE_2D, this.depthMap);
+        GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MIN_FILTER, GL.NEAREST);
+        GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MAG_FILTER, GL.NEAREST);
+        GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_S, GL.CLAMP_TO_EDGE);
+        GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.CLAMP_TO_EDGE);
+        GL.texImage2D(GL.TEXTURE_2D, 0, GL.DEPTH_COMPONENT32F, this.shadowWidth,
+            this.shadowHeight, 0, GL.DEPTH_COMPONENT, GL.FLOAT, null);
+        // TASK4.1: Set this.depthMap texture as depth attachment on the
+        // framebuffer 
+        GL.framebufferTexture2D(GL.FRAMEBUFFER, GL.DEPTH_ATTACHMENT,
+            GL.TEXTURE_2D, this.depthMap, 0);
+
+        // Create depth map in color attachment to read from on CPU
+        this.depthMapColor = GL.createTexture();
+        GL.bindTexture(GL.TEXTURE_2D, this.depthMapColor);
+        GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MIN_FILTER, GL.NEAREST);
+        GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MAG_FILTER, GL.NEAREST);
+        GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_S, GL.CLAMP_TO_EDGE);
+        GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.CLAMP_TO_EDGE);
+        GL.texImage2D(GL.TEXTURE_2D, 0, GL.R8, this.shadowWidth,
+            this.shadowHeight, 0, GL.RED, GL.UNSIGNED_BYTE, null);
+        GL.framebufferTexture2D(GL.FRAMEBUFFER, GL.COLOR_ATTACHMENT0,
+            GL.TEXTURE_2D, this.depthMapColor, 0);
+        GL.bindTexture(GL.TEXTURE_2D, null);
+        GL.bindFramebuffer(GL.FRAMEBUFFER, null);
+        // GL.checkFramebufferStatus(GL.FRAMEBUFFER, this.shadowFramebuffer);
 
         // Pass number of lights to the relevant shaders
         this.updateLightSourceAmount();
@@ -384,9 +455,34 @@ export default class Game {
      * Renders all game object graphics
      */
     render() {
+        // Set up depth/shadow map settings
+        GL.bindFramebuffer(GL.FRAMEBUFFER, this.shadowFramebuffer);
+        GL.viewport(0, 0, this.shadowWidth, this.shadowHeight);
+        GL.clear(GL.DEPTH_BUFFER_BIT);
+        GL.cullFace(GL.FRONT);
+        this.setLightSourceViewAndPerspective();
+        // Render each object to shadow map, pass shadow map shader program
+        this.gameObjects.forEach(object => {
+            object.renderToShadowMap(this.shadowMapShader,
+                this.shadowMapModMatLoc);
+        });
+        // Revert settings to normal
+        GL.cullFace(GL.BACK);
+        GL.bindFramebuffer(GL.FRAMEBUFFER, null);
+        // Reset viewport to default
+        this.setViewPort(this.canvas);
+
+        // Bind texture and set as uniform for shadow map
+        GL.useProgram(this.shadowedShader);
+        GL.activeTexture(GL.TEXTURE0);
+        GL.bindTexture(GL.TEXTURE_2D, this.depthMap);
+        GL.uniform1i(this.shadowMapLoc, 0);
+        GL.uniformMatrix4fv(this.shadowedLightSpaceMatLoc, false,
+            this.lightSpaceMatrix);
+
         // Clear the frame buffer
         GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT);
-        // Render each object
+        // Render each object as usual
         const deferred = [];
         this.gameObjects.forEach(object => {
             // Simple workaround for transparency
@@ -437,6 +533,29 @@ export default class Game {
         canvas.width = canvas.clientWidth;
         canvas.height = canvas.clientWidth * documentAspectRatio;
         gl.viewport(0, 0, canvas.width, canvas.height);
+    }
+
+    setLightSourceViewAndPerspective() {
+        // Set orthographic projection matrix
+        const projectionMatrix = GLMAT.mat4.create();
+        GLMAT.mat4.ortho(projectionMatrix, -40, 40, -25, 25, 1, 200);
+
+        // Set view matrix
+        const viewMatrix = GLMAT.mat4.create();
+        // Look at player from player position minus light direction
+        const lightPos = [
+            this.player.position[0] - this.dirLightSource.position[0],
+            this.player.position[1] - this.dirLightSource.position[1],
+            this.player.position[2] - this.dirLightSource.position[2]
+        ];
+        GLMAT.mat4.lookAt(viewMatrix, lightPos, this.player.position,
+            [0, 1, 0]);
+        // Pass multiplied to shadow map shader
+        this.lightSpaceMatrix = GLMAT.mat4.create();
+        GLMAT.mat4.mul(this.lightSpaceMatrix, projectionMatrix, viewMatrix);
+        GL.useProgram(this.shadowMapShader);
+        GL.uniformMatrix4fv(this.shadowMapLightSpaceMatLoc,
+            false, this.lightSpaceMatrix);
     }
 
     removeGameObject(object) {
