@@ -26,20 +26,20 @@ out vec4 vfColor;
 void main()
 {
     mat4 modelViewMatrix = viewMatrix * modelMatrix;
-    // TASK: Calculate normalMatrix, a variation of the modelViewMatrix used
+    // TASK3.2: Calculate normalMatrix, a variation of the modelViewMatrix used
     //       for normals
     
     // Variation of the viewMatrix used for normals
     mat4 invViewMatrix = inverse(transpose(viewMatrix));
 
     vec4 position = modelViewMatrix * vPosition;
-    // TASK: Transform normals to world space with the normalMatrix
+    // TASK3.2: Transform normals to world space with the normalMatrix
     
 
     float fAtt = 1.0;
     vec3 L;
 
-    // TASK: Calculate the vector L. Note the two cases of directed light and
+    // TASK3.2: Calculate the vector L. Note the two cases of directed light and
     //       point light
     if (lPosition[0].w == 0.0) {
         // Directed light, position represents the vector light direction from
@@ -48,22 +48,24 @@ void main()
         L = normalize(-lightDir.xyz);
     } else {
         // Point light
-        // TASK: Calculate the vector L in the case of a point light
+        // TASK3.2: Calculate the vector L in the case of a point light
         
         
 
-        // TASK: Calculate the attenuation factor fAtt
+        // TASK3.2: Calculate the attenuation factor fAtt
         
         
     }
     
-    // TASK: Calculate the vectors N and V
+    // TASK3.2: Calculate the vectors N and V
     
     
-    // TASK: Calculate the vector R
+    // TASK3.3: Calculate the vector R
     
 
-    // TASK: Calculate the light/color intensity with Phong's lighting equation
+    // TASK3.1: Calculate the ambient intensity with Phong's lighting equation
+    // TASK3.2: Calculate the diffuse intensity with Phong's lighting equation
+    // TASK3.3: Calculate the specular intensity with Phong's lighting equation
     vec3 I = vec3(0.73, 0.52, 0.3);
     vfColor = vec4(I.rgb, 1.0);
     

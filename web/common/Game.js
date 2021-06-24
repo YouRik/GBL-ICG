@@ -314,8 +314,7 @@ export default class Game {
             this.shadowHeight, 0, GL.DEPTH_COMPONENT, GL.FLOAT, null);
         // TASK4.1: Set this.depthMap texture as depth attachment on the
         // framebuffer 
-        GL.framebufferTexture2D(GL.FRAMEBUFFER, GL.DEPTH_ATTACHMENT,
-            GL.TEXTURE_2D, this.depthMap, 0);
+        
 
         // Create depth map in color attachment to read from on CPU
         this.depthMapColor = GL.createTexture();

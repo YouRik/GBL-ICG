@@ -18,7 +18,7 @@ export default function deCasteljau(p0, p1, p2, p3, tStep) {
     splinePoints.push(p0);
 
     // Add control points of spline
-    // TASK: Do not add the actual control points themselves
+    // TASK2: Do not add the actual control points themselves
     splinePoints.push(p1);
     splinePoints.push(p2);
 
@@ -40,14 +40,14 @@ export default function deCasteljau(p0, p1, p2, p3, tStep) {
             const nextPoints = [];
             // Iterate through current points
             for (let j = 1; j < currentPoints.length; j++) {
-                // TASK: Interpolate one new point from two current ones
+                // TASK2: Interpolate one new point from two current ones
                 
-                // TASK: and add it to the points array for next iteration
+                // TASK2: and add it to the points array for next iteration
             }
             // Set new current points for next iteration
             currentPoints = nextPoints;
         }
-        // TASK: Add the fully interpolated point Q_1(t) to the final spline
+        // TASK2: Add the fully interpolated point Q_1(t) to the final spline
         //       curve array
         
     }
@@ -67,7 +67,7 @@ export default function deCasteljau(p0, p1, p2, p3, tStep) {
  * @returns {Array<number>} The new point between a and b at step t
  */
 function interpolatePoint(a, b, t) {
-    // TASK: Calculate the interpolated point between points a and b
+    // TASK2: Calculate the interpolated point between points a and b
     //       with parameter t
     //       You can access the points' components with point[index]
     return [

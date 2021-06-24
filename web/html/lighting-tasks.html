@@ -12,7 +12,7 @@
         </p>
         <ol>
             <li>Open the file <div class=code>web/shaders/tasks/vertex_lighting.vs</div> in a text editor. Notice that all required attributes and uniforms are already defined in the shader.</li>
-            <li>Implement ambient lighting in the shader based on the Phong lighting model.</li>
+            <li>Implement ambient lighting in the shader based on the Phong lighting model. Look for the comment marked with TASK3.1</li>
             <li>Find a way through to the next level of the labyrinth.</li>
         </ol>
     </div>
@@ -21,7 +21,7 @@
             I guess we were lucky with the different colored walls down there. You should implement diffuse lighting next to add a little depth.
         </p>
         <ol>
-            <li>Some required uniforms are not yet passed to the shader. Open the file <div class=code>web/common/GameObject.js</div> and look for the comments marked with TASK. <br />
+            <li>Some required uniforms are not yet passed to the shader. Open the file <div class=code>web/common/GameObject.js</div> and look for the comments marked with TASK3.2. <br />
                 You will need the following WebGL functions: <br />
                 <ul>
                     <li><a href=https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/getUniformLocation>GL.getUniformLocation()</a></li>
@@ -29,7 +29,7 @@
                 </ul>
             </li>
             <li>
-                Look for the comments marked with TASK and calculate the normalMatrix, transform the normals, calculate the vectors L, V and N and the attenuation factor fAtt.
+                Look for the comments marked with TASK3.2 and calculate the normalMatrix, transform the normals, calculate the vectors L, V and N and the attenuation factor fAtt.
             </li>
             <li>Then add the diffuse part of the equation.</li>
             <li>
@@ -53,7 +53,7 @@
             Get the orb and let's go. But which one is it? They all look the same... or do they?
         </p>
         <ol>
-            <li>Look for the remaining comments marked with TASK and calculate the vector R.</li>
+            <li>Look for the remaining comments marked with TASK3.3 and calculate the vector R.</li>
             <li>Then add the specular part of Phong's lighting equation.</li>
             <li>Now choose the shiny orb that looks different from the rest. When you think you've got it, click to the next task.</li>
         </ol>
@@ -65,7 +65,7 @@
         </p>
         <ol>
             <li>Open the file <div class=code>web/common/GameObjects/LitPlatform.js</div> and change the shader from <div class=code>vertexLighting</div> to <div class=code>fragmentLighting</div></li>
-            <li>Open the file <div class=code>web/common/shaders/tasks/fragmentLighting.fs</div> and look for the comments marked with TASK. Note that this shader uses multiple light sources and loops over them.</li>
+            <li>Open the file <div class=code>web/common/shaders/tasks/fragmentLighting.fs</div> and look for the comments marked with TASK3.4. Note that this shader uses multiple light sources and loops over them.</li>
             <li>When your fragment lighting is correct, you will be able to see a glow in the middle of the platforms that can hold you. Take the orb and get to the last island!</li>
         </ol>
         </ol>

@@ -38,14 +38,15 @@ float shadow(int lIndex) {
         || projected.y > 1.0 || projected.y < 0.0 || projected.z > 1.0) {
         // Fragment is outside of rendered shadow map, not in shadow
         // TASK4.2: set shadow value accordingly
-        shadow = 0.0;
+        
     } else {
-        // TASK4.2: Read closest depth from shadow map
-        float closest = texture(shadowMap, projected.xy).r;
+        // TASK4.2: Read closest depth from shadow map. It is the first
+        //          component of the vector read from the shadow/depth map
+        
         // TASK4.2: Read light space projected depth of fragment
-        float current = projected.z;
-        // TASK4.2: Set shadow value depending on whether the fragment is in shadow
-        shadow = closest > current ? 0.0 : 0.7;
+        
+        // TASK4.2: Set shadow value depending on if the fragment is in shadow
+        
     }
     return shadow;
 }
@@ -60,40 +61,38 @@ vec3 calculateIntensity(int lIndex, vec3 N, vec3 V) {
         // the light source in world space
         L = normalize(-lightPosCam[lIndex].xyz);
         // TASK4.2: Calculate shadow factor with above shadow() function
-        shadowFactor = 1.0 - shadow(lIndex);
+        
     } else {
         // Point light
-        // TASK: Calculate L for point lights
-        L = normalize((lightPosCam[lIndex] - positionCam).xyz);
+        // TASK3.4: Calculate L for point lights
+        
 
-        // TASK: Calculate the light attenuation factor fAtt
-        float d = distance(lightPosCam[lIndex], positionCam);
-        fAtt = min(1.0/(c1[lIndex] + c2[lIndex] * d + c3[lIndex] * pow(d, 2.0)),
-            1.0);
+        // TASK3.4: Calculate the light attenuation factor fAtt
+        
+
+
     }
-    // TASK: Calculate the reflection vector R
-    vec3 R = reflect(-L, N);
+    // TASK3.4: Calculate the reflection vector R
     
-    // TASK: Return the diffuse and specular part of the Phong lighting equation
+    
+    // TASK3.4: Return the diffuse and specular part of the Phong lighting equation
     // TASK4.2: Multiply shadowFactor to the intensity equation
-    return shadowFactor * fAtt *
-        (Id[lIndex] * kd * max(dot(N, L), 0.0)
-        + Is[lIndex] * ks * pow(max(dot(R, V), 0.0), specExp));
+    return vec3(0.0, 0.0, 0.0);
 }
 
 void main()
 {
-    // TASK: Calculate the vectors N and V
-    vec3 N = normalize(normalCam.xyz);
-    vec3 V = normalize((-positionCam).xyz);
+    // TASK3.4: Calculate the vectors N and V
+    
+    
 
-    // TASK Set ambient component of color/intensity vector I
-    vec3 I = Ia * ka;
+    // TASK3.4 Calculate ambient part of color/intensity vector I
+    vec3 I = vec3(0.0, 0.0, 0.0);
     for (int i = 0; i < lightsCount; i++) {
-        // TASK: for each light source, add the calculated intensity
-        I += calculateIntensity(i, N, V);
+        // TASK3.4: for each light source, add the calculated intensity
+        
     }
 
-    // TASK: Set RGB components to those of newly calculated intensity
-    fColor = vec4(I.rgb, 1.0);
+    // TASK3.4: Set RGB components to those of newly calculated intensity
+    fColor = vec4(ka.rgb, 1.0);
 }

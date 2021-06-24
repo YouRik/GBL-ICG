@@ -36,6 +36,6 @@ void main()
     }
 
     // TASK4.2: transform vertex position to light space
-    positionLightSpace = lightSpaceMatrix * modelMatrix * vPosition;
+    positionLightSpace = vec4(0.0, 0.0, 0.0, 0.0);
     gl_Position = projectionMatrix * positionCam;
 }
