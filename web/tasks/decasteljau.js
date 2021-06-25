@@ -48,7 +48,7 @@ export default function deCasteljau(p0, p1, p2, p3, tStep) {
             currentPoints = nextPoints;
         }
         // TASK2: Add the fully interpolated point Q_1(t) to the final spline
-        //       curve array
+        //        curve array
         
     }
 
@@ -68,8 +68,8 @@ export default function deCasteljau(p0, p1, p2, p3, tStep) {
  */
 function interpolatePoint(a, b, t) {
     // TASK2: Calculate the interpolated point between points a and b
-    //       with parameter t
-    //       You can access the points' components with point[index]
+    //        with parameter t
+    //        You can access the points' components with point[index]
     return [
         // first component of new point,
         // second component of new point

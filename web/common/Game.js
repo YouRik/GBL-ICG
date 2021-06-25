@@ -6,6 +6,7 @@ import LightSource from './LightSource.js';
 import DirectedLightSource from './DirectedLightSource.js';
 import FirstPersonPlayer from './FirstPersonPlayer.js';
 import PerformanceLogger from './PerformanceLogger.js';
+import GameObject from './GameObjects/GameObject.js';
 import Pedestal from './GameObjects/Pedestal.js';
 import BoxObject from './GameObjects/BoxObject.js';
 import MeshObject from './GameObjects/MeshObject.js';
@@ -17,19 +18,30 @@ import * as CANNON from './lib/cannon/cannon-es.js';
 import * as GLMAT from './lib/gl-matrix/index.js';
 
 /**
- * TODO: documentation
+ * The base class for each game stage. This class defines base resources, loads
+ * them and other stage related files, sets up graphics and physics and loads
+ * stage information to place game objects.
+ * Stages may extend this class to add stage-specific game logic.
  */
 export default class Game {
+    /**
+     * Create a game. This constructor only defines basic variables and does not
+     *  yet process loading or setting up.
+     * @param {string} stageName The name of the stage to load. Needed to load
+     *  stage information from JSON file.
+     */
     constructor(stageName) {
         this.isPaused = true;
         this.stageName = stageName;
     }
 
     /**
-     * Load stage data
+     * Load all base and stage-related resources and proceed to setup
+     * @returns {Promise} A promise that is resolved once setup is complete and
+     *  the game is ready to be started
      */
     load() {
-        // Resources required to be loaded in any stage
+        // Base resources required to be loaded in any stage
         const baseResources = {
             shaders: [
                 ['fragLightingV', 'shaders/tasks/fragment_lighting.vs'],
@@ -88,6 +100,7 @@ export default class Game {
             }
         };
 
+        // Load the stage, then unpack and proceed to setup
         return loadStage(`stages/${this.stageName}.json`).then(levelData => {
             const resourceFiles = levelData['resources'];
 
@@ -102,9 +115,10 @@ export default class Game {
                 ...levelData['shader_programs'],
                 ...baseResources.programs
             };
-
             const scene = levelData['scene'];
             const objects = levelData['objects'];
+
+            // Load, then set up
             return loadResources(
                 resourceFiles['shaders'],
                 resourceFiles['textures'],
@@ -123,9 +137,9 @@ export default class Game {
      * @param {Array<Object>} objectDefs List of game object definitions
      */
     setup(resources, shaderDefs, sceneDefs, objectDefs) {
-        const canvas = document.getElementById('gl-canvas');
+        this.canvas = document.getElementById('gl-canvas');
         // Initialize WebGL context and set globally
-        window.GL = this.initWebGL(canvas);
+        window.GL = this.initWebGL();
 
         // Create programs from shaders
         this.programs = {};
@@ -145,7 +159,7 @@ export default class Game {
             gravity: new CANNON.Vec3(0, -21, 0)
         });
 
-        // Create player
+        // Declare player
         this.player = null;
 
         // Array of game objects
@@ -163,6 +177,7 @@ export default class Game {
         // Set up scene settings
         for (const setting in sceneDefs) {
             if (setting == 'player') {
+                // Player related stage settings
                 let startPos = sceneDefs['player']['start_position'];
                 let yaw = sceneDefs['player']['yaw'];
                 let pitch = sceneDefs['player']['pitch'];
@@ -174,12 +189,13 @@ export default class Game {
                     yaw = respawnPosition[1];
                     pitch = respawnPosition[2];
                 }
-
+                // Create player
                 this.player = new FirstPersonPlayer(this.world, startPos,
                     this.programs, resources.meshes['icoSphere'],
-                    canvas.width / canvas.height, yaw, pitch);
+                    this.canvas.width / this.canvas.height, yaw, pitch);
                 this.gameObjects.push(this.player.jointSphere);
             } else if (setting == 'ambient_light') {
+                // Global ambient light
                 const Ia = sceneDefs['ambient_light'];
                 for (const programIndex in this.lightPrograms) {
                     const program = this.lightPrograms[programIndex];
@@ -189,7 +205,7 @@ export default class Game {
                     GL.uniform3fv(IaLocV, Ia);
                 }
             } else if (setting == 'directed_light') {
-                // Create shadow casting light source
+                // Shadow casting light source
                 const globalLightDirection =
                     sceneDefs['directed_light']['direction'];
                 this.dirLightSource = new DirectedLightSource(
@@ -207,12 +223,14 @@ export default class Game {
             if (objType == 'lightSource') {
                 // Create light source
                 if (objectDef.directed) {
+                    // Create directed light source
                     this.lightSources.push(new DirectedLightSource(
                         objectDef.direction, this.lightPrograms, {
                             Id: objectDef.Id,
                             Is: objectDef.Is
                         }));
                 } else {
+                    // Create point light source
                     this.lightSources.push(new LightSource(
                         objectDef.position, this.lightPrograms, {
                             Id: objectDef.Id,
@@ -277,20 +295,22 @@ export default class Game {
                         this.programs, options.startPosition,
                         options.endPosition, options.speed,
                         resources.meshes, options));
+                    break;
                 }
             }
         });
 
         // Initialize everything shadow related
-        this.canvas = document.getElementById('gl-canvas');
-
-        // Shadow map shader program
+        // Shadow/depth map shader program
         this.shadowMapShader = this.programs['shadowMap'];
+        // Shader for objects that receive shadows
         this.shadowedShader = this.programs['fragmentLighting'];
+        // Locations of uniforms in depth map shader
         this.shadowMapLightSpaceMatLoc = GL.getUniformLocation(
             this.shadowMapShader, 'lightSpaceMatrix');
         this.shadowMapModMatLoc = GL.getUniformLocation(this.shadowMapShader,
             'modelMatrix');
+        // Locations of uniforms in shadow receiving shader
         this.shadowMapLoc = GL.getUniformLocation(this.shadowedShader,
             'shadowMap');
         this.shadowedLightSpaceMatLoc =
@@ -331,12 +351,13 @@ export default class Game {
             GL.TEXTURE_2D, this.depthMapColor, 0);
         GL.bindTexture(GL.TEXTURE_2D, null);
         GL.bindFramebuffer(GL.FRAMEBUFFER, null);
+        // Check if framebuffer is complete
         // GL.checkFramebufferStatus(GL.FRAMEBUFFER, this.shadowFramebuffer);
 
         // Pass number of lights to the relevant shaders
         this.updateLightSourceAmount();
 
-        // Input callbacks
+        // Define input callbacks
         const handleKeyUp = (event) => {
             event.preventDefault();
             this.player.keyUp(event);
@@ -364,7 +385,7 @@ export default class Game {
         };
         const lockChangeAlert = () => {
             // Unpause, hook input callbacks when pointer is locked
-            if (document.pointerLockElement === canvas) {
+            if (document.pointerLockElement === this.canvas) {
                 document.addEventListener('mousemove', handlePointerMove);
                 document.addEventListener('keyup', handleKeyUp);
                 document.addEventListener('keydown', handleKeyDown);
@@ -374,7 +395,7 @@ export default class Game {
                     capture: true,
                     passive: false
                 });
-                canvas.classList.add('playing');
+                this.canvas.classList.add('playing');
                 this.isPaused = false;
             } else {
                 // Pause, unhook input callbacks when pointer is locked
@@ -385,26 +406,30 @@ export default class Game {
                 document.removeEventListener('pointerup', handlePointerUp);
                 document.removeEventListener('wheel', handleWheel,
                     { capture: true });
-                canvas.classList.remove('playing');
+                this.canvas.classList.remove('playing');
                 this.isPaused = true;
             }
         };
         // Hook pointer lock callback
         document.addEventListener('pointerlockchange', lockChangeAlert);
-        canvas.addEventListener('click', () => {
-            if (document.pointerLockElement !== canvas) {
-                canvas.requestPointerLock();
+        this.canvas.addEventListener('click', () => {
+            if (document.pointerLockElement !== this.canvas) {
+                this.canvas.requestPointerLock();
             }
         });
 
         // Update resolution and perspective matrix on window resize
         window.addEventListener('resize', () => {
-            this.setViewPort(canvas);
-            this.player.setPerspectiveMatrix(canvas.width / canvas.height);
+            this.setViewport();
+            this.player.setPerspectiveMatrix(
+                this.canvas.width / this.canvas.height);
             this.render();
         });
     }
 
+    /**
+     * Update the number of light sources in all shaders
+     */
     updateLightSourceAmount() {
         for (const programIndex in this.programs) {
             const program = this.programs[programIndex];
@@ -431,7 +456,6 @@ export default class Game {
 
         // Call next iteration of game loop
         lastUpdateTime = time;
-
         requestAnimationFrame(() => {
             this.gameLoop(lastUpdateTime);
         });
@@ -453,7 +477,7 @@ export default class Game {
     }
 
     /**
-     * Renders all game object graphics
+     * Render all game object graphics
      */
     render() {
         // Set up depth/shadow map settings
@@ -462,18 +486,19 @@ export default class Game {
         GL.clear(GL.DEPTH_BUFFER_BIT);
         GL.cullFace(GL.FRONT);
         this.setLightSourceViewAndPerspective();
-        // Render each object to shadow map, pass shadow map shader program
+        // Render each object to shadow map with depth map shader
         this.gameObjects.forEach(object => {
             object.renderToShadowMap(this.shadowMapShader,
                 this.shadowMapModMatLoc);
         });
+
         // Revert settings to normal
         GL.cullFace(GL.BACK);
         GL.bindFramebuffer(GL.FRAMEBUFFER, null);
         // Reset viewport to default
-        this.setViewPort(this.canvas);
+        this.setViewport();
 
-        // Bind texture and set as uniform for shadow map
+        // Bind depth/shadow map texture and set pass as uniform to draw shadows
         GL.useProgram(this.shadowedShader);
         GL.activeTexture(GL.TEXTURE0);
         GL.bindTexture(GL.TEXTURE_2D, this.depthMap);
@@ -501,15 +526,14 @@ export default class Game {
 
     /**
      * Initialize WebGL
-     * @param {HTMLCanvasElement} canvas The canvas to initialize WebGL in
      * @returns {WebGL2RenderingContext} WebGL context
      */
-    initWebGL(canvas) {
+    initWebGL() {
         // WebGL context from canvas
-        const gl = canvas.getContext('webgl2');
+        const gl = this.canvas.getContext('webgl2');
 
         // Configure viewport
-        this.setViewPort(canvas, gl);
+        this.setViewport(gl);
         // Set clear color (background) to a bright blue
         gl.clearColor(0.53, 0.78, 0.92, 1.0);
         // Enable depth test
@@ -526,16 +550,19 @@ export default class Game {
 
     /**
      * Sets the WebGL viewport to the correct canvas size
-     * @param {HTMLCanvasElement} canvas The canvas used as viewport
      * @param {WebGL2RenderingContext} [gl=window.GL] WebGL context 
      */
-    setViewPort(canvas, gl = window.GL) {
+    setViewport(gl = window.GL) {
         const documentAspectRatio = window.innerHeight / window.innerWidth;
-        canvas.width = canvas.clientWidth;
-        canvas.height = canvas.clientWidth * documentAspectRatio;
-        gl.viewport(0, 0, canvas.width, canvas.height);
+        this.canvas.width = this.canvas.clientWidth;
+        this.canvas.height = this.canvas.clientWidth * documentAspectRatio;
+        gl.viewport(0, 0, this.canvas.width, this.canvas.height);
     }
 
+    /**
+     * Calculate and set the view and perspective matrices used for the shadow
+     * casting light source.
+     */
     setLightSourceViewAndPerspective() {
         // Set orthographic projection matrix
         const projectionMatrix = GLMAT.mat4.create();
@@ -551,14 +578,19 @@ export default class Game {
         ];
         GLMAT.mat4.lookAt(viewMatrix, lightPos, this.player.position,
             [0, 1, 0]);
-        // Pass multiplied to shadow map shader
+        // Multiply them together
         this.lightSpaceMatrix = GLMAT.mat4.create();
         GLMAT.mat4.mul(this.lightSpaceMatrix, projectionMatrix, viewMatrix);
+        // Then pass them to the depth map shader
         GL.useProgram(this.shadowMapShader);
         GL.uniformMatrix4fv(this.shadowMapLightSpaceMatLoc,
             false, this.lightSpaceMatrix);
     }
 
+    /**
+     * Removes a game object previously added to the game.
+     * @param {GameObject} object The game object to be removed from the game
+     */
     removeGameObject(object) {
         this.world.removeBody(object.physicsBody);
         const index = this.gameObjects.indexOf(object);

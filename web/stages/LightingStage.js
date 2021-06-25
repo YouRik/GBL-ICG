@@ -8,19 +8,22 @@ import Checkpoint from '../common/GameObjects/Checkpoint.js';
 import TaskSwitcher from '../common/TaskSwitcher.js';
 
 /**
- * TODO: documentation
+ * The stage designed to teach Phong lighting
  */
 export default class LightingStage extends Game {
     constructor() {
         super('lighting');
     }
 
-    // Override parent's setup to enable level-specific logic
+    // Override parent's setup to implement stage-specific logic
     setup(resources, shaderDefs, sceneDefs, objectDefs) {
+        // General game setup
         super.setup(resources, shaderDefs, sceneDefs, objectDefs);
 
+        // Shorter name for access to mesh resources
         const meshes = resources.meshes;
 
+        // Handle switching between displayed tasks
         const taskSwitcher = new TaskSwitcher(4);
 
         // Add checkpoints

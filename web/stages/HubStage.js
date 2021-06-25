@@ -6,14 +6,14 @@ import Pedestal from '../common/GameObjects/Pedestal.js';
 import SphereObject from '../common/GameObjects/SphereObject.js';
 
 /**
- * TODO: documentation
+ * The hub stage used as a means of moving between stages
  */
 export default class HubStage extends Game {
     constructor() {
         super('hub');
     }
 
-    // Override parent's setup to enable level-specific logic
+    // Override parent's setup to implement stage-specific logic
     setup(resources, shaderDefs, sceneDefs, objectDefs) {
         // Reset all saved progress except completed stages
         const stagesDone = localStorage.stagesDone == undefined ? 0
@@ -24,9 +24,10 @@ export default class HubStage extends Game {
         // General game setup
         super.setup(resources, shaderDefs, sceneDefs, objectDefs);
 
+        // Shorter name for access to mesh resources
         const meshes = resources.meshes;
 
-        // Orb 1
+        // Create Orb 1
         const orb1 = new SphereObject(this.world,
             this.programs['fragmentLighting'], 'lit',
             meshes['icoSphere'], {
@@ -39,9 +40,9 @@ export default class HubStage extends Game {
         );
         this.gameObjects.push(orb1);
 
+        // Create Orb 2 if first stage is completed
         let orb2 = null;
         if (localStorage.stagesDone >= 1) {
-            // Orb 2
             orb2 = new SphereObject(this.world,
                 this.programs['fragmentLighting'], 'lit',
                 meshes['icoSphere'],
@@ -61,10 +62,9 @@ export default class HubStage extends Game {
             this.gameObjects.push(orb2);
         }
 
-
+        // Create Orb 3 if stage 2 is completed
         let orb3 = null;
         if (localStorage.stagesDone >= 2) {
-            // Orb 3
             orb3 = new SphereObject(this.world,
                 this.programs['fragmentLighting'], 'lit',
                 meshes['icoSphere'],
@@ -84,6 +84,7 @@ export default class HubStage extends Game {
             this.gameObjects.push(orb3);
         }
 
+        // Create Orb 4 if stage 3 is completed
         let orb4 = null;
         if (localStorage.stagesDone >= 3) {
             orb4 = new SphereObject(this.world,
@@ -104,6 +105,7 @@ export default class HubStage extends Game {
             this.gameObjects.push(orb4);
         }
 
+        // Create Orb 5 if stage 4 is completed
         let orb5 = null;
         if (localStorage.stagesDone >= 4) {
             orb5 = new SphereObject(this.world,
@@ -185,7 +187,8 @@ export default class HubStage extends Game {
         );
         this.gameObjects.push(gate4);
 
-        // Pedestal
+        // Pedestal where orbs are to be placed to open the gates
+        // Open respective gate if orb is placed
         const pedestalFilled = (event) => {
             if (event.body === orb1.physicsBody) {
                 gate1.activate();
@@ -200,6 +203,7 @@ export default class HubStage extends Game {
                 gate4.activate();
             }
         };
+        // Close respective gate if orb is removed
         const pedestalEmptied = (event) => {
             if (event.bodyA === orb1.physicsBody
                 || event.bodyB === orb1.physicsBody) {

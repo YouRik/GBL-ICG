@@ -12,19 +12,22 @@ import * as CANNON from '../common/lib/cannon/cannon-es.js';
 import TaskSwitcher from '../common/TaskSwitcher.js';
 
 /**
- * TODO: documentation
+ * Stage designed to teach transformations
  */
 export default class TransformationsStage extends Game {
     constructor() {
         super('transformations');
     }
 
-    // Override parent's setup to enable level-specific logic
+    // Override parent's setup to implement stage-specific logic
     setup(resources, shaderDefs, sceneDefs, objectDefs) {
+        // Base game setup
         super.setup(resources, shaderDefs, sceneDefs, objectDefs);
 
+        // Shorter name for access to mesh resources
         const meshes = resources.meshes;
 
+        // Handle switching of displayed tasks
         const taskSwitcher = new TaskSwitcher(6);
 
         // Orb 1
@@ -97,7 +100,7 @@ export default class TransformationsStage extends Game {
             }
         });
 
-        // Transformable boxes
+        // Transformable cyan box
         const boxCyan = new BoxObject(this.world,
             this.programs['fragmentLighting'], 'lit', {
                 halfExtents: [1, 0.2, 3],
@@ -107,7 +110,7 @@ export default class TransformationsStage extends Game {
                 mass: 0
             });
         this.gameObjects.push(boxCyan);
-
+        // Transformable magenta box
         const boxMagenta = new BoxObject(this.world,
             this.programs['fragmentLighting'], 'lit', {
                 halfExtents: [1, 0.2, 1],
@@ -118,7 +121,7 @@ export default class TransformationsStage extends Game {
             });
         this.gameObjects.push(boxMagenta);
 
-        // Key, lock and locking bolt
+        // Transformable key
         const key = new MeshObject(this.world,
             this.programs['fragmentLighting'], 'lit', [meshes['keyC']], {
                 graphicalMesh: meshes['key'],
@@ -129,6 +132,7 @@ export default class TransformationsStage extends Game {
                 mass: 0
             });
         this.gameObjects.push(key);
+        // Lock where key needs to be placed
         const lock = new MeshObject(this.world,
             this.programs['fragmentLighting'], 'lit', [meshes['lockC']], {
                 graphicalMesh: meshes['lock'],
@@ -139,6 +143,7 @@ export default class TransformationsStage extends Game {
                 mass: 0
             });
         this.gameObjects.push(lock);
+        // Locking bolt that moves aside after key is placed
         const lockingBolt = new BoxObject(this.world,
             this.programs['fragmentLighting'], 'lit', {
                 halfExtents: [2.5, 0.5, 0.5],
@@ -156,7 +161,6 @@ export default class TransformationsStage extends Game {
                     taskSwitcher.unlockTasks(1);
                     taskSwitcher.switchTask(1);
                 }));
-
         this.gameObjects.push(
             new Checkpoint(this.world, this.programs['colored'],
                 meshes['icoSphere'], [-12, 6.5, 38], [-12, 6.4, 38], -82, 12,
@@ -172,7 +176,7 @@ export default class TransformationsStage extends Game {
                     taskSwitcher.switchTask(4);
                 }));
 
-        // Input fields
+        // Default values and transformations to store
         const cyanTranslationDefault = boxCyan.position;
         const cyanQuaternionDefault = boxCyan.quaternion;
         const magentaTranslationDefault = boxMagenta.position;
@@ -180,11 +184,10 @@ export default class TransformationsStage extends Game {
         const yellowTranslationDefault = key.position;
         const yellowQuaternionDefault = key.quaternion;
         const yellowScaleDefault = [3, 3, 3];
-
         const cyanTransformation = GLMAT.mat4.create();
         const magentaTransformation = GLMAT.mat4.create();
         const yellowTransformation = GLMAT.mat4.create();
-
+        // Buttons to apply and reset transformations
         const btnCyanApply = document.getElementById('transCyanApply');
         const btnCyanReset = document.getElementById('transCyanReset');
         const btnMagentaApply = document.getElementById('transMagentaApply');
@@ -192,8 +195,7 @@ export default class TransformationsStage extends Game {
         const btnYellowApply = document.getElementById('transYellowApply');
         const btnYellowReset = document.getElementById('transYellowReset');
 
-
-        // Handle transformation matrix inputs
+        // Handle transformation matrix inputs for the boxes
         btnCyanApply.addEventListener('click', () => {
             this.applyMatrixInputs('cyan', boxCyan, cyanTransformation,
                 cyanQuaternionDefault, cyanTranslationDefault);
@@ -209,6 +211,7 @@ export default class TransformationsStage extends Game {
             this.resetMatrixInputs('magenta', btnMagentaApply);
         });
 
+        // Handle transformation matrix inputs for the key
         btnYellowApply.addEventListener('click', () => {
             this.applyMatrixInputs('yellow', key, yellowTransformation,
                 yellowQuaternionDefault, yellowTranslationDefault,
@@ -221,15 +224,18 @@ export default class TransformationsStage extends Game {
                     && key.quaternion[1] == targetQuat[1]
                     && key.quaternion[2] == targetQuat[2]
                     && key.quaternion[3] == targetQuat[3]) {
+                    // If the key is correctly positioned, unlock the bolt
                     lock.color = [1, 1, 0];
                     lockingBolt.physicsBody.position.x = -50.2;
                     taskSwitcher.unlockTasks(3);
                 } else {
+                    // Otherwise, reset it
                     lock.color = [0.7, 0.7, 0.3];
                     lockingBolt.physicsBody.position.x = -45.2;
                 }
                 lock.calculateLightParams();
             } else {
+                // Otherwise, reset it
                 lock.color = [0.47, 0.47, 0.47];
                 lockingBolt.physicsBody.position.x = -45.2;
                 lock.calculateLightParams();
@@ -262,20 +268,45 @@ export default class TransformationsStage extends Game {
         }
     }
 
+    /**
+     * Reset the transformation of one of the transformable objects
+     * @param {string} color Color of the object to transform, to select correct
+     *  input fields
+     * @param {HTMLButtonElement} applyButton The corresponding button to apply the
+     *  transformation after resetting
+     * @param {Array<number>} defaultMatrix The default matrix to reset to
+     */
     resetMatrixInputs(color, applyButton, defaultMatrix) {
         const mat4Default = defaultMatrix === undefined ? GLMAT.mat4.create()
             : defaultMatrix;
+        // Reset all the input values
         for (let i = 0; i < 4; i++) {
             for (let j = 0; j < 4; j++) {
                 document.getElementById(`${color}${j}${i}`).value =
                     mat4Default[i * 4 + j];
             }
         }
+        // Apply the reset transformation
         applyButton.click();
     }
 
+    /**
+     * Apply the input field's transformation matrix to one of the transformable
+     * objects
+     * @param {string} color Color of the object to transform, to select correct
+     *  input fields
+     * @param {GameObject} object The transformable object to apply
+     *  tranformations to
+     * @param {Array<number>} transformation The transformation matrix to apply
+     * @param {Array<number>} defaultQuaternion The object's default orientation
+     *  as quaternion
+     * @param {Array<number>} defaultTranslation The object's default position
+     *  vector
+     * @param {Array<number>} defaultScale The object's default scale vector
+     */
     applyMatrixInputs(color, object, transformation,
         defaultQuaternion, defaultTranslation, defaultScale = [1, 1, 1]) {
+        // Read all the input fields' transformation matrix inputs
         for (let i = 0; i < 4; i++) {
             for (let j = 0; j < 4; j++) {
                 transformation[i * 4 + j] =
@@ -287,6 +318,8 @@ export default class TransformationsStage extends Game {
         localStorage.setItem(color + 'MatrixInputs',
             JSON.stringify(transformation));
 
+        // Read transformations from the matrix and compose with default
+        // transformations
         const rotationQuat = GLMAT.quat.create();
         const scale = GLMAT.vec3.create();
         const translation = GLMAT.vec3.create();
@@ -298,21 +331,25 @@ export default class TransformationsStage extends Game {
         GLMAT.mat4.getTranslation(translation, transformation);
         GLMAT.vec3.add(translation, translation, defaultTranslation);
 
+        // Set object's scale
         object.scale = scale;
         if (object.scalePhysicsShape !== undefined) {
             object.scalePhysicsShape(scale);
         }
+        // Set object's position
         object.physicsBody.position = new CANNON.Vec3(
             translation[0],
             translation[1],
             translation[2]
         );
+        // Set object's orientation
         object.physicsBody.quaternion = new CANNON.Quaternion(
             rotationQuat[0],
             rotationQuat[1],
             rotationQuat[2],
             rotationQuat[3]
         );
+        // Update and render to make changes visual
         this.update(0);
         this.render();
     }

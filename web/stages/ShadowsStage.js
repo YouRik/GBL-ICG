@@ -1,6 +1,7 @@
 /** @module ShadowsStage */
 
 import Game from '../common/Game.js';
+import GameObject from '../common/GameObjects/GameObject.js';
 import Box from '../common/GameObjects/BoxObject.js';
 import Checkpoint from '../common/GameObjects/Checkpoint.js';
 import Gate from '../common/GameObjects/Gate.js';
@@ -11,36 +12,40 @@ import * as GLMAT from '../common/lib/gl-matrix/index.js';
 import TaskSwitcher from '../common/TaskSwitcher.js';
 
 /**
- * TODO: documentation
+ * The stage designed to teach shadow mapping
  */
 export default class ShadowsStage extends Game {
     constructor() {
         super('shadows');
     }
 
-    // Override parent's setup to enable level-specific logic
+    // Override parent's setup to implement stage-specific logic
     setup(resources, shaderDefs, sceneDefs, objectDefs) {
+        // General game setup
         super.setup(resources, shaderDefs, sceneDefs, objectDefs);
 
+        // Shorter name for access to mesh resources
         const meshes = resources.meshes;
 
-        // Initialize everything stage related
+        // Handle switching between tasks
         this.taskSwitcher = new TaskSwitcher(2);
 
         // Add checkpoints
         this.gameObjects.push(new Checkpoint(this.world,
             this.programs['colored'], meshes['icoSphere'], [-51, 3, -1],
             [-51, 2.9, -1], 115, -5, this.player, null, 4));
-
         this.gameObjects.push(new Checkpoint(this.world,
             this.programs['colored'], meshes['icoSphere'], [15, 1, -33],
             [15, 0.9, -33], 160, 0, this.player, null, 1));
 
+        // Get sliders for display of orb heat
         this.heatSlider1 = document.getElementById('heatslider1');
         this.heatSlider2 = document.getElementById('heatslider2');
+        // And set their initial values
         this.heatValue1 = 0;
         this.heatValue2 = 0;
 
+        // Glass wall that blocks access to the second orb
         this.glassWall = new Box(this.world, this.programs['colored'],
             'colored', {
                 halfExtents: [0.1, 2, 1.5],
@@ -50,8 +55,10 @@ export default class ShadowsStage extends Game {
             });
         this.gameObjects.push(this.glassWall);
 
-        // This orb has to be slightly bigger than the others because of low
-        // shadow precision
+        // Orbs in this stage have to be slightly bigger than the normal ones
+        // to be correctly seen as in-shadow when they are directly behind a
+        // wall due to low shadow precision
+        // Orb 1
         this.orb1 = new SphereObject(this.world,
             this.programs['fragmentLighting'], 'lit',
             meshes['icoSphere'], {
@@ -69,6 +76,7 @@ export default class ShadowsStage extends Game {
             });
         this.gameObjects.push(this.orb1);
 
+        // Orb 2
         this.orb2 = new SphereObject(this.world,
             this.programs['fragmentLighting'], 'lit',
             meshes['icoSphere'], {
@@ -87,6 +95,7 @@ export default class ShadowsStage extends Game {
 
         // Pedestal 1
         const pedestal1Filled = () => {
+            // Move the glass wall to allow access to the second orb
             localStorage.setItem('orb1Placed', 'true');
             this.glassWall.physicsBody.position.y = 4;
             this.taskSwitcher.unlockTasks(1);
@@ -95,6 +104,7 @@ export default class ShadowsStage extends Game {
         const pedestal1Emptied = (event) => {
             if (event.bodyA === this.orb1.physicsBody
                 || event.bodyB === this.orb1.physicsBody) {
+                // Move the glass wall back to block the second orb
                 localStorage.removeItem('orb1Placed');
                 this.glassWall.physicsBody.position.y = 2;
             }
@@ -158,10 +168,9 @@ export default class ShadowsStage extends Game {
         });
     }
 
+    // Extend update to check if the two orbs are in shadow or not
     update(deltaTime) {
-        GL.bindFramebuffer(GL.FRAMEBUFFER, this.shadowFramebuffer);
-
-        // Set heat slider value for orb1
+        // Set heat slider value for orb1 if it is not placed on its pedestal
         if (localStorage.orb1Placed != 'true') {
             if (this.isInShadow(this.orb1)) {
                 this.heatValue1 -= deltaTime * 50;
@@ -182,7 +191,7 @@ export default class ShadowsStage extends Game {
         }
         this.heatSlider2.value = this.heatValue2;
 
-        // Restart if either orb got too hot or too cold
+        // Restart if one of the orbs got too hot or too cold
         if (this.heatValue1 > this.heatSlider1.max
             || this.heatValue2 > this.heatSlider2.max
             || this.heatValue2 < this.heatSlider2.min) {
@@ -190,12 +199,20 @@ export default class ShadowsStage extends Game {
             location.reload();
         }
 
-        GL.bindFramebuffer(GL.FRAMEBUFFER, null);
+        // Do usual update
         super.update(deltaTime);
     }
 
+    /**
+     * Check whether an object's center point is in shadow according to the
+     * depth/shadow map
+     * @param {GameObject} object The object to check
+     * @returns {boolean} True if the object's center point is in shadow,
+     *  false otherwise
+     */
     isInShadow(object) {
-        // Calculate object depth in light space
+        GL.bindFramebuffer(GL.FRAMEBUFFER, this.shadowFramebuffer);
+        // Calculate object's depth in light space
         const objPosLightSpace = GLMAT.vec3.create();
         GLMAT.vec3.transformMat4(objPosLightSpace,
             object.position, this.lightSpaceMatrix);
@@ -217,8 +234,9 @@ export default class ShadowsStage extends Game {
             || yCoord < 0 || yCoord >= this.shadowHeight) {
             pixelArr[0] = 255;
         }
+        GL.bindFramebuffer(GL.FRAMEBUFFER, null);
 
-        // Check if the object is in shadow or not.
+        // Check if the object is in shadow or not
         if (pixelArr[0] >= objDepth) {
             return false;
         } else {
@@ -226,6 +244,7 @@ export default class ShadowsStage extends Game {
         }
     }
 
+    // Extend render if depth map quad is to be rendered for testing purposes
     render() {
         // Render as usual
         super.render();
@@ -234,8 +253,12 @@ export default class ShadowsStage extends Game {
         // this.renderDepthMapQuad();
     }
 
+    /**
+     * Create and render a quad showing the depth map.
+     * This is not optimized in any way.
+     */
     renderDepthMapQuad() {
-        // Init arrays
+        // Init arrays for vertex positions and texture coordinates
         const positions = [
             -0.75, -0.75, 		// lower left
             0.75, -0.75,		// lower right
@@ -244,7 +267,6 @@ export default class ShadowsStage extends Game {
             -0.75, 0.75, 		// upper left
             0.75, -0.75			// lower right
         ];
-
         const texCoords = [
             0.0, 0.0,			// lower left
             1.0, 0.0,			// lower right
@@ -259,7 +281,7 @@ export default class ShadowsStage extends Game {
         GL.bindBuffer(GL.ARRAY_BUFFER, posVBO);
         GL.bufferData(GL.ARRAY_BUFFER, new Float32Array(positions),
             GL.DYNAMIC_DRAW);
-
+        
         const texCoordVBO = GL.createBuffer();
         GL.bindBuffer(GL.ARRAY_BUFFER, texCoordVBO);
         GL.bufferData(GL.ARRAY_BUFFER, new Float32Array(texCoords),

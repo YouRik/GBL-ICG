@@ -11,19 +11,22 @@ import * as GLMAT from '../common/lib/gl-matrix/index.js';
 import TaskSwitcher from '../common/TaskSwitcher.js';
 
 /**
- * TODO: documentation
+ * The stage designed to teach spline approximation
  */
 export default class SplinesStage extends Game {
     constructor() {
         super('splines');
     }
 
-    // Override parent's setup to enable level-specific logic
+    // Override parent's setup to implement stage-specific logic
     setup(resources, shaderDefs, sceneDefs, objectDefs) {
+        // Base game setup
         super.setup(resources, shaderDefs, sceneDefs, objectDefs);
 
+        // Shorter name for access to mesh resources
         const meshes = resources.meshes;
 
+        // Handle switching of displayed tasks
         const taskSwitcher = new TaskSwitcher(3);
 
         // Orb 1
@@ -41,6 +44,7 @@ export default class SplinesStage extends Game {
                 position: [2, 5.6, -2],
                 portable: true
             });
+        // Specific physical properties to enhance rolling
         orb1.physicsBody.angularDamping = 0;
         orb1.physicsBody.material.friction = 0.1;
         this.gameObjects.push(orb1);
@@ -179,8 +183,10 @@ export default class SplinesStage extends Game {
         });
 
         if (localStorage.spliceValues === undefined) {
+            // Reset initial splice values if none are stored
             btnReset.click();
         } else {
+            // Otherwise load the stored ones
             const spliceValues = JSON.parse(localStorage.spliceValues);
             y1Element.value = spliceValues[0];
             z1Element.value = spliceValues[1];
@@ -230,7 +236,15 @@ export default class SplinesStage extends Game {
         }
     }
 
-    // Places spline segment on the YZ plane
+    /**
+     * Place spline segment on the YZ plane
+     * @param {Object} meshes Object containing mesh resources such that the
+     *  correct ones can be used for spline segments
+     * @param {Array<number>} point1 2D point (YZ) to start spline segment
+     * @param {Array<number>} point2 2D point (YZ) to end spline segment
+     * @param {number} x X-depth to place spline segment at
+     * @returns {GameObject} The game object representing the spline segment
+     */
     placeSplineSegmentYZ(meshes, point1, point2, x = 0) {
         let a = [x, parseFloat(point1[0]), parseFloat(point1[1])];
         let b = [x, parseFloat(point2[0]), parseFloat(point2[1])];
@@ -263,7 +277,15 @@ export default class SplinesStage extends Game {
         return segment;
     }
 
-    // Places spline segment on the XY plane
+    /**
+     * Place spline segment on the XY plane
+     * @param {Object} meshes Object containing mesh resources such that the
+     *  correct ones can be used for spline segments
+     * @param {Array<number>} point1 2D point (XY) to start spline segment
+     * @param {Array<number>} point2 2D point (XY) to end spline segment
+     * @param {number} z Z-depth to place spline segment at
+     * @returns {GameObject} The game object representing the spline segment
+     */
     placeSplineSegmentXY(meshes, point1, point2, z = 0) {
         let a = [parseFloat(point1[0]), parseFloat(point1[1]), z];
         let b = [parseFloat(point2[0]), parseFloat(point2[1]), z];
@@ -295,6 +317,11 @@ export default class SplinesStage extends Game {
         return segment;
     }
 
+    /**
+     * Convert radian value to degrees
+     * @param {number} radian Radian value to convert
+     * @returns {number} Value in degrees
+     */
     toDegree(radian) {
         return radian * 180 / Math.PI;
     }
