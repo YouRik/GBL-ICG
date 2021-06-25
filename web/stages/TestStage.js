@@ -9,8 +9,6 @@ import CubeObject from '../common/GameObjects/CubeObject.js';
 export default class TestStage extends Game {
     constructor() {
         super('test');
-        // Load resources and stage, then start the game loop
-        this.load().then(() => this.gameLoop());
     }
 
     // Override parent's setup to enable level-specific logic

@@ -10,30 +10,37 @@ import TestStage from './stages/TestStage.js';
 // Global WebGL rendering context
 window.GL = null;
 
+// Default stage
 if (window.stageName == undefined) {
     window.stageName = 'test';
 }
 
+let stage = null;
+
+// Load and start requested stage
 switch (stageName) {
 case 'test':
-    new TestStage();
+    stage = new TestStage();
     break;
 case 'hub':
-    new HubStage();
+    stage = new HubStage();
     break;
 case 'transformations':
-    new TransformationsStage();
+    stage = new TransformationsStage();
     break;
 case 'splines':
-    new SplinesStage();
+    stage = new SplinesStage();
     break;
 case 'lighting':
-    LightingStage();
+    stage = new LightingStage();
     break;
 case 'shadows':
-    new ShadowsStage();
+    stage = new ShadowsStage();
     break;
 }
+
+// Load resources and stage information, then start the game loop
+stage.load().then(() => stage.gameLoop());
 
 // TODO: replace colored, lit, textured with bit flag
 

@@ -13,8 +13,6 @@ import TaskSwitcher from '../common/TaskSwitcher.js';
 export default class LightingStage extends Game {
     constructor() {
         super('lighting');
-        // Load resources and stage, then start the game loop
-        this.load().then(() => this.gameLoop());
     }
 
     // Override parent's setup to enable level-specific logic

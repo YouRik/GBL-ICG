@@ -11,8 +11,6 @@ import SphereObject from '../common/GameObjects/SphereObject.js';
 export default class HubStage extends Game {
     constructor() {
         super('hub');
-        // Load resources and stage, then start the game loop
-        this.load().then(() => this.gameLoop());
     }
 
     // Override parent's setup to enable level-specific logic
