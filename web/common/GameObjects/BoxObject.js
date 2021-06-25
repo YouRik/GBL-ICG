@@ -4,9 +4,29 @@ import GameObject from './GameObject.js';
 import * as CANNON from '../lib/cannon/cannon-es.js';
 
 /**
- * TODO: add documentation
+ * A game object in the shape of a box
+ * @extends GameObject
  */
 export default class Box extends GameObject {
+    /**
+        * @param {CANNON.World} world The physics world to add the box to 
+        * @param {WebGLProgram} program The shader program to use for rendering
+        * @param {string} shaderType Type of shader used. 'colored' or 'lit'
+        * @param {object} [options={}] Optional options for the object
+        *  If none is given, one will be constructed from the physics meshes
+        * @param {Array<number>} [options.position] The object's default position
+        * @param {Array<number>} [options.orientation] The object's default
+        *  orientation
+        * @param {number} [options.halfExtents] The box's half extents
+        * @param {Array<number>} [options.mass] The object's mass
+        * @param {Array<number>} [options.color] The object's color
+        * @param {Object} [options.lightParams] The object's light coefficients
+        * @param {boolean} [options.portable] Whether the object can be picked
+        * @param {number} [options.collisionFilterGroup] The object's collision
+        *  group
+        * @param {number} [options.collisionFilterMask] The object's collision
+        *  mask
+    */
     constructor(world, program, shaderType, options = {}) {
         const halfExtents = options.halfExtents == undefined ? [1, 1, 1]
             : options.halfExtents;
@@ -25,6 +45,10 @@ export default class Box extends GameObject {
         this.initVBOs(box);
     }
 
+    /**
+     * Initialize the VBOs
+     * @param {CANNON.Box} box The box defining this game object's shape
+     */
     initVBOs(box) {
         if (this.shaderType == 'colored') {
             this.initVBOsColored(box);
@@ -36,7 +60,10 @@ export default class Box extends GameObject {
             // TODO: init textured and lit VBOs
         }
     }
-
+    /**
+     * Initialize the VBOs with colors included when a 'colored' shader is used
+     * @param {CANNON.Box} box The box defining this game object's shape
+     */
     initVBOsColored(box) {
         const hE = box.halfExtents;
         const positions = [
@@ -93,6 +120,10 @@ export default class Box extends GameObject {
             GL.DYNAMIC_DRAW);
     }
 
+    /**
+     * Initialize the VBOs when a lit shader is used
+     * @param {CANNON.Box} box The box that defines this object's shape
+     */
     initVBOsLit(box) {
         const hE = box.halfExtents;
         // Per face normal
@@ -236,6 +267,10 @@ export default class Box extends GameObject {
             GL.DYNAMIC_DRAW);
     }
 
+    /**
+     * Modify the box's physical scale
+     * @param {Array<number>} scale Scale to use
+     */
     scalePhysicsShape(scale) {
         const oldShape = this.physicsBody.shapes[0];
         this.physicsBody.removeShape(oldShape);

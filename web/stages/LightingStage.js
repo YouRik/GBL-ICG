@@ -9,6 +9,7 @@ import TaskSwitcher from '../common/TaskSwitcher.js';
 
 /**
  * The stage designed to teach Phong lighting
+ * @extends Game
  */
 export default class LightingStage extends Game {
     constructor() {

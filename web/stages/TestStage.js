@@ -5,6 +5,7 @@ import CubeObject from '../common/GameObjects/CubeObject.js';
 
 /**
  * Stage to test stuff
+ * @extends Game
  */
 export default class TestStage extends Game {
     constructor() {

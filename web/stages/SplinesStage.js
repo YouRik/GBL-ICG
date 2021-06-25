@@ -12,6 +12,7 @@ import TaskSwitcher from '../common/TaskSwitcher.js';
 
 /**
  * The stage designed to teach spline approximation
+ * @extends Game
  */
 export default class SplinesStage extends Game {
     constructor() {

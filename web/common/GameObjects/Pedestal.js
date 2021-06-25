@@ -3,7 +3,31 @@
 import MeshObject from './MeshObject.js';
 import * as CANNON from '../lib/cannon/cannon-es.js';
 
+/**
+ * Pedestal game object that triggers a callback
+ * @extends MeshObject
+ */
 export default class Pedestal extends MeshObject {
+    /**
+     * @param {CANNON.World} world Physics world to add the pedestal to
+     * @param {WebGLProgram} program The shader program to use for rendering
+     * @param {string} shaderType The type of shader used. 'colored' or 'lit'
+     * @param {Object} resources Resources object to pick the correct meshes
+     *  from
+     * @param {function} [callback] Function called when something is placed on
+     *  the pedestal
+     * @param {object} [options={}] Optional options for the object
+     * @param {Array<number>} [options.position] The object's default position
+     * @param {Array<number>} [options.orientation] The object's default
+     *  orientation
+     * @param {Array<number>} [options.scale] The object's default scale
+     * @param {Array<number>} [options.color] The object's color
+     * @param {Object} [options.lightParams] The object's light coefficients
+     * @param {number} [options.collisionFilterGroup] The object's collision
+     *  group
+     * @param {number} [options.collisionFilterMask] The object's collision
+     *  mask
+     */
     constructor(world, program, shaderType, resources, callback, options = {}) {
         const scale = options.scale == undefined ? [1, 1, 1]
             : options.scale;
@@ -43,7 +67,7 @@ export default class Pedestal extends MeshObject {
                 position[1] + triggerPositionOffset[1],
                 position[2] + triggerPositionOffset[2])
         });
-        // Trigger callback
+        // Set up callback to trigger callback
         if (callback) {
             this.triggerBody.addEventListener('collide', (event) => {
                 callback(event);

@@ -19,11 +19,11 @@ export default class GameObject {
      * @param {GLMAT.vec3} [options.scale] The object's default scale
      * @param {GLMAT.vec3} [options.mass] The object's mass
      * @param {(GLMAT.vec3|GLMAT.vec4)} [options.color] The object's color
-     * @param {GLMAT.vec3} [options.lightParams] The object's light coefficients
-     * @param {GLMAT.vec3} [options.portable] Whether the object can be picked
-     * @param {GLMAT.vec3} [options.collisionFilterGroup] The object's collision
+     * @param {Object} [options.lightParams] The object's light coefficients
+     * @param {boolean} [options.portable] Whether the object can be picked
+     * @param {number} [options.collisionFilterGroup] The object's collision
      *  group
-     * @param {GLMAT.vec3} [options.collisionFilterMask] The object's collision
+     * @param {number} [options.collisionFilterMask] The object's collision
      *  mask
      */
     constructor(program, shaderType, options = {}) {
@@ -91,6 +91,7 @@ export default class GameObject {
             quaternion,
             GLMAT.vec3.fromValues(scale[0], scale[1], scale[2]));
 
+        // Set collision filter group for being picked up
         if (portable) {
             collisionFilterGroup = collisionFilterGroup | 2;
         }
@@ -112,6 +113,10 @@ export default class GameObject {
         });
     }
 
+    /**
+     * Calculate lighting parameters if needed and set them
+     * @param {Object} lightParams The object containing light coefficients
+     */
     calculateLightParams(lightParams) {
         if (this.shaderType == 'lit') {
             // Set light parameters or calculate from color
@@ -278,6 +283,12 @@ export default class GameObject {
         GL.drawElements(GL.TRIANGLES, this.indexCount, GL.UNSIGNED_SHORT, 0);
     }
 
+    /**
+     * Draw the object to a shadow/depth map
+     * @param {WebGLProgram} shaderProgram The depth/shadow map shader program
+     * @param {WebGLUniformLocation} modelMatLoc The shader's uniform location
+     *  for the model matrix
+     */
     renderToShadowMap(shaderProgram, modelMatLoc) {
         if (this.visible && this.castsShadow) {
             // Bind buffers and shader program

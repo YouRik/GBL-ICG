@@ -13,6 +13,7 @@ import TaskSwitcher from '../common/TaskSwitcher.js';
 
 /**
  * The stage designed to teach shadow mapping
+ * @extends Game
  */
 export default class ShadowsStage extends Game {
     constructor() {

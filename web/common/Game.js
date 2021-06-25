@@ -463,7 +463,7 @@ export default class Game {
 
     /**
      * Update the player and physics
-     * @param {number} deltaTime Elapsed time since last update
+     * @param {number} deltaTime Elapsed time since last update in seconds
      */
     update(deltaTime) {
         // Update physics

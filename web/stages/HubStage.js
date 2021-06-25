@@ -7,6 +7,7 @@ import SphereObject from '../common/GameObjects/SphereObject.js';
 
 /**
  * The hub stage used as a means of moving between stages
+ * @extends Game
  */
 export default class HubStage extends Game {
     constructor() {

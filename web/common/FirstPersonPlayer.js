@@ -4,10 +4,24 @@ import * as CANNON from './lib/cannon/cannon-es.js';
 import * as GLMAT from './lib/gl-matrix/index.js';
 import SphereObject from './GameObjects/SphereObject.js';
 
-// TODO: documentation
+/**
+ * The player
+ */
 export default class FirstPersonPlayer {
+    /**
+     * @param {CANNON.World} world The physics world to add the player to
+     * @param {Array<number>} position The position to place the player at
+     * @param {Object} programs An object containing named shaders to pass
+     *  matrices to
+     * @param {string} jointMesh The sphere object type string to use for the
+     *  visual joint when carrying other objects
+     * @param {number} aspectRatio The view's aspect ratio
+     * @param {number} yaw The player's initial yaw
+     * @param {number} pitch The player's initial pitch
+     */
     constructor(world, position, programs, jointMesh, aspectRatio, yaw = 0,
         pitch = 0) {
+        // Get locations of view and projection matrices in shaders
         this.programs = [];
         for (const programName in programs) {
             const program = programs[programName];
@@ -63,7 +77,7 @@ export default class FirstPersonPlayer {
         this.position = GLMAT.vec3.fromValues(
             position[0], position[1] + this.cameraOffsetY, position[2]);
 
-        // Create physics body
+        // Create physics body and add to world
         this.physicsBody = new CANNON.Body({
             mass: 70,
             position: new CANNON.Vec3(position[0], position[1], position[2]),
@@ -97,6 +111,7 @@ export default class FirstPersonPlayer {
         this.jointSphere.visible = false;
         this.jointSphere.castsShadow = false;
 
+        // Store objects that the player touches as ground
         this.groundObjects = new Set();
 
         // World event listener for contact exits
@@ -107,6 +122,10 @@ export default class FirstPersonPlayer {
         this.update(0);
     }
 
+    /**
+     * Calculate the player's perspective matrix and pass to shaders
+     * @param {number} aspectRatio The view's aspect ratio
+     */
     setPerspectiveMatrix(aspectRatio) {
         this.projectionMatrix = GLMAT.mat4.create();
         GLMAT.mat4.perspective(this.projectionMatrix, 1, aspectRatio, 0.1, 500);
@@ -116,6 +135,9 @@ export default class FirstPersonPlayer {
         });
     }
 
+    /**
+     * Calculate the player's view matrix and pass to shaders
+     */
     setViewMatrix() {
         // Calculate target position to look at
         const target = GLMAT.vec3.create();
@@ -178,12 +200,18 @@ export default class FirstPersonPlayer {
         }
     }
 
+    /**
+     * Handle clicking of left mouse button
+     */
     pointerDown() {
         if (!this.controls.isCarrying) {
             this.controls.isPickingUp = true;
         }
     }
 
+    /**
+     * Handle release of left mouse button
+     */
     pointerUp() {
         this.controls.isPickingUp = false;
         if (this.controls.isCarrying) {
@@ -191,20 +219,30 @@ export default class FirstPersonPlayer {
         }
     }
 
+    /**
+     * Handle movement of pointer/mouse
+     * @param {PointerEvent} event The mouse movement's event
+     */
     pointerMove(event) {
         // Calculate offsets
         this.controls.pointerX += event.movementX;
         this.controls.pointerY += event.movementY;
     }
 
+    /**
+     * Handle mouse wheel movement
+     * @param {WheelEvent} event The mouse wheels movement event
+     */
     wheel(event) {
         if (this.controls.isCarrying) {
             if (event.deltaY > 0) {
+                // Move carried object closer
                 this.controls.carryDistance -= 0.2;
                 if (this.controls.carryDistance < this.minCarryDistance) {
                     this.controls.carryDistance = this.minCarryDistance;
                 }
             } else if (event.deltaY < 0) {
+                // Move carried object farther
                 this.controls.carryDistance += 0.2;
                 if (this.controls.carryDistance > this.maxCarryDistance) {
                     this.controls.carryDistance = this.maxCarryDistance;
@@ -213,6 +251,11 @@ export default class FirstPersonPlayer {
         }
     }
 
+    /**
+     * Handle player's collision with other objects, specifically to determine
+     * whether jumping is enabled
+     * @param {Object} event The collision's event
+     */
     handleCollision(event) {
         let contactNormal = new CANNON.Vec3();
         // Check collision objects, negate collision normal if necessary
@@ -229,6 +272,10 @@ export default class FirstPersonPlayer {
         }
     }
 
+    /**
+     * Handle ending of collision, also to determine whether the player can jump
+     * @param {Object} event The collision's end event
+     */
     handleCollisionEnd(event) {
         if (event.bodyA === this.physicsBody) {
             this.groundObjects.delete(event.bodyB);
@@ -241,6 +288,10 @@ export default class FirstPersonPlayer {
         }
     }
 
+    /**
+     * Update the player's movements, view and object carrying
+     * @param {number} deltaTime The elapsed time since last update in seconds
+     */
     update(deltaTime) {
         // Calculate new yaw and pitch values in degrees
         this.yaw -= this.controls.pointerX * this.sensitivity;

@@ -3,7 +3,33 @@
 import MeshObject from './MeshObject.js';
 import * as CANNON from '../lib/cannon/cannon-es.js';
 
+/**
+ * A gate that can be activated and used to to trigger a callback
+ * @extends MeshObject
+ */
 export default class Gate extends MeshObject {
+    /**
+     * @param {CANNON.World} world The physics world to add the gate to
+     * @param {WebGLProgram} program The shader program to use
+     * @param {string} shaderType Type of used shader. 'colored' or 'lit'
+     * @param {Object} resources Resource object that contains the meshes to be
+     *  picked out of
+     * @param {function} callback The callback to be called when something
+     *  passes through the gate while it is activated
+     * @param {object} [options={}] Optional options for the object
+     *  If none is given, one will be constructed from the physics meshes
+     * @param {Array<number>} [options.position] The object's default position
+     * @param {Array<number>} [options.orientation] The object's default
+     *  orientation
+     * @param {Array<number>} [options.scale] The object's default scale
+     * @param {Array<number>} [options.color] The object's color
+     * @param {Object} [options.lightParams] The object's light coefficients
+     * @param {boolean} [options.portable] Whether the object can be picked
+     * @param {number} [options.collisionFilterGroup] The object's collision
+     *  group
+     * @param {number} [options.collisionFilterMask] The object's collision
+     *  mask
+     */
     constructor(world, program, shaderType, resources, callback, options = {}) {
         const scale = options.scale == undefined ? [1, 1, 1]
             : options.scale;

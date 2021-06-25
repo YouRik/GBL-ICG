@@ -1,10 +1,10 @@
 /** @module LoadResources */
 
-// TODO: documentation here
 /**
- * Load the stage file. This
+ * Load the stage file. This does not load any of the resources.
  * @param {string} stagePath Stage file path
- * @returns {}
+ * @returns {Promise<Object>} Object containing lists of resources and stage
+ *  definitions
  */
 export function loadStage(stagePath) {
     return fetchAndDecode('stage', stagePath);
@@ -22,14 +22,14 @@ export function loadStage(stagePath) {
  * @returns {Promise<Object>} The object containing the resources wrapped in a
  *  promise
  */
-export async function loadResources(
-    shaderPaths, texturePaths, meshPaths) {
+export function loadResources(shaderPaths, texturePaths, meshPaths) {
     const resources = {
         shaders: {},
         textures: {},
         meshes: {}
     };
 
+    // List of promises for resources to be loaded
     const loading = [];
 
     // Load shaders
@@ -69,6 +69,7 @@ export async function loadResources(
         }));
     }
 
+    // Return promise that resolves when all resources are loaded
     return Promise.all(loading).then(() => {
         return resources;
     });
@@ -126,11 +127,12 @@ function fetchAndDecode(type, url, name) {
     });
 }
 
+
 /**
- * TODO: documentation
- * @param {} meshText 
- * @throws {}
- * @returns 
+ * Parse a PLY mesh string to an object
+ * @param {string} meshText The mesh file's content string
+ * @returns {Object} An object containing mesh information including position,
+ *  normals, indices and faceIndexCounts
  */
 function parsePLY(meshText) {
     const mesh = {

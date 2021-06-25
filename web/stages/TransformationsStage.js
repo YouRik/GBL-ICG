@@ -1,6 +1,7 @@
 /** @module TransformationsStage */
 
 import Game from '../common/Game.js';
+import GameObject from '../common/GameObjects/GameObject.js';
 import Gate from '../common/GameObjects/Gate.js';
 import Pedestal from '../common/GameObjects/Pedestal.js';
 import BoxObject from '../common/GameObjects/BoxObject.js';
@@ -13,6 +14,7 @@ import TaskSwitcher from '../common/TaskSwitcher.js';
 
 /**
  * Stage designed to teach transformations
+ * @extends Game
  */
 export default class TransformationsStage extends Game {
     constructor() {
