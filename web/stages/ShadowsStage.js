@@ -116,8 +116,7 @@ export default class ShadowsStage extends Game {
         // Gate 1
         const gate1Entered = (event) => {
             if (event.body === this.player.physicsBody) {
-                localStorage.removeItem('orb1Placed');
-                localStorage.setItem('stage4Done', 'true');
+                localStorage.stagesDone = Math.max(localStorage.stagesDone, 4);
                 window.location.replace('hub');
             }
         }

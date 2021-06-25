@@ -50,7 +50,7 @@ export default class TransformationsStage extends Game {
         // Gate 1
         const gate1Entered = (event) => {
             if (event.body === this.player.physicsBody) {
-                localStorage.setItem('stage1Done', 'true');
+                localStorage.stagesDone = Math.max(localStorage.stagesDone, 1);
                 window.location.replace('hub');
             }
         }
@@ -76,7 +76,7 @@ export default class TransformationsStage extends Game {
         const pedestal1Emptied = (event) => {
             if (event.bodyA === orb1.physicsBody
                 || event.bodyB === orb1.physicsBody) {
-                    gate1.deactivate();
+                gate1.deactivate();
             }
         };
         const pedestal1 = new Pedestal(this.world,
@@ -153,26 +153,26 @@ export default class TransformationsStage extends Game {
         // Add checkpoints
         this.gameObjects.push(
             new Checkpoint(this.world, this.programs['colored'],
-            meshes['icoSphere'], [-10, 1, -10], [-10, 0.9, -10], 25, 5,
-            this.player, () => {
-                taskSwitcher.unlockTasks(1);
-                taskSwitcher.switchTask(1);
-            }));
+                meshes['icoSphere'], [-10, 1, -10], [-10, 0.9, -10], 25, 5,
+                this.player, () => {
+                    taskSwitcher.unlockTasks(1);
+                    taskSwitcher.switchTask(1);
+                }));
 
         this.gameObjects.push(
             new Checkpoint(this.world, this.programs['colored'],
-            meshes['icoSphere'], [-12, 6.5, 38], [-12, 6.4, 38], -82, 12,
-            this.player, () => {
-                taskSwitcher.unlockTasks(2);
-                taskSwitcher.switchTask(3);
-            }));
+                meshes['icoSphere'], [-12, 6.5, 38], [-12, 6.4, 38], -82, 12,
+                this.player, () => {
+                    taskSwitcher.unlockTasks(2);
+                    taskSwitcher.switchTask(3);
+                }));
         this.gameObjects.push(
             new Checkpoint(this.world, this.programs['colored'],
-            meshes['icoSphere'], [-50, 16, 34], [-50, 15.9, 34], 208, 12,
-            this.player, () => {
-                taskSwitcher.unlockTasks(4);
-                taskSwitcher.switchTask(4);
-            }));
+                meshes['icoSphere'], [-50, 16, 34], [-50, 15.9, 34], 208, 12,
+                this.player, () => {
+                    taskSwitcher.unlockTasks(4);
+                    taskSwitcher.switchTask(4);
+                }));
 
         // Input fields
         const cyanTranslationDefault = boxCyan.position;
@@ -217,20 +217,20 @@ export default class TransformationsStage extends Game {
                 yellowScaleDefault);
             if (key.position[0] == -42 && key.position[1] == 24
                 && key.position[2] == 16) {
-                    const targetQuat = GLMAT.quat.create();
-                    GLMAT.quat.fromEuler(targetQuat, 90, 0, 0);
-                    if (key.quaternion[0] == targetQuat[0]
-                        && key.quaternion[1] == targetQuat[1]
-                        && key.quaternion[2] == targetQuat[2]
-                        && key.quaternion[3] == targetQuat[3]) {
-                            lock.color = [1, 1, 0];
-                            lockingBolt.physicsBody.position.x = -50.2;
-                            taskSwitcher.unlockTasks(3);
-                    } else {
-                        lock.color = [0.7, 0.7, 0.3];
-                        lockingBolt.physicsBody.position.x = -45.2;
-                    }
-                    lock.calculateLightParams();
+                const targetQuat = GLMAT.quat.create();
+                GLMAT.quat.fromEuler(targetQuat, 90, 0, 0);
+                if (key.quaternion[0] == targetQuat[0]
+                    && key.quaternion[1] == targetQuat[1]
+                    && key.quaternion[2] == targetQuat[2]
+                    && key.quaternion[3] == targetQuat[3]) {
+                    lock.color = [1, 1, 0];
+                    lockingBolt.physicsBody.position.x = -50.2;
+                    taskSwitcher.unlockTasks(3);
+                } else {
+                    lock.color = [0.7, 0.7, 0.3];
+                    lockingBolt.physicsBody.position.x = -45.2;
+                }
+                lock.calculateLightParams();
             } else {
                 lock.color = [0.47, 0.47, 0.47];
                 lockingBolt.physicsBody.position.x = -45.2;
@@ -260,7 +260,7 @@ export default class TransformationsStage extends Game {
         } else {
             this.resetMatrixInputs('yellow', btnYellowApply,
                 JSON.parse(localStorage.yellowMatrixInputs));
-                btnYellowApply.click();
+            btnYellowApply.click();
         }
     }
 

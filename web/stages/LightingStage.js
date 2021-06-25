@@ -62,7 +62,7 @@ export default class LightingStage extends Game {
         // Gate 1
         const gate1Entered = (event) => {
             if (event.body === this.player.physicsBody) {
-                localStorage.setItem('stage3Done', 'true');
+                localStorage.stagesDone = Math.max(localStorage.stagesDone, 3);
                 window.location.replace('hub');
             }
         }

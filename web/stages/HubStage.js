@@ -17,8 +17,13 @@ export default class HubStage extends Game {
 
     // Override parent's setup to enable level-specific logic
     setup(resources, shaderDefs, sceneDefs, objectDefs) {
-        // Reset player respawn position
-        localStorage.removeItem('respawn');
+        // Reset all saved progress except completed stages
+        const stagesDone = localStorage.stagesDone == undefined ? 0
+            : localStorage.stagesDone;
+        localStorage.clear();
+        localStorage.stagesDone = stagesDone;
+
+        // General game setup
         super.setup(resources, shaderDefs, sceneDefs, objectDefs);
 
         const meshes = resources.meshes;
@@ -37,8 +42,7 @@ export default class HubStage extends Game {
         this.gameObjects.push(orb1);
 
         let orb2 = null;
-
-        if (localStorage.stage1Done == 'true') {
+        if (localStorage.stagesDone >= 1) {
             // Orb 2
             orb2 = new SphereObject(this.world,
                 this.programs['fragmentLighting'], 'lit',
@@ -61,8 +65,7 @@ export default class HubStage extends Game {
 
 
         let orb3 = null;
-
-        if (localStorage.stage2Done == 'true') {
+        if (localStorage.stagesDone >= 2) {
             // Orb 3
             orb3 = new SphereObject(this.world,
                 this.programs['fragmentLighting'], 'lit',
@@ -84,8 +87,7 @@ export default class HubStage extends Game {
         }
 
         let orb4 = null;
-
-        if (localStorage.stage3Done == 'true') {
+        if (localStorage.stagesDone >= 3) {
             orb4 = new SphereObject(this.world,
                 this.programs['fragmentLighting'], 'lit',
                 meshes['icoSphere'],
@@ -105,8 +107,7 @@ export default class HubStage extends Game {
         }
 
         let orb5 = null;
-
-        if (localStorage.stage4Done == 'true') {
+        if (localStorage.stagesDone >= 4) {
             orb5 = new SphereObject(this.world,
                 this.programs['fragmentLighting'], 'lit',
                 meshes['icoSphere'],
@@ -118,7 +119,7 @@ export default class HubStage extends Game {
                         ks: [0.93, 0.85, 0.2],
                         specExp: 10
                     },
-                    radius: 0.4,
+                    radius: 0.6,
                     position: [12, 0.8, -4],
                     portable: true
                 });
@@ -170,31 +171,53 @@ export default class HubStage extends Game {
             }
         );
         this.gameObjects.push(gate3);
+        // Gate 4
+        const gate4Entered = (event) => {
+            if (event.body === this.player.physicsBody) {
+                window.location.replace('shadows');
+            }
+        }
+        const gate4 = new Gate(this.world, this.programs['fragmentLighting'],
+            'lit', resources, gate4Entered,
+            {
+                scale: [1, 1, 1],
+                orientation: [0, 20, -0.5],
+                position: [-8, 0, 0]
+            }
+        );
+        this.gameObjects.push(gate4);
 
         // Pedestal
         const pedestalFilled = (event) => {
             if (event.body === orb1.physicsBody) {
                 gate1.activate();
-            } else if (localStorage.stage1Done == 'true' &&
+            } else if (localStorage.stagesDone >= 1 &&
                 event.body === orb2.physicsBody) {
                 gate2.activate();
-            } else if (localStorage.stage2Done == 'true' &&
+            } else if (localStorage.stagesDone >= 2 &&
                 event.body === orb3.physicsBody) {
                 gate3.activate();
+            } else if (localStorage.stagesDone >= 3 &&
+                event.body === orb4.physicsBody) {
+                gate4.activate();
             }
         };
         const pedestalEmptied = (event) => {
             if (event.bodyA === orb1.physicsBody
                 || event.bodyB === orb1.physicsBody) {
                 gate1.deactivate();
-            } else if (localStorage.stage1Done == 'true' &&
+            } else if (localStorage.stagesDone >= 1 &&
                 (event.bodyA === orb2.physicsBody
                     || event.bodyB === orb2.physicsBody)) {
                 gate2.deactivate();
-            } else if (localStorage.stage2Done == 'true' &&
+            } else if (localStorage.stagesDone >= 2 &&
                 (event.bodyA === orb3.physicsBody
                     || event.bodyB === orb3.physicsBody)) {
                 gate3.deactivate();
+            } else if (localStorage.stagesDone >= 3 &&
+                (event.bodyA === orb4.physicsBody
+                    || event.bodyB === orb4.physicsBody)) {
+                gate4.deactivate();
             }
         };
         const pedestal = new Pedestal(this.world,
