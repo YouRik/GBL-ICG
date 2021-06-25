@@ -1,21 +1,15 @@
 {
-    "parser": "babel-eslint",
-    "root": true,
     "env": {
         "browser": true,
+        "commonjs": true,
         "es2021": true
     },
     "extends": "eslint:recommended",
     "parserOptions": {
-        "ecmaVersion": 12,
-        "sourceType": "module"
+        "ecmaVersion": 12
     },
-    "ignorePatterns": [
-        "common/lib/*"
-    ],
     "globals": {
-        "stageName": "readonly",
-        "GL": "writable"
+        "process": "readonly"
     },
     "rules": {
         "indent": [
@@ -33,9 +27,6 @@
         "semi": [
             "error",
             "always"
-        ],
-        "no-unused-vars": [
-            "warn"
         ]
     }
 }
