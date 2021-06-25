@@ -71,8 +71,7 @@ function interpolatePoint(a, b, t) {
     //       with parameter t
     //       You can access the points' components with point[index]
     return [
-        // first component of new point
-        ,
+        // first component of new point,
         // second component of new point
     ];
 }
