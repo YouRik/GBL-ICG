@@ -32,58 +32,58 @@ export default class Game {
         // Resources required to be loaded in any stage
         const baseResources = {
             shaders: [
-                ["fragLightingV", "shaders/tasks/fragment_lighting.vs"],
-                ["fragLightingF", "shaders/tasks/fragment_lighting.fs"],
-                ["defaultV", "shaders/default.vs"],
-                ["defaultF", "shaders/default.fs"],
-                ["depthV", "shaders/tasks/depth.vs"],
-                ["depthF", "shaders/tasks/depth.fs"]
+                ['fragLightingV', 'shaders/tasks/fragment_lighting.vs'],
+                ['fragLightingF', 'shaders/tasks/fragment_lighting.fs'],
+                ['defaultV', 'shaders/default.vs'],
+                ['defaultF', 'shaders/default.fs'],
+                ['depthV', 'shaders/tasks/depth.vs'],
+                ['depthF', 'shaders/tasks/depth.fs']
             ],
             textures: [],
             meshes: [
-                ["icoSphere", "meshes/icosphere.ply"],
-                ["icoSphereSoft", "meshes/icosphere_soft.ply"],
-                ["island", "meshes/island.ply"],
-                ["islandC", "meshes/island_collider.ply"],
-                ["pedestalD1", "meshes/pedestal_convdecomp1.ply"],
-                ["pedestalD2", "meshes/pedestal_convdecomp2.ply"],
-                ["pedestalD3", "meshes/pedestal_convdecomp3.ply"],
-                ["pedestalD4", "meshes/pedestal_convdecomp4.ply"],
-                ["pedestalD5", "meshes/pedestal_convdecomp5.ply"],
-                ["pedestalD6", "meshes/pedestal_convdecomp6.ply"],
-                ["pedestalD7", "meshes/pedestal_convdecomp7.ply"],
-                ["pedestalD8", "meshes/pedestal_convdecomp8.ply"],
-                ["pedestalD9", "meshes/pedestal_convdecomp9.ply"],
-                ["pedestalD10", "meshes/pedestal_convdecomp10.ply"],
-                ["pedestalD11", "meshes/pedestal_convdecomp11.ply"],
-                ["pedestalG", "meshes/pedestal.ply"],
-                ["gateD1", "meshes/gate_convdecomp1.ply"],
-                ["gateD2", "meshes/gate_convdecomp2.ply"],
-                ["gateD3", "meshes/gate_convdecomp3.ply"],
-                ["gateD4", "meshes/gate_convdecomp4.ply"],
-                ["gateD5", "meshes/gate_convdecomp5.ply"],
-                ["gateD6", "meshes/gate_convdecomp6.ply"],
-                ["gateD7", "meshes/gate_convdecomp7.ply"],
-                ["gateD8", "meshes/gate_convdecomp8.ply"],
-                ["gateD9", "meshes/gate_convdecomp9.ply"],
-                ["gateD10", "meshes/gate_convdecomp10.ply"],
-                ["gateG", "meshes/gate.ply"]
+                ['icoSphere', 'meshes/icosphere.ply'],
+                ['icoSphereSoft', 'meshes/icosphere_soft.ply'],
+                ['island', 'meshes/island.ply'],
+                ['islandC', 'meshes/island_collider.ply'],
+                ['pedestalD1', 'meshes/pedestal_convdecomp1.ply'],
+                ['pedestalD2', 'meshes/pedestal_convdecomp2.ply'],
+                ['pedestalD3', 'meshes/pedestal_convdecomp3.ply'],
+                ['pedestalD4', 'meshes/pedestal_convdecomp4.ply'],
+                ['pedestalD5', 'meshes/pedestal_convdecomp5.ply'],
+                ['pedestalD6', 'meshes/pedestal_convdecomp6.ply'],
+                ['pedestalD7', 'meshes/pedestal_convdecomp7.ply'],
+                ['pedestalD8', 'meshes/pedestal_convdecomp8.ply'],
+                ['pedestalD9', 'meshes/pedestal_convdecomp9.ply'],
+                ['pedestalD10', 'meshes/pedestal_convdecomp10.ply'],
+                ['pedestalD11', 'meshes/pedestal_convdecomp11.ply'],
+                ['pedestalG', 'meshes/pedestal.ply'],
+                ['gateD1', 'meshes/gate_convdecomp1.ply'],
+                ['gateD2', 'meshes/gate_convdecomp2.ply'],
+                ['gateD3', 'meshes/gate_convdecomp3.ply'],
+                ['gateD4', 'meshes/gate_convdecomp4.ply'],
+                ['gateD5', 'meshes/gate_convdecomp5.ply'],
+                ['gateD6', 'meshes/gate_convdecomp6.ply'],
+                ['gateD7', 'meshes/gate_convdecomp7.ply'],
+                ['gateD8', 'meshes/gate_convdecomp8.ply'],
+                ['gateD9', 'meshes/gate_convdecomp9.ply'],
+                ['gateD10', 'meshes/gate_convdecomp10.ply'],
+                ['gateG', 'meshes/gate.ply']
             ],
             programs: {
                 fragmentLighting: {
-                    type: "lit",
-                    vertex: "fragLightingV",
-                    fragment: "fragLightingF"
+                    type: 'lit',
+                    vertex: 'fragLightingV',
+                    fragment: 'fragLightingF'
                 },
                 colored: {
-                    type: "colored",
-                    vertex: "defaultV",
-                    fragment: "defaultF"
+                    type: 'colored',
+                    vertex: 'defaultV',
+                    fragment: 'defaultF'
                 },
                 shadowMap: {
-                    type: "shadowMap",
-                    vertex: "depthV",
-                    fragment: "depthF"
+                    type: 'shadowMap',
+                    vertex: 'depthV',
+                    fragment: 'depthF'
                 }
             }
         };
@@ -101,7 +101,7 @@ export default class Game {
             const shaderPrograms = {
                 ...levelData['shader_programs'],
                 ...baseResources.programs
-            }
+            };
 
             const scene = levelData['scene'];
             const objects = levelData['objects'];
@@ -150,6 +150,7 @@ export default class Game {
 
         // Array of game objects
         this.gameObjects = [];
+        this.lightSources = [];
 
         // Remember shaders that implement lighting
         this.lightPrograms = [];
@@ -194,9 +195,9 @@ export default class Game {
                 this.dirLightSource = new DirectedLightSource(
                     globalLightDirection,
                     this.lightPrograms, {
-                    Id: sceneDefs['directed_light']['Id'],
-                    Is: sceneDefs['directed_light']['Is']
-                });
+                        Id: sceneDefs['directed_light']['Id'],
+                        Is: sceneDefs['directed_light']['Is']
+                    });
             }
         }
 
@@ -206,18 +207,18 @@ export default class Game {
             if (objType == 'lightSource') {
                 // Create light source
                 if (objectDef.directed) {
-                    const lightSource = new DirectedLightSource(
+                    this.lightSources.push(new DirectedLightSource(
                         objectDef.direction, this.lightPrograms, {
-                        Id: objectDef.Id,
-                        Is: objectDef.Is
-                    });
+                            Id: objectDef.Id,
+                            Is: objectDef.Is
+                        }));
                 } else {
-                    const lightSource = new LightSource(
+                    this.lightSources.push(new LightSource(
                         objectDef.position, this.lightPrograms, {
-                        Id: objectDef.Id,
-                        Is: objectDef.Is,
-                        c: objectDef.c
-                    });
+                            Id: objectDef.Id,
+                            Is: objectDef.Is,
+                            c: objectDef.c
+                        }));
                 }
             } else {
                 // Get object options
@@ -232,49 +233,50 @@ export default class Game {
                 const program = objectDef.shader_program;
                 // Create object based on type
                 switch (objType) {
-                    case 'box':
-                        this.gameObjects.push(
-                            new BoxObject(this.world, this.programs[program],
-                                shaderDefs[program].type, options));
-                        break;
-                    case 'cube':
-                        this.gameObjects.push(
-                            new CubeObject(this.world, this.programs[program],
-                                shaderDefs[program].type, options));
-                        break;
-                    case 'mesh':
-                        options['graphicalMesh'] =
+                case 'box':
+                    this.gameObjects.push(
+                        new BoxObject(this.world, this.programs[program],
+                            shaderDefs[program].type, options));
+                    break;
+                case 'cube':
+                    this.gameObjects.push(
+                        new CubeObject(this.world, this.programs[program],
+                            shaderDefs[program].type, options));
+                    break;
+                case 'mesh': {
+                    options['graphicalMesh'] =
                             resources.meshes[objectDef.graphical_mesh];
-                        const meshes = [];
-                        objectDef.meshes.forEach(mesh => {
-                            meshes.push(resources.meshes[mesh]);
-                        });
-                        this.gameObjects.push(
-                            new MeshObject(this.world, this.programs[program],
-                                shaderDefs[program].type, meshes, options));
-                        break;
-                    case 'sphere':
-                        this.gameObjects.push(
-                            new SphereObject(this.world, this.programs[program],
-                                shaderDefs[program].type,
-                                resources.meshes[objectDef.mesh], options)
-                        );
-                        break;
-                    case 'pedestal':
-                        this.gameObjects.push(new Pedestal(this.world,
-                            this.programs[program], shaderDefs[program].type,
-                            resources, null, options));
-                        break;
-                    case 'lit_platform':
-                        this.gameObjects.push(new LitPlatform(this.world,
-                            this.programs, this.lightPrograms,
-                            options));
-                        break;
-                    case 'cloud':
-                        this.gameObjects.push(new Cloud(this.world,
-                            this.programs, options.startPosition,
-                            options.endPosition, options.speed,
-                            resources.meshes, options));
+                    const meshes = [];
+                    objectDef.meshes.forEach(mesh => {
+                        meshes.push(resources.meshes[mesh]);
+                    });
+                    this.gameObjects.push(
+                        new MeshObject(this.world, this.programs[program],
+                            shaderDefs[program].type, meshes, options));
+                    break;
+                }
+                case 'sphere':
+                    this.gameObjects.push(
+                        new SphereObject(this.world, this.programs[program],
+                            shaderDefs[program].type,
+                            resources.meshes[objectDef.mesh], options)
+                    );
+                    break;
+                case 'pedestal':
+                    this.gameObjects.push(new Pedestal(this.world,
+                        this.programs[program], shaderDefs[program].type,
+                        resources, null, options));
+                    break;
+                case 'lit_platform':
+                    this.gameObjects.push(new LitPlatform(this.world,
+                        this.programs, this.lightPrograms,
+                        options));
+                    break;
+                case 'cloud':
+                    this.gameObjects.push(new Cloud(this.world,
+                        this.programs, options.startPosition,
+                        options.endPosition, options.speed,
+                        resources.meshes, options));
                 }
             }
         });

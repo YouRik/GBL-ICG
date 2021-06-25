@@ -1,6 +1,5 @@
 /** @module LitPlatform */
 
-import GameObject from './GameObject.js';
 import Box from './BoxObject.js';
 import LightSource from '../LightSource.js';
 /**
@@ -20,7 +19,7 @@ export default class LitPlatform extends Box {
         ];
 
         if (options.solid) {
-            const light = new LightSource(lightPosition, lightPrograms,
+            this.light = new LightSource(lightPosition, lightPrograms,
                 {
                     Id: [0, 1, 0],
                     Is: [1, 1, 0.5],

@@ -1,16 +1,13 @@
 /** @module ShadowsStage */
 
-import DirectedLightSource from '../common/DirectedLightSource.js';
 import Game from '../common/Game.js';
 import Box from '../common/GameObjects/BoxObject.js';
 import Checkpoint from '../common/GameObjects/Checkpoint.js';
-import Cloud from '../common/GameObjects/Cloud.js';
 import Gate from '../common/GameObjects/Gate.js';
 import Pedestal from '../common/GameObjects/Pedestal.js';
 import SphereObject from '../common/GameObjects/SphereObject.js';
 
 import * as GLMAT from '../common/lib/gl-matrix/index.js';
-import { projection } from '../common/lib/gl-matrix/mat3.js';
 import TaskSwitcher from '../common/TaskSwitcher.js';
 
 /**
@@ -48,11 +45,11 @@ export default class ShadowsStage extends Game {
 
         this.glassWall = new Box(this.world, this.programs['colored'],
             'colored', {
-            halfExtents: [0.1, 2, 1.5],
-            position: [21, 2, -18.5],
-            color: [0.4, 0.3, 0.2, 0.3],
-            mass: 0
-        });
+                halfExtents: [0.1, 2, 1.5],
+                position: [21, 2, -18.5],
+                color: [0.4, 0.3, 0.2, 0.3],
+                mass: 0
+            });
         this.gameObjects.push(this.glassWall);
 
         // This orb has to be slightly bigger than the others because of low
@@ -60,34 +57,34 @@ export default class ShadowsStage extends Game {
         this.orb1 = new SphereObject(this.world,
             this.programs['fragmentLighting'], 'lit',
             meshes['icoSphere'], {
-            mass: 5,
-            lightParams: {
-                ka: [0.57, 0.36, 0.51],
-                kd: [0.31, 0.83, 0.63],
-                ks: [1, 1, 1],
-                specExp: 10
-            },
-            radius: 0.6,
-            position: localStorage.orb1Placed == 'true' ? [-68, 3.8, 0]
-                : [22, 0.6, -21.5],
-            portable: true
-        });
+                mass: 5,
+                lightParams: {
+                    ka: [0.57, 0.36, 0.51],
+                    kd: [0.31, 0.83, 0.63],
+                    ks: [1, 1, 1],
+                    specExp: 10
+                },
+                radius: 0.6,
+                position: localStorage.orb1Placed == 'true' ? [-68, 3.8, 0]
+                    : [22, 0.6, -21.5],
+                portable: true
+            });
         this.gameObjects.push(this.orb1);
 
         this.orb2 = new SphereObject(this.world,
             this.programs['fragmentLighting'], 'lit',
             meshes['icoSphere'], {
-            mass: 5,
-            lightParams: {
-                ka: [0.45, 0.15, 0.20],
-                kd: [0.31, 0.83, 0.73],
-                ks: [0.93, 0.85, 0.2],
-                specExp: 10
-            },
-            radius: 0.6,
-            position: [22, 0.6, -18.5],
-            portable: true
-        });
+                mass: 5,
+                lightParams: {
+                    ka: [0.45, 0.15, 0.20],
+                    kd: [0.31, 0.83, 0.73],
+                    ks: [0.93, 0.85, 0.2],
+                    specExp: 10
+                },
+                radius: 0.6,
+                position: [22, 0.6, -18.5],
+                portable: true
+            });
         this.gameObjects.push(this.orb2);
 
         // Pedestal 1
@@ -103,14 +100,14 @@ export default class ShadowsStage extends Game {
                 localStorage.removeItem('orb1Placed');
                 this.glassWall.physicsBody.position.y = 2;
             }
-        }
+        };
         const pedestal1 = new Pedestal(this.world,
             this.programs['fragmentLighting'], 'lit', resources,
             pedestal1Filled, {
-            position: [-68, 2, 0],
-            color: [0, 0, 1],
-            scale: [2, 1, 2]
-        })
+                position: [-68, 2, 0],
+                color: [0, 0, 1],
+                scale: [2, 1, 2]
+            });
         this.gameObjects.push(pedestal1);
 
         // Gate 1
@@ -119,7 +116,7 @@ export default class ShadowsStage extends Game {
                 localStorage.stagesDone = Math.max(localStorage.stagesDone, 4);
                 window.location.replace('hub');
             }
-        }
+        };
         const gate1 = new Gate(this.world, this.programs['fragmentLighting'],
             'lit', resources, gate1Entered,
             {
@@ -144,14 +141,18 @@ export default class ShadowsStage extends Game {
         const pedestal2 = new Pedestal(this.world,
             this.programs['fragmentLighting'], 'lit', resources,
             pedestal2Filled, {
-            position: [40, 0, -210],
-            color: [0.5, 0.5, 1],
-            scale: [2, 1, 2]
-        });
+                position: [40, 0, -210],
+                color: [0.5, 0.5, 1],
+                scale: [2, 1, 2]
+            });
         this.gameObjects.push(pedestal2);
 
         // World event listener for contact exits
         this.world.addEventListener('endContact', (event) => {
+            if (event.bodyA === pedestal1.triggerBody
+                || event.bodyB === pedestal1.triggerBody) {
+                pedestal1Emptied(event);
+            }
             if (event.bodyA === pedestal2.triggerBody
                 || event.bodyB === pedestal2.triggerBody) {
                 pedestal2Emptied(event);
@@ -273,16 +274,16 @@ export default class ShadowsStage extends Game {
         // Activate texture
         GL.activeTexture(GL.TEXTURE0);
         GL.bindTexture(GL.TEXTURE_2D, this.depthMap);
-        GL.uniform1i(GL.getUniformLocation(program, "uSampler"), 0);
+        GL.uniform1i(GL.getUniformLocation(program, 'uSampler'), 0);
 
         // Bind VBOs
         GL.bindBuffer(GL.ARRAY_BUFFER, posVBO);
-        const posLoc = GL.getAttribLocation(program, "vPosition");
+        const posLoc = GL.getAttribLocation(program, 'vPosition');
         GL.enableVertexAttribArray(posLoc);
         GL.vertexAttribPointer(posLoc, 2, GL.FLOAT, false, 0, 0);
 
         GL.bindBuffer(GL.ARRAY_BUFFER, texCoordVBO);
-        const texCoordsLoc = GL.getAttribLocation(program, "vTexCoord");
+        const texCoordsLoc = GL.getAttribLocation(program, 'vTexCoord');
         GL.enableVertexAttribArray(texCoordsLoc);
         GL.vertexAttribPointer(texCoordsLoc, 2, GL.FLOAT, false, 0, 0);
 

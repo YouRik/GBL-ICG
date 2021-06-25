@@ -1,6 +1,6 @@
 /** @module MeshObject */
 
-import GameObject from "./GameObject.js";
+import GameObject from './GameObject.js';
 import * as CANNON from '../lib/cannon/cannon-es.js';
 
 /**

@@ -32,17 +32,17 @@ export default class SplinesStage extends Game {
         const orb1 = new SphereObject(this.world,
             this.programs['fragmentLighting'], 'lit',
             meshes['icoSphere'], {
-            mass: 5,
-            lightParams: {
-                ka: [0.73, 0.43, 0.13],
-                kd: [0.09, 0.5, 1.0],
-                ks: [0.76, 0.13, 0.28],
-                specExp: 10
-            },
-            radius: 0.4,
-            position: [2, 5.6, -2],
-            portable: true
-        });
+                mass: 5,
+                lightParams: {
+                    ka: [0.73, 0.43, 0.13],
+                    kd: [0.09, 0.5, 1.0],
+                    ks: [0.76, 0.13, 0.28],
+                    specExp: 10
+                },
+                radius: 0.4,
+                position: [2, 5.6, -2],
+                portable: true
+            });
         orb1.physicsBody.angularDamping = 0;
         orb1.physicsBody.material.friction = 0.1;
         this.gameObjects.push(orb1);
@@ -53,7 +53,7 @@ export default class SplinesStage extends Game {
                 localStorage.stagesDone = Math.max(localStorage.stagesDone, 2);
                 window.location.replace('hub');
             }
-        }
+        };
         const gate1 = new Gate(this.world, this.programs['fragmentLighting'],
             'lit', resources, gate1Entered,
             {
@@ -102,12 +102,12 @@ export default class SplinesStage extends Game {
         // Orange glass wall
         const orangeWall = new BoxObject(this.world, this.programs['colored'],
             'colored', {
-            halfExtents: [0.1, 2, 3],
-            color: [1, 0.5, 0, 0.4],
-            orientation: [0, 9, 0],
-            position: [5, 7, -2],
-            mass: 0
-        });
+                halfExtents: [0.1, 2, 3],
+                color: [1, 0.5, 0, 0.4],
+                orientation: [0, 9, 0],
+                position: [5, 7, -2],
+                mass: 0
+            });
         // Don't collide with player
         orangeWall.physicsBody.collisionFilterMask = ~4;
         this.gameObjects.push(orangeWall);
@@ -125,7 +125,7 @@ export default class SplinesStage extends Game {
             });
         thickWall.physicsBody.addEventListener('collide', event => {
             if (event.body === orb1.physicsBody) {
-                taskSwitcher.unlockTasks(1)
+                taskSwitcher.unlockTasks(1);
                 taskSwitcher.switchTask(1);
             }
         });
@@ -249,18 +249,18 @@ export default class SplinesStage extends Game {
 
         const segment = new MeshObject(this.world,
             this.programs['fragmentLighting'], 'lit', [
-            meshes['halfpipeD1'],
-            meshes['halfpipeD2'],
-            meshes['halfpipeD3'],
-            meshes['halfpipeD4'],
-            meshes['halfpipeD5'],
-        ], {
-            position: position,
-            scale: [1.5, 1, length + 1],
-            orientation: [angle + flipX * 180, flipY * 180, 0],
-            color: [0.6, 0.6, 0.6],
-            mass: 0
-        });
+                meshes['halfpipeD1'],
+                meshes['halfpipeD2'],
+                meshes['halfpipeD3'],
+                meshes['halfpipeD4'],
+                meshes['halfpipeD5'],
+            ], {
+                position: position,
+                scale: [1.5, 1, length + 1],
+                orientation: [angle + flipX * 180, flipY * 180, 0],
+                color: [0.6, 0.6, 0.6],
+                mass: 0
+            });
         this.gameObjects.push(segment);
         return segment;
     }
@@ -281,18 +281,18 @@ export default class SplinesStage extends Game {
 
         const segment = new MeshObject(this.world,
             this.programs['fragmentLighting'], 'lit', [
-            meshes['halfpipeD1'],
-            meshes['halfpipeD2'],
-            meshes['halfpipeD3'],
-            meshes['halfpipeD4'],
-            meshes['halfpipeD5'],
-        ], {
-            position: position,
-            scale: [1.5, 1, length + 1],
-            orientation: [angle, flipY * 180 + 90, 0],
-            color: [0.6, 0.6, 0.6],
-            mass: 0
-        });
+                meshes['halfpipeD1'],
+                meshes['halfpipeD2'],
+                meshes['halfpipeD3'],
+                meshes['halfpipeD4'],
+                meshes['halfpipeD5'],
+            ], {
+                position: position,
+                scale: [1.5, 1, length + 1],
+                orientation: [angle, flipY * 180 + 90, 0],
+                color: [0.6, 0.6, 0.6],
+                mass: 0
+            });
         this.gameObjects.push(segment);
         return segment;
     }

@@ -14,32 +14,28 @@ if (window.stageName == undefined) {
     window.stageName = 'test';
 }
 
-let stage = null;
-
 switch (stageName) {
-    case 'test':
-        stage = new TestStage();
-        break;
-    case 'hub':
-        stage = new HubStage();
-        break;
-    case 'transformations':
-        stage = new TransformationsStage();
-        break;
-    case 'splines':
-        stage = new SplinesStage();
-        break;
-    case 'lighting':
-        stage = new LightingStage();
-        break;
-    case 'shadows':
-        stage = new ShadowsStage();
-        break;
+case 'test':
+    new TestStage();
+    break;
+case 'hub':
+    new HubStage();
+    break;
+case 'transformations':
+    new TransformationsStage();
+    break;
+case 'splines':
+    new SplinesStage();
+    break;
+case 'lighting':
+    LightingStage();
+    break;
+case 'shadows':
+    new ShadowsStage();
+    break;
 }
 
 // TODO: replace colored, lit, textured with bit flag
 
-// TODO: Check coding style (ESLint)
 // TODO: DOCUMENTATION
-// TODO: Reduce imports to only necessary ones
 // TODO: Write and execute tests

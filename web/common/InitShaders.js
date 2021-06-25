@@ -23,24 +23,6 @@ export default function initShaders(
 }
 
 /**
- * Loads a file from the server synchronously
- * @deprecated Load files asynchronously with loadResources instead
- * @param {string} filePath The file to load
- * @returns {string} The loaded file's contents
- */
-function loadFile(filePath) {
-    let result;
-    const xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('GET', filePath, false);
-    xmlhttp.send();
-    if (xmlhttp.status == 200) {
-        result = xmlhttp.responseText;
-    }
-
-    return result;
-}
-
-/**
  * Compile WebGL shader from source code string
  * @param {number} shaderType gl.VERTEX_SHADER or gl.FRAGMENT_SHADER
  * @param {string} shaderString The shader's source string

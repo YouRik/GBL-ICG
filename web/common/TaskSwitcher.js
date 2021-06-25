@@ -18,11 +18,11 @@ export default class TaskSwitcher {
         }
         this.tasks[this.taskIndex].style.display = 'block';
     
-        prevButton.addEventListener('click', (event) => {
+        prevButton.addEventListener('click', () => {
             this.switchTask(this.taskIndex - 1);
         });
     
-        nextButton.addEventListener('click', (event) => {
+        nextButton.addEventListener('click', () => {
             this.switchTask(this.taskIndex + 1);
         });
 
@@ -31,7 +31,7 @@ export default class TaskSwitcher {
 
     unlockTasks(index) {
         if (index >= this.numberOfTasks) {
-            this.maxUnlockedTask = this.numberOfTasks - 1
+            this.maxUnlockedTask = this.numberOfTasks - 1;
         } else {
             this.maxUnlockedTask = Math.max(index, this.maxUnlockedTask);
         }

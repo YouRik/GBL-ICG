@@ -4,7 +4,6 @@ import Game from '../common/Game.js';
 import SphereObject from '../common/GameObjects/SphereObject.js';
 import Pedestal from '../common/GameObjects/Pedestal.js';
 import Gate from '../common/GameObjects/Gate.js';
-import LightSource from '../common/LightSource.js';
 import Checkpoint from '../common/GameObjects/Checkpoint.js';
 import TaskSwitcher from '../common/TaskSwitcher.js';
 
@@ -46,17 +45,17 @@ export default class LightingStage extends Game {
         const orb1 = new SphereObject(this.world,
             this.programs['vertexLighting'], 'lit',
             meshes['icoSphere'], {
-            mass: 5,
-            lightParams: {
-                ka: [0.03, 0.53, 0.41],
-                kd: [0.24, 0.82, 0.05],
-                ks: [0.77, 0.21, 0.95],
-                specExp: 10
-            },
-            radius: 0.4,
-            position: [5, 10.5, -8],
-            portable: true
-        });
+                mass: 5,
+                lightParams: {
+                    ka: [0.03, 0.53, 0.41],
+                    kd: [0.24, 0.82, 0.05],
+                    ks: [0.77, 0.21, 0.95],
+                    specExp: 10
+                },
+                radius: 0.4,
+                position: [5, 10.5, -8],
+                portable: true
+            });
         this.gameObjects.push(orb1);
 
         // Gate 1
@@ -65,7 +64,7 @@ export default class LightingStage extends Game {
                 localStorage.stagesDone = Math.max(localStorage.stagesDone, 3);
                 window.location.replace('hub');
             }
-        }
+        };
         const gate1 = new Gate(this.world, this.programs['fragmentLighting'],
             'lit', resources, gate1Entered,
             {

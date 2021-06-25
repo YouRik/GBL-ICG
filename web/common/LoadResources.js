@@ -23,7 +23,7 @@ export function loadStage(stagePath) {
  *  promise
  */
 export async function loadResources(
-        shaderPaths, texturePaths, meshPaths) {
+    shaderPaths, texturePaths, meshPaths) {
     const resources = {
         shaders: {},
         textures: {},
@@ -109,7 +109,7 @@ function fetchAndDecode(type, url, name) {
         } else if (type == 'mesh') {
             // Return mesh in correct format
             return response.text().then(meshText => {
-                let mesh
+                let mesh;
                 try {
                     mesh = parsePLY(meshText);
                 } catch (error) {
@@ -123,7 +123,7 @@ function fetchAndDecode(type, url, name) {
     }).catch(error => {
         console.log(error);
         throw new LoadResourceError(name, url, error);
-    })
+    });
 }
 
 /**

@@ -3,7 +3,7 @@
 // TODO: documentation
 export default class PerformanceLogger {
     constructor(htmlElement, timer = 1) {
-        this.htmlElement = htmlElement
+        this.htmlElement = htmlElement;
 
         this.timer = timer;
         this.lastUpdate = 0;

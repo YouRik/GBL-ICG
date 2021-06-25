@@ -32,12 +32,12 @@ export default class HubStage extends Game {
         const orb1 = new SphereObject(this.world,
             this.programs['fragmentLighting'], 'lit',
             meshes['icoSphere'], {
-            mass: 5,
-            color: [1, 1, 0],
-            radius: 0.4,
-            position: [11, 0.8, -4],
-            portable: true
-        }
+                mass: 5,
+                color: [1, 1, 0],
+                radius: 0.4,
+                position: [11, 0.8, -4],
+                portable: true
+            }
         );
         this.gameObjects.push(orb1);
 
@@ -131,7 +131,7 @@ export default class HubStage extends Game {
             if (event.body === this.player.physicsBody) {
                 window.location.replace('transformations');
             }
-        }
+        };
         const gate1 = new Gate(this.world, this.programs['fragmentLighting'],
             'lit', resources, gate1Entered,
             {
@@ -146,7 +146,7 @@ export default class HubStage extends Game {
             if (event.body === this.player.physicsBody) {
                 window.location.replace('splines');
             }
-        }
+        };
         const gate2 = new Gate(this.world, this.programs['fragmentLighting'],
             'lit', resources, gate2Entered,
             {
@@ -161,7 +161,7 @@ export default class HubStage extends Game {
             if (event.body === this.player.physicsBody) {
                 window.location.replace('lighting');
             }
-        }
+        };
         const gate3 = new Gate(this.world, this.programs['fragmentLighting'],
             'lit', resources, gate3Entered,
             {
@@ -176,7 +176,7 @@ export default class HubStage extends Game {
             if (event.body === this.player.physicsBody) {
                 window.location.replace('shadows');
             }
-        }
+        };
         const gate4 = new Gate(this.world, this.programs['fragmentLighting'],
             'lit', resources, gate4Entered,
             {

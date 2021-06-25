@@ -33,17 +33,17 @@ export default class TransformationsStage extends Game {
         const orb1 = new SphereObject(this.world,
             this.programs['fragmentLighting'], 'lit',
             meshes['icoSphere'], {
-            mass: 5,
-            lightParams: {
-                ka: [0.9, 0.17, 0.31],
-                kd: [0.78, 0.91, 0.34],
-                ks: [1, 1, 1],
-                specExp: 10
-            },
-            radius: 0.4,
-            position: [-90, 19.5, 23],
-            portable: true
-        }
+                mass: 5,
+                lightParams: {
+                    ka: [0.9, 0.17, 0.31],
+                    kd: [0.78, 0.91, 0.34],
+                    ks: [1, 1, 1],
+                    specExp: 10
+                },
+                radius: 0.4,
+                position: [-90, 19.5, 23],
+                portable: true
+            }
         );
         this.gameObjects.push(orb1);
 
@@ -53,7 +53,7 @@ export default class TransformationsStage extends Game {
                 localStorage.stagesDone = Math.max(localStorage.stagesDone, 1);
                 window.location.replace('hub');
             }
-        }
+        };
         const gate1 = new Gate(this.world, this.programs['fragmentLighting'],
             'lit', resources, gate1Entered,
             {
@@ -102,52 +102,52 @@ export default class TransformationsStage extends Game {
         // Transformable boxes
         const boxCyan = new BoxObject(this.world,
             this.programs['fragmentLighting'], 'lit', {
-            halfExtents: [1, 0.2, 3],
-            orientation: [170, 260, -35],
-            position: [-40, 3.5, 45],
-            color: [0, 1, 1],
-            mass: 0
-        });
+                halfExtents: [1, 0.2, 3],
+                orientation: [170, 260, -35],
+                position: [-40, 3.5, 45],
+                color: [0, 1, 1],
+                mass: 0
+            });
         this.gameObjects.push(boxCyan);
 
         const boxMagenta = new BoxObject(this.world,
             this.programs['fragmentLighting'], 'lit', {
-            halfExtents: [1, 0.2, 1],
-            orientation: [0, 0, 0],
-            position: [-45, 3.5, 40],
-            color: [1, 0, 1],
-            mass: 0
-        });
+                halfExtents: [1, 0.2, 1],
+                orientation: [0, 0, 0],
+                position: [-45, 3.5, 40],
+                color: [1, 0, 1],
+                mass: 0
+            });
         this.gameObjects.push(boxMagenta);
 
         // Key, lock and locking bolt
         const key = new MeshObject(this.world,
             this.programs['fragmentLighting'], 'lit', [meshes['keyC']], {
-            graphicalMesh: meshes['key'],
-            scale: [3, 3, 3],
-            orientation: [0, 0, 0],
-            position: [-40, 24, 16],
-            color: [1, 1, 0],
-            mass: 0
-        });
+                graphicalMesh: meshes['key'],
+                scale: [3, 3, 3],
+                orientation: [0, 0, 0],
+                position: [-40, 24, 16],
+                color: [1, 1, 0],
+                mass: 0
+            });
         this.gameObjects.push(key);
         const lock = new MeshObject(this.world,
             this.programs['fragmentLighting'], 'lit', [meshes['lockC']], {
-            graphicalMesh: meshes['lock'],
-            scale: [3, 3, 3],
-            orientation: [0, 0, 0],
-            position: [-42, 24, 16],
-            color: [0.47, 0.47, 0.47],
-            mass: 0
-        });
+                graphicalMesh: meshes['lock'],
+                scale: [3, 3, 3],
+                orientation: [0, 0, 0],
+                position: [-42, 24, 16],
+                color: [0.47, 0.47, 0.47],
+                mass: 0
+            });
         this.gameObjects.push(lock);
         const lockingBolt = new BoxObject(this.world,
             this.programs['fragmentLighting'], 'lit', {
-            halfExtents: [2.5, 0.5, 0.5],
-            position: [-45.2, 24, 16],
-            color: [0.6, 0.6, 0.6],
-            mass: 0
-        });
+                halfExtents: [2.5, 0.5, 0.5],
+                position: [-45.2, 24, 16],
+                color: [0.6, 0.6, 0.6],
+                mass: 0
+            });
         this.gameObjects.push(lockingBolt);
 
         // Add checkpoints

@@ -87,13 +87,13 @@ export default class FirstPersonPlayer {
         // Create sphere as joint body and visual indicator
         this.jointSphere = new SphereObject(world, programs['colored'],
             'colored', jointMesh, {
-            radius: 0.1,
-            color: [1, 0, 0, 0.75],
-            mass: 0,
-            collisionFilterGroup: 0,
-            collisionFilterMask: 0,
-            fixedRotation: true
-        });
+                radius: 0.1,
+                color: [1, 0, 0, 0.75],
+                mass: 0,
+                collisionFilterGroup: 0,
+                collisionFilterMask: 0,
+                fixedRotation: true
+            });
         this.jointSphere.visible = false;
         this.jointSphere.castsShadow = false;
 
@@ -136,21 +136,21 @@ export default class FirstPersonPlayer {
      */
     keyUp(event) {
         switch (event.key.toLowerCase()) {
-            case 'w':
-                this.controls.forward = false;
-                break;
-            case 's':
-                this.controls.backward = false;
-                break;
-            case 'a':
-                this.controls.left = false;
-                break;
-            case 'd':
-                this.controls.right = false;
-                break;
-            case ' ':
-                this.controls.wantsToJump = false;
-                break;
+        case 'w':
+            this.controls.forward = false;
+            break;
+        case 's':
+            this.controls.backward = false;
+            break;
+        case 'a':
+            this.controls.left = false;
+            break;
+        case 'd':
+            this.controls.right = false;
+            break;
+        case ' ':
+            this.controls.wantsToJump = false;
+            break;
         }
     }
 
@@ -160,31 +160,31 @@ export default class FirstPersonPlayer {
      */
     keyDown(event) {
         switch (event.key.toLowerCase()) {
-            case 'w':
-                this.controls.forward = true;
-                break;
-            case 's':
-                this.controls.backward = true;
-                break;
-            case 'a':
-                this.controls.left = true;
-                break;
-            case 'd':
-                this.controls.right = true;
-                break;
-            case ' ':
-                this.controls.wantsToJump = true;
-                break;
+        case 'w':
+            this.controls.forward = true;
+            break;
+        case 's':
+            this.controls.backward = true;
+            break;
+        case 'a':
+            this.controls.left = true;
+            break;
+        case 'd':
+            this.controls.right = true;
+            break;
+        case ' ':
+            this.controls.wantsToJump = true;
+            break;
         }
     }
 
-    pointerDown(event) {
+    pointerDown() {
         if (!this.controls.isCarrying) {
             this.controls.isPickingUp = true;
         }
     }
 
-    pointerUp(event) {
+    pointerUp() {
         this.controls.isPickingUp = false;
         if (this.controls.isCarrying) {
             this.controls.isDropping = true;
@@ -409,11 +409,7 @@ export default class FirstPersonPlayer {
         }
 
         // Drop object if desired or carried object is too far
-        if (this.controls.isDropping
-            // || (this.controls.isCarrying
-            //     && this.jointConstraint.bodyA.position.distanceTo(
-            //         this.jointConstraint.bodyB.position) > 2.5)
-        ) {
+        if (this.controls.isDropping) {
             this.controls.isDropping = false;
             this.controls.isCarrying = false;
             // Reset angular damping on object
