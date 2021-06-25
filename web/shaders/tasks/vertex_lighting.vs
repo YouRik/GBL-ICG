@@ -66,7 +66,7 @@ void main()
     // TASK3.1: Calculate the ambient intensity with Phong's lighting equation
     // TASK3.2: Calculate the diffuse intensity with Phong's lighting equation
     // TASK3.3: Calculate the specular intensity with Phong's lighting equation
-    vec3 I = vec3(0.73, 0.52, 0.3);
+    vec3 I = vec3(0.11, 0.55, 0.35);
     vfColor = vec4(I.rgb, 1.0);
     
     gl_Position = projectionMatrix * position;
