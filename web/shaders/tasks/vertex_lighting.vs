@@ -27,10 +27,9 @@ void main()
 {
     mat4 modelViewMatrix = viewMatrix * modelMatrix;
     // TASK3.2: Calculate normalMatrix, a variation of the modelViewMatrix used
-    //       for normals
+    //          for normals
     
-    // Variation of the viewMatrix used for normals
-    mat4 invViewMatrix = inverse(transpose(viewMatrix));
+    // TASK3.2: Calculate variation of the viewMatrix used for direction vectors
 
     vec4 position = modelViewMatrix * vPosition;
     // TASK3.2: Transform normals to world space with the normalMatrix
@@ -40,21 +39,16 @@ void main()
     vec3 L;
 
     // TASK3.2: Calculate the vector L. Note the two cases of directed light and
-    //       point light
+    //          point light
     if (lPosition[0].w == 0.0) {
         // Directed light, position represents the vector light direction from
         // the light source in world coordinates
-        vec4 lightDir = invViewMatrix * lPosition[0];
-        L = normalize(-lightDir.xyz);
-    } else {
-        // Point light
+        // TASK3.2: Calculate the light direction in view space
+        
         // TASK3.2: Calculate the vector L in the case of a point light
         
-        
-
-        // TASK3.2: Calculate the attenuation factor fAtt
-        
-        
+    } else {
+        // Point light
     }
     
     // TASK3.2: Calculate the vectors N and V
