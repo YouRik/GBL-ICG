@@ -2,7 +2,16 @@
     "resources": {
         "shaders": [],
         "textures": [],
-        "meshes": []
+        "meshes": [
+            ["deviloperG", "meshes/deviloper.ply"],
+            ["deviloperP1", "meshes/deviloper_convdecomp1.ply"],
+            ["deviloperP2", "meshes/deviloper_convdecomp2.ply"],
+            ["deviloperP3", "meshes/deviloper_convdecomp3.ply"],
+            ["deviloperP4", "meshes/deviloper_convdecomp4.ply"],
+            ["deviloperP5", "meshes/deviloper_convdecomp5.ply"],
+            ["deviloperP6", "meshes/deviloper_convdecomp6.ply"],
+            ["deviloperP7", "meshes/deviloper_convdecomp7.ply"]
+        ]
     },
     "shader_programs": {
     },

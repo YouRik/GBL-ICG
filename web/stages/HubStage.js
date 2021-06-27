@@ -2,8 +2,11 @@
 
 import Game from '../common/Game.js';
 import Gate from '../common/GameObjects/Gate.js';
+import MeshObject from '../common/GameObjects/MeshObject.js';
 import Pedestal from '../common/GameObjects/Pedestal.js';
 import SphereObject from '../common/GameObjects/SphereObject.js';
+import TaskSwitcher from '../common/TaskSwitcher.js';
+import { Body, Sphere } from '../common/lib/cannon/cannon-es.js';
 
 /**
  * The hub stage used as a means of moving between stages
@@ -27,6 +30,9 @@ export default class HubStage extends Game {
 
         // Shorter name for access to mesh resources
         const meshes = resources.meshes;
+
+        // Handle switching of tasks
+        const taskSwitcher = new TaskSwitcher(2);
 
         // Create Orb 1
         const orb1 = new SphereObject(this.world,
@@ -125,6 +131,48 @@ export default class HubStage extends Game {
                     portable: true
                 });
             this.gameObjects.push(orb5);
+
+            // Create Deviloper if stage 4 is completed
+            this.gameObjects.push(
+                new MeshObject(this.world, this.programs['fragmentLighting'],
+                    'lit', [
+                        meshes['deviloperP1'],
+                        meshes['deviloperP2'],
+                        meshes['deviloperP3'],
+                        meshes['deviloperP4'],
+                        meshes['deviloperP5'],
+                        meshes['deviloperP6'],
+                        meshes['deviloperP7'],
+                    ], {
+                        graphicalMesh: meshes['deviloperG'],
+                        scale: [1.5, 1.5, 1.5],
+                        position: [-7, 0, -6],
+                        orientation: [0, -20, 0],
+                        mass: 0,
+                        lightParams: {
+                            ka: [0, 0, 0],
+                            kd: [0.3, 0.3, 0.3],
+                            ks: [0.6, 0.6, 0.6],
+                            specExp: 5
+                        }
+                    })
+            );
+            // Create collision sphere for Deviloper's hands
+            const devTrigger = new SphereObject(this.world,
+                this.programs['fragmentLighting'], 'lit', meshes['icoSphere'], {
+                    radius: 0.3,
+                    position: [-6, 1.5, -5.6],
+                    mass: 0
+                });
+            devTrigger.physicsBody.isTrigger = true;
+            devTrigger.physicsBody.addEventListener('collide', (event) => {
+                if (event.body === orb5.physicsBody) {
+                    taskSwitcher.unlockTasks(1);
+                    taskSwitcher.switchTask(1);
+                }
+            });
+            devTrigger.visible = false;
+            this.gameObjects.push(devTrigger);
         }
 
         // Gate 1
