@@ -25,7 +25,7 @@ uniform float c3[MAX_LIGHTS_COUNT];
 
 out vec4 fColor;
 
-float shadow(int lIndex) {
+float calcShadowFactor(int lIndex) {
     // Do perspective divide in case a perspective projection was used
     vec3 projected = positionLightSpace.xyz / positionLightSpace.w;
     // Range correction to [0; 1]
@@ -37,30 +37,30 @@ float shadow(int lIndex) {
     if (projected.x > 1.0 || projected.x < 0.0
         || projected.y > 1.0 || projected.y < 0.0 || projected.z > 1.0) {
         // Fragment is outside of rendered shadow map, not in shadow
-        // TASK4.2: set shadow value accordingly
-        
+        shadow = 0.0;
     } else {
         // TASK4.2: Read closest depth from shadow map. It is the first
         //          component of the vector read from the shadow/depth map
         
         // TASK4.2: Read light space projected depth of fragment
         
-        // TASK4.2: Set shadow value depending on if the fragment is in shadow
-        
+        // TASK4.2: Set shadow value depending on if the fragment is in shadow.
+        //          Play around with the value to see how the shadows change.
+        shadow = 0.8;
     }
-    return shadow;
+    return 1.0 - shadow;
 }
 
 vec3 calculateIntensity(int lIndex, vec3 N, vec3 V) {
     float fAtt = 1.0;
     vec3 L;
-    float shadowFactor = 0.0;
+    float shadowFactor = 1.0;
     
     if (lightPosCam[lIndex].w == 0.0) {
         // Directed light, position represents the light direction coming from
         // the light source in world space
         L = normalize(-lightPosCam[lIndex].xyz);
-        // TASK4.2: Calculate shadow factor with above shadow() function
+        // TASK4.1: Set shadowFactor with the above calcShadowFactor() function
         
     } else {
         // Point light
@@ -75,8 +75,9 @@ vec3 calculateIntensity(int lIndex, vec3 N, vec3 V) {
     // TASK3.4: Calculate the reflection vector R
     
     
-    // TASK3.4: Return the diffuse and specular part of the Phong lighting equation
-    // TASK4.2: Multiply shadowFactor to the intensity equation
+    // TASK3.4: Return the diffuse and specular part of the Phong lighting
+    //          equation
+    // TASK4.1: Multiply shadowFactor to the intensity equation
     return vec3(0.0, 0.0, 0.0);
 }
 
