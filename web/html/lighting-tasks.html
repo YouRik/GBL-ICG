@@ -36,14 +36,11 @@
                 Here are some useful GLSL functions to keep in mind:
                 <ul>
                     <li><a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/normalize.xhtml">normalize()</a></li>
-                    <li><a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/reflect.xhtml">reflect()</a></li>
                     <li><a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/inverse.xhtml">inverse()</a></li>
                     <li><a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/transpose.xhtml">transpose()</a></li>
-                    <li><a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/distance.xhtml">distance()</a></li>
                     <li><a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/dot.xhtml">dot()</a></li>
                     <li><a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/min.xhtml">min()</a></li>
                     <li><a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/max.xhtml">max()</a></li>
-                    <li><a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/pow.xhtml">pow()</a></li>
                 </ul>
             </li>
         </ol>
@@ -55,6 +52,13 @@
         <ol>
             <li>Look for the remaining comments marked with TASK3.3 and calculate the vector R.</li>
             <li>Then add the specular part of Phong's lighting equation.</li>
+            <li>
+                Here are some more useful GLSL functions to keep in mind:
+                <ul>
+                    <li><a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/reflect.xhtml">reflect()</a></li>
+                    <li><a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/pow.xhtml">pow()</a></li>
+                </ul>
+            </li>
             <li>Now choose the shiny orb that looks different from the rest. When you think you've got it, click to the next task.</li>
         </ol>
     </div>
@@ -66,6 +70,12 @@
         <ol>
             <li>Open the file <div class=code>web/common/GameObjects/LitPlatform.js</div> and change the shader from <div class=code>vertexLighting</div> to <div class=code>fragmentLighting</div></li>
             <li>Open the file <div class=code>web/common/shaders/tasks/fragmentLighting.fs</div> and look for the comments marked with TASK3.4. Note that this shader uses multiple light sources and loops over them.</li>
+            <li>
+                Here is another useful GLSL functions you may need:
+                <ul>
+                    <li><a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/distance.xhtml">distance()</a></li>
+                </ul>
+            </li>
             <li>When your fragment lighting is correct, you will be able to see a glow in the middle of the platforms that can hold you. Take the orb and get to the last island!</li>
         </ol>
         </ol>

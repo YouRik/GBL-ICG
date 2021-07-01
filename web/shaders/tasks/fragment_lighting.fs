@@ -56,10 +56,13 @@ vec3 calculateIntensity(int lIndex, vec3 N, vec3 V) {
     vec3 L;
     float shadowFactor = 1.0;
     
+    // TASK3.4: Calculate the vector L. Note the two cases of directed light and
+    //          point light. This time both cases are relevant.
     if (lightPosCam[lIndex].w == 0.0) {
         // Directed light, position represents the light direction coming from
         // the light source in world space
-        L = normalize(-lightPosCam[lIndex].xyz);
+        // TASK3.4: Calculate L for directed lights
+        
         // TASK4.1: Set shadowFactor with the above calcShadowFactor() function
         
     } else {

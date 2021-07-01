@@ -39,7 +39,7 @@ void main()
     vec3 L;
 
     // TASK3.2: Calculate the vector L. Note the two cases of directed light and
-    //          point light
+    //          point light. Only the first case is relevant for this task
     if (lPosition[0].w == 0.0) {
         // Directed light, position represents the vector light direction from
         // the light source in world coordinates
