@@ -1,0 +1,21 @@
+<h2>Transformations</h2>
+<p>In case you're not all up to speed on the theory, here's a quick recap of the most important bits.</p>
+<p>
+    3D visual objects are transformed with 4x4 matrices.
+    The most important ones for translations, scalings and rotations are constructed as follows:
+</p>
+<p>Translation with offset t:</p>
+<image src="/images/translationmatrix.svg"></image>
+<p>Scaling with scale s:</p>
+<image src="/images/scalingmatrix.svg"></image>
+<p>Rotation around one of the axes x, y or z with angle &phi;:</p>
+<image src="/images/rotxmatrix.svg"></image>
+,
+<image src="/images/rotymatrix.svg"></image>
+,
+<image src="/images/rotzmatrix.svg"></image>
+
+<p>
+    To combine transformations, matrix multiplication is used. The left-most transformation is applied first.
+</p>
+<image src="/images/transformationmultiplication.svg"></image>

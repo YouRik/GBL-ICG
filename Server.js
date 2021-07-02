@@ -21,7 +21,8 @@ const mimeTypes = {
     '.png': 'image/png',
     '.ply': 'text/plain',
     '.txt': 'text/plain',
-    '.md': 'text/markdown'
+    '.md': 'text/markdown',
+    '.svg': 'image/svg+xml'
 };
 
 /**

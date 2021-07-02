@@ -26,7 +26,6 @@
 				<td id="canvas-container">
 					<canvas id="gl-canvas">
 						If you see this, your browser doesn't support WebGL.
-						<!-- TODO: introductory text before starting level -->
 					</canvas>
 				</td>
 
@@ -36,11 +35,7 @@
 				</td>
 			</tr>
 		</table>
-
-		<h2>Theory recap</h2>
-		<p>
-			Remember ... from the lecture? No worries! Here's a short summary of the most important bits you will need.
-		</p>
+		<%- include(`./html/${StageName}-theory.html`); %>
 		<script type="text/javascript">
 			const btn = document.getElementById('btnToHub');
 			btn.addEventListener('click', () => {
