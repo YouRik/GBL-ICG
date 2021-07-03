@@ -192,6 +192,14 @@ export default class ShadowsStage extends Game {
         }
         this.heatSlider2.value = this.heatValue2;
 
+        // Set orbs' ambient color based on heat value
+        this.orb1.ka = this.interpolateColor(
+            [0.31, 0.31, 1], [1, 0.29, 0.29],
+            (this.heatValue1 + 1000) / 2000);
+        this.orb2.ka = this.interpolateColor(
+            [0.31, 0.31, 1], [1, 0.29, 0.29],
+            (this.heatValue2 + 1000) / 2000);
+
         // Restart if one of the orbs got too hot or too cold
         if (this.heatValue1 > this.heatSlider1.max
             || this.heatValue2 > this.heatSlider2.max
@@ -310,5 +318,22 @@ export default class ShadowsStage extends Game {
 
         // Render
         GL.drawArrays(GL.TRIANGLES, 0, 6);
+    }
+
+    /**
+     * Pick a color from a gradient at a specified position/step
+     * @param {Array<number>} color1 The first color in the color gradient
+     * @param {Array<number>} color2 The second color in the color gradient
+     * @param {number} step Number between 0 and 1 to indicate the position to
+     * pick based from on the gradient
+     * @returns {Array<number>} The interpolated color at specified step
+     */
+    interpolateColor(color1, color2, step) {
+        const color = [
+            color1[0] * (1 - step) + color2[0] * step,
+            color1[1] * (1 - step) + color2[1] * step,
+            color1[2] * (1 - step) + color2[2] * step
+        ];
+        return color;
     }
 }
