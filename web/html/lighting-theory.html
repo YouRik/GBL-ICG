@@ -1,1 +1,17 @@
- 
+<h2>Phong Lighting</h2>
+<p>In case you're not all up to speed on the theory, here's a quick recap of the most important bits.</p>
+
+<p>
+    Phong Lighting approximates the color intensity of a point in space based on multiple parameters allowing for shiny and matte surface materials to be displayed. <br />
+    It can be implemented in the vertex shader to be calculated per vertex or in the fragment shader to be calculated per fragment to avoid visual artifacts. <br />
+    The following vectors are relevant for the calculation:
+</p>
+<image src="/images/phongvectors.svg"></image>
+<p>
+    It is important to note the direction of the vectors and they must all be normalized and be transformed into the same coordinate system/space. <br />
+    The lighting model uses the following equation:
+</p>
+<image src="/images/phongequation.svg"></image>
+<p>
+    The sum can be implemented by looping over the light sources and adding up the diffuse and specular parts for each. <br />
+</p>
