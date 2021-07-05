@@ -1,1 +1,14 @@
- 
+<h2>Dynamic Shadow Mapping</h2>
+<p>In case you're not all up to speed on the theory, here's a quick recap of the most important bits.</p>
+<p>
+    For shadows to be cast in the scene on screen, information on which objects are directly hit by light and which are occluded needs to be generated and processed. <br />
+    One way to do that is to render the scene from the shadow casting light source and write into a texture the closest Z-coordinates/depth values at each fragment's position. This texture is called a depth or shadow map and contains the depth coordinates in light space, meaning depths relative to the light source. <br />
+    During the usual rendering step, fragments can then be transformed to light space and compared with the depth value saved in the depth map at its position. Because the texture only contains a single value, the depth has to be read from the red color channel. <br /> If a fragment is closer to the light than or at equal depth as the stored depth, the fragment is not in shadow and should be displayed at normal brightness. Otherwise, the fragment is occluded and its color intensity should be reduced.
+</p>
+<image src="images/shadow-mapping.png" style="width: 80vw; height: auto;"></image>
+<p>
+    The above graphic shows the depth map rendered from the light source on the left and the same scene rendered from the player's view on the right to show areas that are both in shadow and in light. Darker values on the depth map represent depth values closer to the light source. The red and blue points correspond roughly to the same position in the scene, the red one being in a directly lit position and the blue one being occluded by a cloud and thereby rendered in shadow.
+</p>
+<p>
+    <a href="https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping">Various artifacts</a> may occur when sampling from this depth texture due to resolutions and angles but a simple way to avoid most of them is to use front face culling when rendering from the light source. This is already implemented.
+</p>
