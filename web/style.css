@@ -35,6 +35,7 @@ h2 {
 #triangle_img {
   width: 4vw;
   height: 4vw;
+  vertical-align: middle;
 }
 
 #tasks-container {
@@ -45,7 +46,7 @@ h2 {
 
 #tasks-container h2 {
   display: inline;
-  vertical-align: 100%;
+  vertical-align: middle;
 }
 
 #tasks-container * {
