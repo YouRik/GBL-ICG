@@ -1,0 +1,6 @@
+GBL-ICG
+Copyright 2021 Jurik Karimian
+
+This product includes software developed by others.
+cannon-es https://github.com/pmndrs/cannon-es license found in web/common/lib/cannon/LICENSE.txt
+gl-matrix https://github.com/toji/gl-matrix license found in web/common/lib/gl-matrix/LICENSE.md
