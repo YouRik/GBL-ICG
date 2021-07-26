@@ -18,7 +18,7 @@ export default class SphereObject extends GameObject {
      * @param {Array<number>} [options.orientation] The sphere's default
      *  orientation
      * @param {number} [options.radius] The sphere's radius
-     * @param {Array<number>} [options.mass] The sphere's mass
+     * @param {number} [options.mass] The sphere's mass
      * @param {Array<number>} [options.color] The sphere's color
      * @param {Object} [options.lightParams] Object containing the sphere's
      *  light coefficients

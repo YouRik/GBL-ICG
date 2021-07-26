@@ -18,7 +18,7 @@ export default class Box extends GameObject {
         * @param {Array<number>} [options.orientation] The object's default
         *  orientation
         * @param {number} [options.halfExtents] The box's half extents
-        * @param {Array<number>} [options.mass] The object's mass
+        * @param {number} [options.mass] The object's mass
         * @param {Array<number>} [options.color] The object's color
         * @param {Object} [options.lightParams] The object's light coefficients
         * @param {boolean} [options.portable] Whether the object can be picked

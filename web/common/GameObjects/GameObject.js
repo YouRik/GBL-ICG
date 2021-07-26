@@ -17,7 +17,7 @@ export default class GameObject {
      * @param {GLMAT.vec3} [options.orientation] The object's default
      *  orientation
      * @param {GLMAT.vec3} [options.scale] The object's default scale
-     * @param {GLMAT.vec3} [options.mass] The object's mass
+     * @param {number} [options.mass] The object's mass
      * @param {(GLMAT.vec3|GLMAT.vec4)} [options.color] The object's color
      * @param {Object} [options.lightParams] The object's light coefficients
      * @param {boolean} [options.portable] Whether the object can be picked
