@@ -182,7 +182,7 @@ export default class HubStage extends Game {
             }
         };
         const gate1 = new Gate(this.world, this.programs['fragmentLighting'],
-            'lit', resources, gate1Entered,
+            this.programs['colored'], 'lit', resources, gate1Entered,
             {
                 scale: [1, 1, 1],
                 orientation: [0, 120, 0],
@@ -197,7 +197,7 @@ export default class HubStage extends Game {
             }
         };
         const gate2 = new Gate(this.world, this.programs['fragmentLighting'],
-            'lit', resources, gate2Entered,
+            this.programs['colored'], 'lit', resources, gate2Entered,
             {
                 scale: [1, 1, 1],
                 orientation: [0, 90, 0],
@@ -212,7 +212,7 @@ export default class HubStage extends Game {
             }
         };
         const gate3 = new Gate(this.world, this.programs['fragmentLighting'],
-            'lit', resources, gate3Entered,
+            this.programs['colored'], 'lit', resources, gate3Entered,
             {
                 scale: [1, 1, 1],
                 orientation: [0, 60, 0],
@@ -227,7 +227,7 @@ export default class HubStage extends Game {
             }
         };
         const gate4 = new Gate(this.world, this.programs['fragmentLighting'],
-            'lit', resources, gate4Entered,
+            this.programs['colored'], 'lit', resources, gate4Entered,
             {
                 scale: [1, 1, 1],
                 orientation: [0, 20, -0.5],

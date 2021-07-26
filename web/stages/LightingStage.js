@@ -68,7 +68,7 @@ export default class LightingStage extends Game {
             }
         };
         const gate1 = new Gate(this.world, this.programs['fragmentLighting'],
-            'lit', resources, gate1Entered,
+            this.programs['colored'], 'lit', resources, gate1Entered,
             {
                 scale: [1, 1, 1],
                 orientation: [0, 45, 0],
