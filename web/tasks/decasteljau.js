@@ -9,7 +9,7 @@
  * @param {Array<number>} p3 Spline's end control point
  * @param {number} tStep Step between 0 and 1 at which to place new spline
  *  points
- * @returns {Array<number>} Array of interpolated spline points
+ * @returns {Array<Array<number>>} Array of interpolated spline points
  */
 export default function deCasteljau(p0, p1, p2, p3, tStep) {
     // Array for final spline curve points
