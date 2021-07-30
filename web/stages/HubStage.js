@@ -7,6 +7,7 @@ import Pedestal from '../common/GameObjects/Pedestal.js';
 import SphereObject from '../common/GameObjects/SphereObject.js';
 import TaskSwitcher from '../common/TaskSwitcher.js';
 import { Body, Sphere } from '../common/lib/cannon/cannon-es.js';
+import deCasteljau from '../tasks/decasteljau.js';
 
 /**
  * The hub stage used as a means of moving between stages
@@ -41,7 +42,7 @@ export default class HubStage extends Game {
                 mass: 5,
                 color: [1, 1, 0],
                 radius: 0.4,
-                position: [11, 0.8, -4],
+                position: [13, 0.8, -4],
                 portable: true
             }
         );
@@ -62,7 +63,7 @@ export default class HubStage extends Game {
                         specExp: 10
                     },
                     radius: 0.4,
-                    position: [12, 0.8, -3],
+                    position: [14, 0.8, -3],
                     portable: true
                 }
             );
@@ -84,7 +85,7 @@ export default class HubStage extends Game {
                         specExp: 10
                     },
                     radius: 0.4,
-                    position: [13, 0.8, -4],
+                    position: [15, 0.8, -4],
                     portable: true
                 }
             );
@@ -106,7 +107,7 @@ export default class HubStage extends Game {
                         specExp: 10
                     },
                     radius: 0.4,
-                    position: [12, 0.8, -5],
+                    position: [14, 0.8, -5],
                     portable: true
                 });
             this.gameObjects.push(orb4);
@@ -127,7 +128,7 @@ export default class HubStage extends Game {
                         specExp: 10
                     },
                     radius: 0.6,
-                    position: [12, 0.8, -4],
+                    position: [14, 0.8, -4],
                     portable: true
                 });
             this.gameObjects.push(orb5);
@@ -290,5 +291,118 @@ export default class HubStage extends Game {
                 pedestalEmptied(event);
             }
         });
+
+        // Add river
+        this.gameObjects.push(this.getRiver(this.world,
+            this.programs['fragmentLighting'], [0, 0.001, 0], meshes['river']));
+    }
+
+    /**
+     * Generate river geometry and initialize a mesh object with it. The river
+     *  geometry will be interpolated using DeCasteljau's algorithm
+     * @param {CANNON.World} world The game's physics world
+     * @param {WebGLProgram} program The shader program to be used
+     * @param {Array<number>} position The position to offset the river
+     * @returns {MeshObject} River mesh object
+     */
+    getRiver(world, program, position) {
+        // Define spline curve points
+        let leftSideSpline = [
+            [19.9333, -0.240965],
+            [12.4769, 0.642908],
+            [9.64548, -1.50411],
+            [10.21269, -4.78538],
+            [11.8236, -8.22445],
+            [9.1854, -10.7944],
+            [4.26666, -12.5904]
+        ];
+        let rightSideSpline = [
+            [9, 6.14458],
+            [5.73489, 3.30336],
+            [4.81963, -0.821107],
+            [5.85268, -4.79127],
+            [7.31993, -7.83071],
+            [5.86601, -10.097],
+            [1.60572, -11.6733]
+        ];
+
+        // Interpolate spline curves
+        const leftSpline1 = deCasteljau(leftSideSpline[0], leftSideSpline[1],
+            leftSideSpline[2], leftSideSpline[3], 0.1);
+        const leftSpline2 = deCasteljau(leftSideSpline[3], leftSideSpline[4],
+            leftSideSpline[5], leftSideSpline[6], 0.1);
+
+        const rightSpline1 = deCasteljau(rightSideSpline[0], rightSideSpline[1],
+            rightSideSpline[2], rightSideSpline[3], 0.1);
+        const rightSpline2 = deCasteljau(rightSideSpline[3], rightSideSpline[4],
+            rightSideSpline[5], rightSideSpline[6], 0.1);
+
+        // Collect splines
+        const splines = [leftSpline1, rightSpline1, leftSpline2, rightSpline2];
+        // Declare mesh object
+        const riverMesh = {
+            positions: [],
+            normals: [],
+            indices: [],
+            faceIndexCounts: []
+        };
+        console.log(splines);
+
+        // Add positions to mesh
+        splines.forEach(spline => {
+            spline.forEach(point => {
+                riverMesh.positions.push(point[0]);
+                riverMesh.positions.push(0);
+                riverMesh.positions.push(point[1]);
+            });
+        });
+        // Add normals to mesh
+        for (let i = 0; i < riverMesh.positions.length / 3; i++) {
+            riverMesh.normals.push(0);
+            riverMesh.normals.push(1);
+            riverMesh.normals.push(0);
+        }
+
+        // Add indices to mesh
+        console.log(riverMesh.positions);
+        for (let i = 0; i < leftSpline1.length - 1; i++) {
+            riverMesh.indices.push(i);
+            riverMesh.indices.push(i + 1);
+            riverMesh.indices.push(i + leftSpline1.length);
+        }
+        for (let i = 0; i < leftSpline1.length - 1; i++) {
+            riverMesh.indices.push(i + 1);
+            riverMesh.indices.push(i + 1 + leftSpline1.length);
+            riverMesh.indices.push(i + leftSpline1.length);
+        }
+        for (let i = leftSpline1.length + rightSpline1.length;
+            i < (leftSpline1.length + rightSpline1.length
+                + leftSpline2.length - 1); i++) {
+            riverMesh.indices.push(i);
+            riverMesh.indices.push(i + 1);
+            riverMesh.indices.push(i + leftSpline2.length);
+        }
+        for (let i = leftSpline1.length + rightSpline1.length;
+            i < (leftSpline1.length + rightSpline1.length
+                + leftSpline2.length - 1); i++) {
+            riverMesh.indices.push(i + 1);
+            riverMesh.indices.push(i + 1 + leftSpline2.length);
+            riverMesh.indices.push(i + leftSpline2.length);
+        }
+
+        // Add face counts to mesh
+        for (let i = 0; i < riverMesh.indices.length / 3; i++ ) {
+            riverMesh.faceIndexCounts.push(3);
+        }
+
+        // Create game object
+        const river = new MeshObject(world, program, 'lit', [], {
+            graphicalMesh: riverMesh,
+            position: position,
+            color: [0.1, 0.3, 1],
+            mass: 0
+        });
+        
+        return river;
     }
 }
