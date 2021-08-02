@@ -346,7 +346,6 @@ export default class HubStage extends Game {
             indices: [],
             faceIndexCounts: []
         };
-        console.log(splines);
 
         // Add positions to mesh
         splines.forEach(spline => {
@@ -364,7 +363,6 @@ export default class HubStage extends Game {
         }
 
         // Add indices to mesh
-        console.log(riverMesh.positions);
         for (let i = 0; i < leftSpline1.length - 1; i++) {
             riverMesh.indices.push(i);
             riverMesh.indices.push(i + 1);
