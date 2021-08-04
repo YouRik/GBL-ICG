@@ -1423,7 +1423,7 @@
                 "ks": [0.73, 0.98, 0.65],
                 "specExp": 10
             },
-            "position": [5, 10.5, 7],
+            "position": [5, 10.5, -8],
             "mass": 5,
             "mesh": "icoSphere",
             "portable": true

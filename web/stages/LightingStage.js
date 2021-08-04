@@ -55,7 +55,7 @@ export default class LightingStage extends Game {
                     specExp: 10
                 },
                 radius: 0.4,
-                position: [5, 10.5, -8],
+                position: [5, 10.5, 7],
                 portable: true
             });
         this.gameObjects.push(orb1);
