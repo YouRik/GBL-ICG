@@ -45,7 +45,7 @@ void main()
         // the light source in world coordinates
         // TASK3.2: Calculate the light direction in view space
         
-        // TASK3.2: Calculate the vector L in the case of a point light
+        // TASK3.2: Calculate the vector L in the case of a directed light
         
     } else {
         // Point light
