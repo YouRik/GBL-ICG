@@ -33,7 +33,7 @@ export default class HubStage extends Game {
         const meshes = resources.meshes;
 
         // Handle switching of tasks
-        const taskSwitcher = new TaskSwitcher(2);
+        const taskSwitcher = new TaskSwitcher(3);
 
         // Create Orb 1
         const orb1 = new SphereObject(this.world,
@@ -168,12 +168,19 @@ export default class HubStage extends Game {
             devTrigger.physicsBody.isTrigger = true;
             devTrigger.physicsBody.addEventListener('collide', (event) => {
                 if (event.body === orb5.physicsBody) {
-                    taskSwitcher.unlockTasks(1);
-                    taskSwitcher.switchTask(1);
+                    taskSwitcher.unlockTasks(2);
+                    taskSwitcher.switchTask(2);
                 }
             });
             devTrigger.visible = false;
             this.gameObjects.push(devTrigger);
+
+            // Unlock next part of the story, change triangle image
+            taskSwitcher.unlockTasks(1);
+            taskSwitcher.switchTask(2);
+            const img = document.getElementById('triangle_img');
+            console.log(img);
+            img.src = './images/deviloper.png';
         }
 
         // Gate 1
