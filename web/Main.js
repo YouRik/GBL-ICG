@@ -19,24 +19,24 @@ let stage = null;
 
 // Load and start requested stage
 switch (stageName) {
-case 'test':
-    stage = new TestStage();
-    break;
-case 'hub':
-    stage = new HubStage();
-    break;
-case 'transformations':
-    stage = new TransformationsStage();
-    break;
-case 'splines':
-    stage = new SplinesStage();
-    break;
-case 'lighting':
-    stage = new LightingStage();
-    break;
-case 'shadows':
-    stage = new ShadowsStage();
-    break;
+    case 'test':
+        stage = new TestStage();
+        break;
+    case 'hub':
+        stage = new HubStage();
+        break;
+    case 'transformations':
+        stage = new TransformationsStage();
+        break;
+    case 'splines':
+        stage = new SplinesStage();
+        break;
+    case 'lighting':
+        stage = new LightingStage();
+        break;
+    case 'shadows':
+        stage = new ShadowsStage();
+        break;
 }
 
 // Load resources and stage information, then start the game loop
