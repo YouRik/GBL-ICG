@@ -68,7 +68,7 @@ export default class GameObject {
         } else if (this.shaderType == 'lit') {
             this.normalLoc = GL.getAttribLocation(this.program, 'vNormal');
             this.kaLoc = GL.getUniformLocation(this.program, 'ka');
-            // TASK3.3: Get uniform locations of remaining lighting parameters
+            // TASK3.2: Get uniform locations of remaining lighting parameters
 
 
 
@@ -275,7 +275,7 @@ export default class GameObject {
 
         // Pass lighting values
         GL.uniform3fv(this.kaLoc, this.ka);
-        // TASK3.3: pass remaining lighting parameters to the shader
+        // TASK3.2: pass remaining lighting parameters to the shader
         
 
         
