@@ -179,7 +179,6 @@ export default class HubStage extends Game {
             taskSwitcher.unlockTasks(1);
             taskSwitcher.switchTask(2);
             const img = document.getElementById('triangle_img');
-            console.log(img);
             img.src = './images/deviloper.png';
         }
 
