@@ -1,5 +1,7 @@
 # A Game-Based Learning Approach to Teaching Interactive Computer Graphics
 
+![screenshots/screenshot-hub.png](screenshots/screenshot-hub.png "The game's graphics evolve by completing stages and implementing missing features")
+
 A majority of modern end-user applications in entertainment and productive domains utilize interactive computer graphics. Yet, the education of its underlying concepts and programming skills remain challenging to educators and students alike. The research field of game-based learning aims to exploit the favorable effects of play to motivate students and provide interactive learning environments. It thereby presents a potential solution to educational problems. This work introduces a concrete game-based approach to teaching computer graphics with an implemented extensible learning game. Overall, the application's development proved the game aspect to introduce new challenges to the development such as requiring the detailed balancing of assignment and game design. However, both the concept and final product have received majorly affirmatory sentiments from the focus group participants.
 
 ## Requirements
